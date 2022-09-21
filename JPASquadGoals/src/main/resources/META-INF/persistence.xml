@@ -3,6 +3,11 @@
 	<persistence-unit name="JPASquadGoals">
 	
 	<provider>org.hibernate.jpa.HibernatePersistenceProvider</provider>
+	<class>com.skilldistillery.squadgoals.entities.Goal</class>
+	<class>com.skilldistillery.squadgoals.entities.Image</class>
+	<class>com.skilldistillery.squadgoals.entities.Review</class>
+	<class>com.skilldistillery.squadgoals.entities.Squad</class>
+	<class>com.skilldistillery.squadgoals.entities.Task</class>
 	<class>com.skilldistillery.squadgoals.entities.User</class>
 
 	<properties>
