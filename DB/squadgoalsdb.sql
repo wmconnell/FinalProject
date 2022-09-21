@@ -405,7 +405,6 @@ DROP TABLE IF EXISTS `badge` ;
 CREATE TABLE IF NOT EXISTS `badge` (
   `id` INT NOT NULL AUTO_INCREMENT,
   `name` VARCHAR(45) NULL,
-  `img` VARCHAR(499) NULL,
   `description` VARCHAR(499) NULL,
   `conditions` VARCHAR(499) NULL,
   PRIMARY KEY (`id`))
@@ -504,8 +503,8 @@ COMMIT;
 -- -----------------------------------------------------
 START TRANSACTION;
 USE `squadgoalsdb`;
-INSERT INTO `user` (`id`, `username`, `password`, `email`, `first_name`, `last_name`, `role`, `bio`, `active`, `points`, `profile_image_id`) VALUES (1, 'originaltom', 'myspace', 'tom@myspace.com', 'Tom', 'MySpace', '1', 'Hi, I\'m Tom, and I\'m friends with everyone!', 1, 300, 1);
-INSERT INTO `user` (`id`, `username`, `password`, `email`, `first_name`, `last_name`, `role`, `bio`, `active`, `points`, `profile_image_id`) VALUES (2, 'godzilla', 'godzilla', 'godzilla@monster.rawr', 'Go', 'Shira', '2', 'Hi, name\'s Godzilla. Love smashing cities and chasing damsels up skyscrapers. Oh, is that my cousin, King Kong? Oops.', 1, 10, 2);
+INSERT INTO `user` (`id`, `username`, `password`, `email`, `first_name`, `last_name`, `role`, `bio`, `active`, `points`, `profile_image_id`) VALUES (1, 'originaltom', 'myspace', 'tom@myspace.com', 'Tom', 'MySpace', 'admin', 'Hi, I\'m Tom, and I\'m friends with everyone!', 1, 300, 1);
+INSERT INTO `user` (`id`, `username`, `password`, `email`, `first_name`, `last_name`, `role`, `bio`, `active`, `points`, `profile_image_id`) VALUES (2, 'godzilla', 'godzilla', 'godzilla@monster.rawr', 'Go', 'Shira', 'member', 'Hi, name\'s Godzilla. Love smashing cities and chasing damsels up skyscrapers. Oh, is that my cousin, King Kong? Oops.', 1, 10, 2);
 
 COMMIT;
 
@@ -580,8 +579,8 @@ COMMIT;
 -- -----------------------------------------------------
 START TRANSACTION;
 USE `squadgoalsdb`;
-INSERT INTO `badge` (`id`, `name`, `img`, `description`, `conditions`) VALUES (1, 'Super Squad', NULL, 'Any squad that reaches 100 pts receives the Super Squad badge!', '{point_threshold: 100}');
-INSERT INTO `badge` (`id`, `name`, `img`, `description`, `conditions`) VALUES (2, 'Mother Teresa', NULL, 'Any squad that achieves 3 charitable goals within 1 year receives the Mother Teresa badge!', '{tags:[\'charitable\'], timeframe: 12}');
+INSERT INTO `badge` (`id`, `name`, `description`, `conditions`) VALUES (1, 'Super Squad', 'Any squad that reaches 100 pts receives the Super Squad badge!', '{point_threshold: 100}');
+INSERT INTO `badge` (`id`, `name`, `description`, `conditions`) VALUES (2, 'Mother Teresa', 'Any squad that achieves 3 charitable goals within 1 year receives the Mother Teresa badge!', '{tags:[\'charitable\'], timeframe: 12}');
 
 COMMIT;
 

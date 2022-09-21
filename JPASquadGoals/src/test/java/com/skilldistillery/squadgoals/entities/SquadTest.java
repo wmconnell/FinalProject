@@ -1,8 +1,6 @@
 package com.skilldistillery.squadgoals.entities;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.*;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
@@ -14,10 +12,10 @@ import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-class UserTest {
+class SquadTest {
 	private static EntityManagerFactory emf;
 	private EntityManager em;
-	private User user;
+	private Squad squad;
 
 	@BeforeAll
 	static void setUpBeforeClass() throws Exception {
@@ -32,29 +30,29 @@ class UserTest {
 	@BeforeEach
 	void setUp() throws Exception {
 		em = emf.createEntityManager();
-		user = em.find(User.class, Long.valueOf(1));
+		squad = em.find(Squad.class, Long.valueOf(1));
 	}
 
 	@AfterEach
 	void tearDown() throws Exception {
 		em.close();
-		user = null;
+		squad = null;
 	}
 
 	@Test
-	void test_user_not_null() {
-		assertNotNull(user);
+	void test_squad_not_null() {
+		assertNotNull(squad);
 	}
 	
 	@Test
-	void test_user_mappings() {
-		assertEquals(user.getUsername(), "originaltom");
-		assertEquals(user.getPassword(), "myspace");
-		assertEquals(user.getEmail(), "tom@myspace.com");
-		assertEquals(user.getFirstName(), "Tom");
-		assertEquals(user.getLastName(), "MySpace");
-		assertEquals(user.getRole(), "admin");
-		assertTrue(user.getActive());
+	void test_squad_mappings() {
+		assertEquals(squad.getsquadname(), "originaltom");
+		assertEquals(squad.getPassword(), "myspace");
+		assertEquals(squad.getEmail(), "tom@myspace.com");
+		assertEquals(squad.getFirstName(), "Tom");
+		assertEquals(squad.getLastName(), "MySpace");
+		assertEquals(squad.getRole(), "admin");
+		assertTrue(squad.getActive());
 	}
 
 }
