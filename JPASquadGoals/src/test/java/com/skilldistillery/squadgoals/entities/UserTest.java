@@ -2,6 +2,7 @@ package com.skilldistillery.squadgoals.entities;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
@@ -49,6 +50,11 @@ class UserTest {
 	void test_user_mappings() {
 		assertEquals(user.getUsername(), "originaltom");
 		assertEquals(user.getPassword(), "myspace");
+		assertEquals(user.getEmail(), "tom@myspace.com");
+		assertEquals(user.getFirstName(), "Tom");
+		assertEquals(user.getLastName(), "MySpace");
+		assertEquals(user.getRole(), "admin");
+		assertTrue(user.getActive());
 	}
 
 }
