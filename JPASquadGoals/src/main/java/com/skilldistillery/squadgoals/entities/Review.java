@@ -18,10 +18,6 @@ public class Review {
 	private long id;
 	private int rating;
 	private String comment;
-	@ManyToOne
-	@JoinColumn(name="goal_id")
-	@JsonIgnoreProperties({"reviews"})
-	private Goal goal;
 	
 	public Review() {
 		

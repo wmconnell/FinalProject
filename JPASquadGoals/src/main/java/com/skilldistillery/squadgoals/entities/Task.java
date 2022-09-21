@@ -36,10 +36,7 @@ public class Task {
 	@Column(name = "end_date")
 	private LocalDateTime endDate;
 	private Boolean completed;
-	@ManyToOne
-	@JoinColumn(name = "goal_id")
-	@JsonIgnoreProperties({ "tasks" })
-	private Goal goal;
+
 
 	public Task() {
 

@@ -23,17 +23,9 @@ public class Squad {
 	private String name;
 	private String bio;
 	private Boolean active;
-	// TODO: Decide whether to keep the leader designation/field
-	@ManyToOne
-	@JoinColumn(name="leader_id")
-	@JsonIgnore
-	private User leader;
+
 	private int points;
-	@OneToOne(cascade=CascadeType.PERSIST)
-	@JoinColumn(name="profile_img_id")
-	@JsonIgnoreProperties({"squad"})
-	private Image profileImg;
-	
+
 	public Squad() {
 		
 	}

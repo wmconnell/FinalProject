@@ -32,14 +32,7 @@ public class User {
 	private String role;
 	private String bio;
 	private Boolean active;
-	@OneToOne(cascade=CascadeType.PERSIST)
-	@JoinColumn(name="profile_img_id")
-	@JsonIgnoreProperties({"user"})
-	private Image profileImg;
-	@ManyToMany
-	@JoinTable(name = "user_has_squad", joinColumns = @JoinColumn(name = "user_id"), inverseJoinColumns = @JoinColumn(name = "squad_id"))
-	@JsonIgnore
-	private List<Squad> squads;
+
 
 	public User() {
 
@@ -115,14 +108,6 @@ public class User {
 
 	public void setActive(Boolean active) {
 		this.active = active;
-	}
-
-	public Image getProfileImg() {
-		return profileImg;
-	}
-
-	public void setProfileImg(Image profileImg) {
-		this.profileImg = profileImg;
 	}
 
 	@Override
