@@ -3,6 +3,7 @@ package com.skilldistillery.squadgoals.services;
 import com.skilldistillery.squadgoals.entities.User;
 
 public interface AuthService {
-	public User register(User user);
-	public User getUserByUsername(String username);
+	User register(User user);
+	User getUserByUsername(String username);
+	User getUserById(long id);
 }
