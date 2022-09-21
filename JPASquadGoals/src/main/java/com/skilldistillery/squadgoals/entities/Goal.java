@@ -31,12 +31,40 @@ public class Goal {
 	@Column(name = "end_date")
 	private LocalDateTime endDate;
 	private Boolean completed;
-	private String visibility;
-	private String attendance;
+	@Column(name= "public_visibility")
+	private Boolean publicVisibility;
+	@Column(name= "public_attendance")
+	private Boolean publicAttendance;
 	private String recurring;
+	private Boolean active;
 	
+
 	public Goal() {
 		
+	}
+	
+	public Boolean getPublicVisibility() {
+		return publicVisibility;
+	}
+	
+	public void setPublicVisibility(Boolean publicVisibility) {
+		this.publicVisibility = publicVisibility;
+	}
+	
+	public Boolean getPublicAttendance() {
+		return publicAttendance;
+	}
+	
+	public void setPublicAttendance(Boolean publicAttendance) {
+		this.publicAttendance = publicAttendance;
+	}
+	
+	public Boolean getActive() {
+		return active;
+	}
+	
+	public void setActive(Boolean active) {
+		this.active = active;
 	}
 
 	public int getId() {
@@ -109,22 +137,6 @@ public class Goal {
 
 	public void setCompleted(Boolean completed) {
 		this.completed = completed;
-	}
-
-	public String getVisibility() {
-		return visibility;
-	}
-
-	public void setVisibility(String visibility) {
-		this.visibility = visibility;
-	}
-
-	public String getAttendance() {
-		return attendance;
-	}
-
-	public void setAttendance(String attendance) {
-		this.attendance = attendance;
 	}
 
 	public String getRecurring() {

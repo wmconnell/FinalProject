@@ -12,7 +12,8 @@ public class Badge {
 	private int id;
 	private String name;
 	private String description;
-	private String conditions;
+	
+	
 
 	public Badge() {
 		
@@ -42,13 +43,6 @@ public class Badge {
 		this.description = description;
 	}
 
-	public String getConditions() {
-		return conditions;
-	}
-
-	public void setConditions(String conditions) {
-		this.conditions = conditions;
-	}
 	
 	
 }

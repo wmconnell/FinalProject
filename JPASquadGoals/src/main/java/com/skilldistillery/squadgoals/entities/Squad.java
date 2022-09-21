@@ -1,19 +1,12 @@
 package com.skilldistillery.squadgoals.entities;
 
-import java.util.Objects;
+import java.time.LocalDateTime;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.OneToOne;
-
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 @Entity
 public class Squad {
@@ -23,7 +16,8 @@ public class Squad {
 	private String name;
 	private String bio;
 	private Boolean active;
-	private int points;
+	@Column(name="create_date")
+	private LocalDateTime createDate;
 
 	public Squad() {
 		
@@ -61,13 +55,15 @@ public class Squad {
 		this.active = active;
 	}
 
-	public int getPoints() {
-		return points;
+	public LocalDateTime getCreateDate() {
+		return createDate;
 	}
 
-	public void setPoints(int points) {
-		this.points = points;
+	public void setCreateDate(LocalDateTime createDate) {
+		this.createDate = createDate;
 	}
+
+	
 	
 	
 	

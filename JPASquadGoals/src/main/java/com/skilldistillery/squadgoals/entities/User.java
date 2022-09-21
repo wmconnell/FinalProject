@@ -1,21 +1,13 @@
 package com.skilldistillery.squadgoals.entities;
 
-import java.util.List;
+import java.time.LocalDateTime;
 import java.util.Objects;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
-import javax.persistence.ManyToMany;
-import javax.persistence.OneToOne;
-
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 @Entity
 public class User {
@@ -32,10 +24,22 @@ public class User {
 	private String role;
 	private String bio;
 	private Boolean active;
+	
+	@Column(name= "create_date")
+	private LocalDateTime createDate;
+
 
 
 	public User() {
 
+	}
+	
+	public LocalDateTime getCreateDate() {
+		return createDate;
+	}
+	
+	public void setCreateDate(LocalDateTime createDate) {
+		this.createDate = createDate;
 	}
 
 	public int getId() {
