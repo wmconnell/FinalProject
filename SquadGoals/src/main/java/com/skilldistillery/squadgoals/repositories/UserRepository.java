@@ -4,7 +4,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 import com.skilldistillery.squadgoals.entities.User;
 
-public interface UserRepository extends JpaRepository<User, Long> {
-	User getUserById(long id);
+public interface UserRepository extends JpaRepository<User, Integer> {
+	User getUserById(int id);
 	User findByUsername(String username);
 }

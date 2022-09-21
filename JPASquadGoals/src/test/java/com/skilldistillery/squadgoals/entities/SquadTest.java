@@ -32,7 +32,7 @@ class SquadTest {
 	@BeforeEach
 	void setUp() throws Exception {
 		em = emf.createEntityManager();
-		squad = em.find(Squad.class, Long.valueOf(1));
+		squad = em.find(Squad.class, 1);
 	}
 
 	@AfterEach

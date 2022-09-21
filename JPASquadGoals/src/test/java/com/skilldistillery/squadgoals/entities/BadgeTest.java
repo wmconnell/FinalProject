@@ -31,7 +31,7 @@ class BadgeTest {
 	@BeforeEach
 	void setUp() throws Exception {
 		em = emf.createEntityManager();
-		badge = em.find(Badge.class, Long.valueOf(1));
+		badge = em.find(Badge.class, 1);
 	}
 
 	@AfterEach

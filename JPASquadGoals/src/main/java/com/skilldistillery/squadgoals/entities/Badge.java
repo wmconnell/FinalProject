@@ -9,7 +9,7 @@ import javax.persistence.Id;
 public class Badge {
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
-	private long id;
+	private int id;
 	private String name;
 	private String description;
 	private String conditions;
@@ -18,11 +18,11 @@ public class Badge {
 		
 	}
 
-	public long getId() {
+	public int getId() {
 		return id;
 	}
 
-	public void setId(long id) {
+	public void setId(int id) {
 		this.id = id;
 	}
 

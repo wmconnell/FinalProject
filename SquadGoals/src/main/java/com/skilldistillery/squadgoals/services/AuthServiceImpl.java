@@ -33,7 +33,7 @@ public class AuthServiceImpl implements AuthService {
 	}
 	
 	@Override
-	public User getUserById(long id) {
+	public User getUserById(int id) {
 		Optional<User> userOpt = userRepo.findById(id);
 		User user = null;
 		if (userOpt.isPresent()) {

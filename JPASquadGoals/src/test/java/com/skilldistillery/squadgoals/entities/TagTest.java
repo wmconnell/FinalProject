@@ -31,7 +31,7 @@ class TagTest {
 	@BeforeEach
 	void setUp() throws Exception {
 		em = emf.createEntityManager();
-		tag = em.find(Tag.class, Long.valueOf(1));
+		tag = em.find(Tag.class, 1);
 	}
 
 	@AfterEach

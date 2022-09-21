@@ -31,7 +31,7 @@ class ReviewTest {
 	@BeforeEach
 	void setUp() throws Exception {
 		em = emf.createEntityManager();
-		review = em.find(Review.class, Long.valueOf(1));
+		review = em.find(Review.class, 1);
 	}
 
 	@AfterEach

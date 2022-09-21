@@ -32,7 +32,7 @@ class GoalTest {
 	@BeforeEach
 	void setUp() throws Exception {
 		em = emf.createEntityManager();
-		goal = em.find(Goal.class, Long.valueOf(1));
+		goal = em.find(Goal.class, 1);
 	}
 
 	@AfterEach

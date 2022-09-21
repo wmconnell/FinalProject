@@ -33,7 +33,7 @@ class TaskTest {
 	@BeforeEach
 	void setUp() throws Exception {
 		em = emf.createEntityManager();
-		task = em.find(Task.class, Long.valueOf(1));
+		task = em.find(Task.class, 1);
 	}
 
 	@AfterEach

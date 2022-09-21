@@ -5,5 +5,5 @@ import com.skilldistillery.squadgoals.entities.User;
 public interface AuthService {
 	User register(User user);
 	User getUserByUsername(String username);
-	User getUserById(long id);
+	User getUserById(int id);
 }
