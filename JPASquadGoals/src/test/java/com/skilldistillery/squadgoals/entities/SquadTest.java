@@ -1,6 +1,8 @@
 package com.skilldistillery.squadgoals.entities;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
@@ -44,14 +46,16 @@ class SquadTest {
 		assertNotNull(squad);
 	}
 	
+//	+----+---------+-------------------------------------+--------+-----------+--------+------------------+
+//	| id | name    | bio                                 | active | leader_id | points | profile_image_id |
+//	+----+---------+-------------------------------------+--------+-----------+--------+------------------+
+//	|  1 | The OGs | We're just two wild and crazy guys! |      1 |         1 |    150 |                3 |
+//	+----+---------+-------------------------------------+--------+-----------+--------+------------------+
+	
 	@Test
 	void test_squad_mappings() {
-		assertEquals(squad.getsquadname(), "originaltom");
-		assertEquals(squad.getPassword(), "myspace");
-		assertEquals(squad.getEmail(), "tom@myspace.com");
-		assertEquals(squad.getFirstName(), "Tom");
-		assertEquals(squad.getLastName(), "MySpace");
-		assertEquals(squad.getRole(), "admin");
+		assertEquals(squad.getName(), "The OGs");
+		assertEquals(squad.getBio(), "We're just two wild and crazy guys!");
 		assertTrue(squad.getActive());
 	}
 
