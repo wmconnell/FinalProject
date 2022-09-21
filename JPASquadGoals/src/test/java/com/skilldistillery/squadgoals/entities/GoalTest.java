@@ -1,6 +1,7 @@
 package com.skilldistillery.squadgoals.entities;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 import javax.persistence.EntityManager;
@@ -54,6 +55,9 @@ class GoalTest {
 	@Test
 	void test_goal_mappings() {
 		assertEquals(goal.getTitle(), "Pizza party");
-		assertEquals(goal.getTitle(), "Pizza party");
+		assertEquals(goal.getDescription(), "Some wholesome, after-school fun!");
+		assertFalse(goal.getCompleted());
+		assertEquals(goal.getVisibility(), "public");
+		assertEquals(goal.getAttendance(), "public");
 	}
 }

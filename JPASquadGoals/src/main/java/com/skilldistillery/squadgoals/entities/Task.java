@@ -42,4 +42,95 @@ public class Task {
 
 	}
 
+
+	public long getId() {
+		return id;
+	}
+
+
+	public void setId(long id) {
+		this.id = id;
+	}
+
+
+	public String getTitle() {
+		return title;
+	}
+
+
+	public void setTitle(String title) {
+		this.title = title;
+	}
+
+
+	public String getDescription() {
+		return description;
+	}
+
+
+	public void setDescription(String description) {
+		this.description = description;
+	}
+
+
+	public LocalDateTime getCreatedDate() {
+		return createdDate;
+	}
+
+
+	public void setCreatedDate(LocalDateTime createdDate) {
+		this.createdDate = createdDate;
+	}
+
+
+	public LocalDateTime getUpdatedDate() {
+		return updatedDate;
+	}
+
+
+	public void setUpdatedDate(LocalDateTime updatedDate) {
+		this.updatedDate = updatedDate;
+	}
+
+
+	public LocalDateTime getCompletedDate() {
+		return completedDate;
+	}
+
+
+	public void setCompletedDate(LocalDateTime completedDate) {
+		this.completedDate = completedDate;
+	}
+
+
+	public LocalDateTime getStartDate() {
+		return startDate;
+	}
+
+
+	public void setStartDate(LocalDateTime startDate) {
+		this.startDate = startDate;
+	}
+
+
+	public LocalDateTime getEndDate() {
+		return endDate;
+	}
+
+
+	public void setEndDate(LocalDateTime endDate) {
+		this.endDate = endDate;
+	}
+
+
+	public Boolean getCompleted() {
+		return completed;
+	}
+
+
+	public void setCompleted(Boolean completed) {
+		this.completed = completed;
+	}
+
+	
 }
