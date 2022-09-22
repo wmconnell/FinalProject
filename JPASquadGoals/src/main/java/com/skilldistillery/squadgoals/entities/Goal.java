@@ -1,12 +1,14 @@
 package com.skilldistillery.squadgoals.entities;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
 
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
@@ -37,6 +39,9 @@ public class Goal {
 	private Boolean publicAttendance;
 	private String recurring;
 	private Boolean active;
+	
+	@OneToMany(mappedBy = "goal")
+	private List<Review> reviews;
 	
 
 	public Goal() {

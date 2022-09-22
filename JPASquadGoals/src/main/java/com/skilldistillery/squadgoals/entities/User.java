@@ -1,6 +1,7 @@
 package com.skilldistillery.squadgoals.entities;
 
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Objects;
 
 import javax.persistence.Column;
@@ -8,6 +9,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
 
 @Entity
 public class User {
@@ -27,6 +29,9 @@ public class User {
 	
 	@Column(name= "create_date")
 	private LocalDateTime createDate;
+	
+	@OneToMany(mappedBy = "user")
+	private List<Review> reviews;
 
 
 
