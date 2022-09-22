@@ -9,7 +9,9 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
 import javax.persistence.ManyToMany;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 
 import org.hibernate.annotations.CreationTimestamp;
@@ -48,6 +50,20 @@ public class Goal {
 	@ManyToMany(mappedBy="goals")
 	@JsonIgnoreProperties({"goals"})
 	private List<User> users;
+	@ManyToMany(mappedBy="goals")
+	@JsonIgnoreProperties({"goals"})
+	private List<Squad> squads;
+	@ManyToMany(mappedBy="goals")
+	@JsonIgnoreProperties({"goals"})
+	private List<Image> images;
+	@ManyToOne
+	@JoinColumn(name="creator_id")
+	@JsonIgnoreProperties({"goalsCreated"})
+	private User creator;
+	@OneToMany
+	@JoinColumn(name="goal_id")
+	@JsonIgnoreProperties({"goal"})
+	private List<Task> tasks;
 	
 
 	public Goal() {
@@ -188,6 +204,89 @@ public class Goal {
 		if (users != null && users.contains(user)) {
 			users.remove(user);
 			user.removeGoal(this);
+		}
+	}
+	
+	public List<Squad> getSquads() {
+		return squads;
+	}
+
+	public void setSquads(List<Squad> squads) {
+		this.squads = squads;
+	}
+	
+	public void addSquad(Squad squad) {
+		if (squads == null) { 
+			squads = new ArrayList<>();
+		}
+		if (!squads.contains(squad)) {
+			squads.add(squad);
+			squad.addGoal(this);
+		}
+	}
+	
+	public void removeSquad(Squad squad) {
+		if (squads != null && squads.contains(squad)) {
+			squads.remove(squad);
+			squad.removeGoal(this);
+		}
+	}
+	
+	public List<Image> getImages() {
+		return images;
+	}
+
+	public void setImages(List<Image> images) {
+		this.images = images;
+	}
+	
+	public void addImage(Image image) {
+		if (images == null) { 
+			images = new ArrayList<>();
+		}
+		if (!images.contains(image)) {
+			images.add(image);
+			image.addGoal(this);
+		}
+	}
+	
+	public void removeImage(Image image) {
+		if (images != null && images.contains(image)) {
+			images.remove(image);
+			image.removeGoal(this);
+		}
+	}
+
+	public User getCreator() {
+		return creator;
+	}
+
+	public void setCreator(User creator) {
+		this.creator = creator;
+	}
+	
+	public List<Task> getTasks() {
+		return tasks;
+	}
+
+	public void setTasks(List<Task> tasks) {
+		this.tasks = tasks;
+	}
+	
+	public void addTask(Task task) {
+		if (tasks == null) { 
+			tasks = new ArrayList<>();
+		}
+		if (!tasks.contains(task)) {
+			tasks.add(task);
+			task.setGoal(this);
+		}
+	}
+	
+	public void removeTask(Task task) {
+		task.setGoal(null);
+		if (tasks != null && tasks.contains(task)) {
+			tasks.remove(task);
 		}
 	}
 }

@@ -58,5 +58,15 @@ class SquadTest {
 		assertEquals(squad.getBio(), "We're just two wild and crazy guys!");
 		assertTrue(squad.getActive());
 	}
+	
+	@Test
+	void test_squad_relationship_mappings() {
+		assertTrue(squad.getGoals().size() == 1);
+		assertTrue(squad.getTasks().size() == 2);
+		assertTrue(squad.getTags().size() == 3);
+		assertTrue(squad.getBadges().size() == 1);
+		assertTrue(squad.getSquadMessages().size() == 2);
+		assertEquals(squad.getProfilePic().getUrl(), "https://static.wikia.nocookie.net/snl/images/6/66/Wild_and_crazy_guys.jpg/revision/latest?cb=20140804162910");
+	}
 
 }

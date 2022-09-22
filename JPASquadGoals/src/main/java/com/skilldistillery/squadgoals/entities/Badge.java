@@ -21,7 +21,9 @@ public class Badge {
 	@ManyToMany(mappedBy="badges")
 	@JsonIgnoreProperties({"badges"})
 	private List<User> users;
-	
+	@ManyToMany(mappedBy="badges")
+	@JsonIgnoreProperties({"badges"})
+	private List<Squad> squads;
 
 	public Badge() {
 		
@@ -73,6 +75,31 @@ public class Badge {
 		if (users != null && users.contains(user)) {
 			users.remove(user);
 			user.removeBadge(this);
+		}
+	}
+	
+	public List<Squad> getSquads() {
+		return squads;
+	}
+
+	public void setSquads(List<Squad> squads) {
+		this.squads = squads;
+	}
+
+	public void addSquad(Squad squad) {
+		if (squads == null) {
+			squads = new ArrayList<>();
+		}
+		if (!squads.contains(squad)) {
+			squads.add(squad);
+			squad.addBadge(this);
+		}
+	}
+
+	public void removeSquad(Squad squad) {
+		if (squads != null && squads.contains(squad)) {
+			squads.remove(squad);
+			squad.removeBadge(this);
 		}
 	}
 	

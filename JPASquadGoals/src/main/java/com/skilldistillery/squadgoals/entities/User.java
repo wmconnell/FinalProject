@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -14,8 +15,10 @@ import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 @Entity
 public class User {
@@ -52,6 +55,21 @@ public class User {
 	@JoinTable(name = "badge_has_user", joinColumns = @JoinColumn(name = "user_id"), inverseJoinColumns = @JoinColumn(name = "badge_id"))
 	@JsonIgnore
 	private List<Badge> badges;
+	@OneToMany(mappedBy="sender")
+	private List<SquadMessage> squadMessages;
+	@ManyToMany
+	@JoinTable(name = "user_has_tag", joinColumns = @JoinColumn(name = "user_id"), inverseJoinColumns = @JoinColumn(name = "tag_id"))
+	@JsonIgnore
+	private List<Tag> tags;
+	@OneToOne(cascade=CascadeType.PERSIST)
+	@JoinColumn(name="profile_image_id")
+	@JsonIgnoreProperties({"user"})
+	private Image profilePic;
+	@OneToMany
+	@JoinColumn(name = "creator_id")
+	@JsonIgnoreProperties({"creator"})
+	private List<Goal> goalsCreated;
+	
 
 	public User() {
 
@@ -242,6 +260,94 @@ public class User {
 		if (badges != null && badges.contains(badge)) {
 			badges.remove(badge);
 			badge.removeUser(this);
+		}
+	}
+	
+
+	public List<SquadMessage> getSquadMessages() {
+		return squadMessages;
+	}
+
+	public void setSquadMessages(List<SquadMessage> squadMessages) {
+		this.squadMessages = squadMessages;
+	}
+
+	public void addSquadMessage(SquadMessage squadMessage) {
+		if (squadMessages == null) {
+			squadMessages = new ArrayList<>();
+		}
+		if (!squadMessages.contains(squadMessage)) {
+			squadMessages.add(squadMessage);
+			if (squadMessage.getSender() != null) {
+				squadMessage.getSender().getSquadMessages().remove(squadMessage);
+			}
+			squadMessage.setSender(this);
+		}
+	}
+
+	public void removeSquadMessage(SquadMessage squadMessage) {
+		squadMessage.setSender(null);
+		if (squadMessages != null && squadMessages.contains(squadMessage)) {
+			squadMessages.remove(squadMessage);
+		}
+	}
+
+	
+	public List<Tag> getTags() {
+		return tags;
+	}
+
+	public void setTags(List<Tag> tags) {
+		this.tags = tags;
+	}
+
+	public void addTag(Tag tag) {
+		if (tags == null) {
+			tags = new ArrayList<>();
+		}
+		if (!tags.contains(tag)) {
+			tags.add(tag);
+			tag.addUser(this);
+		}
+	}
+
+	public void removeTag(Tag tag) {
+		if (tags != null && tags.contains(tag)) {
+			tags.remove(tag);
+			tag.removeUser(this);
+		}
+	}
+
+	public Image getProfilePic() {
+		return profilePic;
+	}
+
+	public void setProfilePic(Image image) {
+		this.profilePic = image;
+	}
+
+	public List<Goal> getGoalsCreated() {
+		return goalsCreated;
+	}
+
+	public void setGoalsCreated(List<Goal> goalsCreated) {
+		this.goalsCreated = goalsCreated;
+	}
+
+	public void addGoalCreated(Goal goal) {
+		if (goalsCreated == null) {
+			goalsCreated = new ArrayList<>();
+		}
+		if (!goalsCreated.contains(goal)) {
+			goalsCreated.add(goal);
+			goal.setCreator(this);
+		}
+	}
+
+	public void removeGoalCreated(Goal goal) {
+		goal.setCreator(null);
+		if (goalsCreated != null && goalsCreated.contains(goal)) {
+			goalsCreated.remove(goal);
 		}
 	}
 

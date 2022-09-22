@@ -8,7 +8,11 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 @Table(name="squad_message")
 @Entity
@@ -21,6 +25,14 @@ public class SquadMessage {
 	@Column(name="message_date")
 	private LocalDateTime messageDate;
 	private String content;
+	@ManyToOne
+	@JoinColumn(name="sender_id")
+	@JsonIgnoreProperties({"squadMessages"})
+	private User sender;
+	@ManyToOne
+	@JoinColumn(name="squad_id")
+	@JsonIgnoreProperties({"squadMessages"})
+	private Squad squad;
 	
 	public SquadMessage() {
 		super();
@@ -48,6 +60,24 @@ public class SquadMessage {
 
 	public void setContent(String content) {
 		this.content = content;
+	}
+
+	public User getSender() {
+		return sender;
+	}
+
+	public void setSender(User sender) {
+		this.sender = sender;
+	}
+	
+	
+
+	public Squad getSquad() {
+		return squad;
+	}
+
+	public void setSquad(Squad squad) {
+		this.squad = squad;
 	}
 
 	@Override

@@ -2,6 +2,7 @@ package com.skilldistillery.squadgoals.entities;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
@@ -55,6 +56,14 @@ class ImageTest {
 	@Test
 	void test_image_mappings() {
 		assertEquals(image.getUrl(), "https://pbs.twimg.com/profile_images/1237550450/mstom_400x400.jpg");
+	}
+	
+	@Test
+	void test_image_relationship_mappings() {
+		assertTrue(image.getGoals().size() == 0);
+		assertTrue(image.getReviews().size() == 0);
+		assertTrue(image.getSquad() == null);
+		assertTrue(image.getUser().getId() == 1);
 	}
 
 }

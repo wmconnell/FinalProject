@@ -3,6 +3,7 @@ package com.skilldistillery.squadgoals.entities;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
@@ -58,6 +59,14 @@ class TaskTest {
 		assertEquals(task.getTitle(), "Buy the pizza");
 		assertEquals(task.getDescription(), "Chicago style, please");
 		assertFalse(task.getCompleted());
+	}
+	
+	@Test
+	void test_task_relationship_mappings() {
+		assertTrue(task.getPrerequisites().size() == 0);
+		assertTrue(task.getGoal().getId() == 1);
+		assertTrue(task.getSquads().size() == 1);
+		assertTrue(task.getUsers().size() == 1);
 	}
 
 }

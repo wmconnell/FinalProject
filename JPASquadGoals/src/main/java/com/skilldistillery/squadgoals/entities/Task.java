@@ -9,7 +9,10 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
+import javax.persistence.ManyToOne;
 
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
@@ -39,7 +42,16 @@ public class Task {
 	@ManyToMany(mappedBy="tasks")
 	@JsonIgnoreProperties({"tasks"})
 	private List<User> users;
-
+	@ManyToMany(mappedBy="tasks")
+	@JsonIgnoreProperties({"tasks"})
+	private List<Squad> squads;
+	@ManyToOne
+	@JoinColumn(name="goal_id")
+	@JsonIgnoreProperties({"tasks"})
+	private Goal goal;
+	@ManyToMany
+	@JoinTable(name="task_has_task", joinColumns = @JoinColumn(name="task_id"), inverseJoinColumns=@JoinColumn(name="precursor_task_id"))
+	private List<Task> prerequisites;
 
 	public Task() {
 
@@ -162,5 +174,66 @@ public class Task {
 		}
 	}
 
+	public List<Squad> getSquads() {
+		return squads;
+	}
+
+
+	public void setSquads(List<Squad> squads) {
+		this.squads = squads;
+	}
+	
+	public void addSquad(Squad squad) {
+		if (squads == null) {
+			squads = new ArrayList<>();
+		}
+		if (!squads.contains(squad)) {
+			squads.add(squad);
+			squad.addTask(this);
+		}
+	}
+
+	public void removeSquad(Squad squad) {
+		if (squads != null && squads.contains(squad)) {
+			squads.remove(squad);
+			squad.removeTask(this);
+		}
+	}
+
+
+	public Goal getGoal() {
+		return goal;
+	}
+
+
+	public void setGoal(Goal goal) {
+		this.goal = goal;
+	}
+	
+	public List<Task> getPrerequisites() {
+		return prerequisites;
+	}
+
+
+	public void setTasks(List<Task> prerequisites) {
+		this.prerequisites = prerequisites;
+	}
+	
+	public void addTask(Task prerequisite) {
+		if (prerequisites == null) {
+			prerequisites = new ArrayList<>();
+		}
+		if (!prerequisites.contains(prerequisite)) {
+			prerequisites.add(prerequisite);
+			prerequisite.addTask(this);
+		}
+	}
+
+	public void removeTask(Task prerequisite) {
+		if (prerequisites != null && prerequisites.contains(prerequisite)) {
+			prerequisites.remove(prerequisite);
+			prerequisite.removeTask(this);
+		}
+	}
 	
 }

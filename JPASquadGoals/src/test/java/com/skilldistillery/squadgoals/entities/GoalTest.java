@@ -61,4 +61,14 @@ class GoalTest {
 		assertTrue(goal.getPublicVisibility());
 		assertTrue(goal.getPublicAttendance());
 	}
+	
+	@Test
+	void test_goal_relationship_mappings() {
+		assertTrue(goal.getCreator().getId() == 1);
+		assertTrue(goal.getImages().size() == 0);
+		assertTrue(goal.getTasks().size() == 2);
+		assertTrue(goal.getSquads().size() == 1);
+		assertTrue(goal.getUsers().size() == 1);
+		assertTrue(goal.getReviews().size() == 1);
+	}
 }

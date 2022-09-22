@@ -234,13 +234,13 @@ ENGINE = InnoDB;
 DROP TABLE IF EXISTS `tag_has_goal` ;
 
 CREATE TABLE IF NOT EXISTS `tag_has_goal` (
-  `tags_id` INT NOT NULL,
+  `tag_id` INT NOT NULL,
   `goal_id` INT NOT NULL,
-  PRIMARY KEY (`tags_id`, `goal_id`),
+  PRIMARY KEY (`tag_id`, `goal_id`),
   INDEX `fk_tags_has_goal_goal1_idx` (`goal_id` ASC),
-  INDEX `fk_tags_has_goal_tags1_idx` (`tags_id` ASC),
+  INDEX `fk_tags_has_goal_tags1_idx` (`tag_id` ASC),
   CONSTRAINT `fk_tags_has_goal_tags1`
-    FOREIGN KEY (`tags_id`)
+    FOREIGN KEY (`tag_id`)
     REFERENCES `tag` (`id`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION,
@@ -253,15 +253,15 @@ ENGINE = InnoDB;
 
 
 -- -----------------------------------------------------
--- Table `squad_has_tags`
+-- Table `squad_has_tag`
 -- -----------------------------------------------------
-DROP TABLE IF EXISTS `squad_has_tags` ;
+DROP TABLE IF EXISTS `squad_has_tag` ;
 
-CREATE TABLE IF NOT EXISTS `squad_has_tags` (
+CREATE TABLE IF NOT EXISTS `squad_has_tag` (
   `squad_id` INT NOT NULL,
-  `tags_id` INT NOT NULL,
-  PRIMARY KEY (`squad_id`, `tags_id`),
-  INDEX `fk_squad_has_tags_tags1_idx` (`tags_id` ASC),
+  `tag_id` INT NOT NULL,
+  PRIMARY KEY (`squad_id`, `tag_id`),
+  INDEX `fk_squad_has_tags_tags1_idx` (`tag_id` ASC),
   INDEX `fk_squad_has_tags_squad1_idx` (`squad_id` ASC),
   CONSTRAINT `fk_squad_has_tags_squad1`
     FOREIGN KEY (`squad_id`)
@@ -269,7 +269,7 @@ CREATE TABLE IF NOT EXISTS `squad_has_tags` (
     ON DELETE NO ACTION
     ON UPDATE NO ACTION,
   CONSTRAINT `fk_squad_has_tags_tags1`
-    FOREIGN KEY (`tags_id`)
+    FOREIGN KEY (`tag_id`)
     REFERENCES `tag` (`id`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
@@ -277,15 +277,15 @@ ENGINE = InnoDB;
 
 
 -- -----------------------------------------------------
--- Table `user_has_tags`
+-- Table `user_has_tag`
 -- -----------------------------------------------------
-DROP TABLE IF EXISTS `user_has_tags` ;
+DROP TABLE IF EXISTS `user_has_tag` ;
 
-CREATE TABLE IF NOT EXISTS `user_has_tags` (
+CREATE TABLE IF NOT EXISTS `user_has_tag` (
   `user_id` INT NOT NULL,
-  `tags_id` INT NOT NULL,
-  PRIMARY KEY (`user_id`, `tags_id`),
-  INDEX `fk_user_has_tags_tags1_idx` (`tags_id` ASC),
+  `tag_id` INT NOT NULL,
+  PRIMARY KEY (`user_id`, `tag_id`),
+  INDEX `fk_user_has_tags_tags1_idx` (`tag_id` ASC),
   INDEX `fk_user_has_tags_user1_idx` (`user_id` ASC),
   CONSTRAINT `fk_user_has_tags_user1`
     FOREIGN KEY (`user_id`)
@@ -293,7 +293,7 @@ CREATE TABLE IF NOT EXISTS `user_has_tags` (
     ON DELETE NO ACTION
     ON UPDATE NO ACTION,
   CONSTRAINT `fk_user_has_tags_tags1`
-    FOREIGN KEY (`tags_id`)
+    FOREIGN KEY (`tag_id`)
     REFERENCES `tag` (`id`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
@@ -655,6 +655,17 @@ COMMIT;
 
 
 -- -----------------------------------------------------
+-- Data for table `user_has_goal`
+-- -----------------------------------------------------
+START TRANSACTION;
+USE `squadgoalsdb`;
+INSERT INTO `user_has_goal` (`user_id`, `goal_id`) VALUES (1, 1);
+INSERT INTO `user_has_goal` (`user_id`, `goal_id`) VALUES (1, 2);
+
+COMMIT;
+
+
+-- -----------------------------------------------------
 -- Data for table `tag`
 -- -----------------------------------------------------
 START TRANSACTION;
@@ -671,7 +682,29 @@ COMMIT;
 -- -----------------------------------------------------
 START TRANSACTION;
 USE `squadgoalsdb`;
-INSERT INTO `tag_has_goal` (`tags_id`, `goal_id`) VALUES (3, 1);
+INSERT INTO `tag_has_goal` (`tag_id`, `goal_id`) VALUES (3, 1);
+
+COMMIT;
+
+
+-- -----------------------------------------------------
+-- Data for table `squad_has_tag`
+-- -----------------------------------------------------
+START TRANSACTION;
+USE `squadgoalsdb`;
+INSERT INTO `squad_has_tag` (`squad_id`, `tag_id`) VALUES (1, 1);
+INSERT INTO `squad_has_tag` (`squad_id`, `tag_id`) VALUES (1, 2);
+INSERT INTO `squad_has_tag` (`squad_id`, `tag_id`) VALUES (1, 3);
+
+COMMIT;
+
+
+-- -----------------------------------------------------
+-- Data for table `user_has_tag`
+-- -----------------------------------------------------
+START TRANSACTION;
+USE `squadgoalsdb`;
+INSERT INTO `user_has_tag` (`user_id`, `tag_id`) VALUES (1, 1);
 
 COMMIT;
 
@@ -689,12 +722,36 @@ COMMIT;
 
 
 -- -----------------------------------------------------
+-- Data for table `user_has_task`
+-- -----------------------------------------------------
+START TRANSACTION;
+USE `squadgoalsdb`;
+INSERT INTO `user_has_task` (`user_id`, `task_id`) VALUES (1, 1);
+INSERT INTO `user_has_task` (`user_id`, `task_id`) VALUES (2, 2);
+INSERT INTO `user_has_task` (`user_id`, `task_id`) VALUES (1, 3);
+
+COMMIT;
+
+
+-- -----------------------------------------------------
+-- Data for table `squad_has_task`
+-- -----------------------------------------------------
+START TRANSACTION;
+USE `squadgoalsdb`;
+INSERT INTO `squad_has_task` (`squad_id`, `task_id`, `points`) VALUES (1, 1, NULL);
+INSERT INTO `squad_has_task` (`squad_id`, `task_id`, `points`) VALUES (1, 2, NULL);
+
+COMMIT;
+
+
+-- -----------------------------------------------------
 -- Data for table `badge`
 -- -----------------------------------------------------
 START TRANSACTION;
 USE `squadgoalsdb`;
 INSERT INTO `badge` (`id`, `name`, `description`) VALUES (1, 'Super Squad', 'Any squad that reaches 100 pts receives the Super Squad badge!');
 INSERT INTO `badge` (`id`, `name`, `description`) VALUES (2, 'Mother Teresa', 'Any squad that achieves 3 charitable goals within 1 year receives the Mother Teresa badge!');
+INSERT INTO `badge` (`id`, `name`, `description`) VALUES (3, 'Huge Member', 'Any member who reaches 100 pts receive the Huge Member badge!');
 
 COMMIT;
 
@@ -705,6 +762,16 @@ COMMIT;
 START TRANSACTION;
 USE `squadgoalsdb`;
 INSERT INTO `badge_has_squad` (`badge_id`, `squad_id`, `achieved_date`) VALUES (1, 1, NULL);
+
+COMMIT;
+
+
+-- -----------------------------------------------------
+-- Data for table `badge_has_user`
+-- -----------------------------------------------------
+START TRANSACTION;
+USE `squadgoalsdb`;
+INSERT INTO `badge_has_user` (`badge_id`, `user_id`, `achieved_date`) VALUES (3, 1, NULL);
 
 COMMIT;
 
