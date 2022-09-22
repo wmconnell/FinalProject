@@ -718,3 +718,13 @@ INSERT INTO `requirement` (`id`, `badge_id`) VALUES (1, 1);
 
 COMMIT;
 
+
+-- -----------------------------------------------------
+-- Data for table `squad_message`
+-- -----------------------------------------------------
+START TRANSACTION;
+USE `squadgoalsdb`;
+INSERT INTO `squad_message` (`id`, `message_date`, `content`, `sender_id`, `squad_id`, `reply_to_id`) VALUES (1, '1/2/12', 'u up?', 1, 1, 1);
+
+COMMIT;
+

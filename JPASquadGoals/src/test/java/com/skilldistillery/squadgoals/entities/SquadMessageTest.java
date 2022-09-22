@@ -42,7 +42,7 @@ class SquadMessageTest {
 	@Test
 	void test_squad_message_mappings() {
 		assertNotNull(squadMessage);
-		assertEquals(squadMessage.getContent(), "The OGs");
+		assertEquals(squadMessage.getContent(), "u up?");
 	}
 
 }

@@ -55,7 +55,6 @@ class BadgeTest {
 	void test_badge_mappings() {
 		assertEquals(badge.getName(), "Super Squad");
 		assertEquals(badge.getDescription(), "Any squad that reaches 100 pts receives the Super Squad badge!");
-		assertEquals(badge.getConditions(), "{point_threshold: 100}");
 	}
 
 }
