@@ -1,15 +1,15 @@
 package com.skilldistillery.squadgoals.entities;
 
 import java.time.LocalDateTime;
-import java.util.Objects;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
+import javax.persistence.ManyToMany;
 
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
@@ -36,6 +36,9 @@ public class Task {
 	@Column(name = "end_date")
 	private LocalDateTime endDate;
 	private Boolean completed;
+	@ManyToMany(mappedBy="tasks")
+	@JsonIgnoreProperties({"tasks"})
+	private List<User> users;
 
 
 	public Task() {
@@ -130,6 +133,33 @@ public class Task {
 
 	public void setCompleted(Boolean completed) {
 		this.completed = completed;
+	}
+
+
+	public List<User> getUsers() {
+		return users;
+	}
+
+
+	public void setUsers(List<User> users) {
+		this.users = users;
+	}
+	
+	public void addUser(User user) {
+		if (users == null) {
+			users = new ArrayList<>();
+		}
+		if (!users.contains(user)) {
+			users.add(user);
+			user.addTask(this);
+		}
+	}
+
+	public void removeUser(User user) {
+		if (users != null && users.contains(user)) {
+			users.remove(user);
+			user.removeTask(this);
+		}
 	}
 
 	

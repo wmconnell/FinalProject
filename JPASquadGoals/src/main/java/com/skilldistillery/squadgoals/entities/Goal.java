@@ -1,6 +1,7 @@
 package com.skilldistillery.squadgoals.entities;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.persistence.Column;
@@ -8,10 +9,13 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
+
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 @Entity
 public class Goal {
@@ -39,9 +43,11 @@ public class Goal {
 	private Boolean publicAttendance;
 	private String recurring;
 	private Boolean active;
-	
 	@OneToMany(mappedBy = "goal")
 	private List<Review> reviews;
+	@ManyToMany(mappedBy="goals")
+	@JsonIgnoreProperties({"goals"})
+	private List<User> users;
 	
 
 	public Goal() {
@@ -151,6 +157,37 @@ public class Goal {
 	public void setRecurring(String recurring) {
 		this.recurring = recurring;
 	}
+
+	public List<Review> getReviews() {
+		return reviews;
+	}
+
+	public void setReviews(List<Review> reviews) {
+		this.reviews = reviews;
+	}
+
+	public List<User> getUsers() {
+		return users;
+	}
+
+	public void setUsers(List<User> users) {
+		this.users = users;
+	}
 	
+	public void addUser(User user) {
+		if (users == null) { 
+			users = new ArrayList<>();
+		}
+		if (!users.contains(user)) {
+			users.add(user);
+			user.addGoal(this);
+		}
+	}
 	
+	public void removeUser(User user) {
+		if (users != null && users.contains(user)) {
+			users.remove(user);
+			user.removeGoal(this);
+		}
+	}
 }

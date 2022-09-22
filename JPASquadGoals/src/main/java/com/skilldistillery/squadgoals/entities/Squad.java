@@ -1,12 +1,17 @@
 package com.skilldistillery.squadgoals.entities;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.ManyToMany;
+
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 @Entity
 public class Squad {
@@ -18,6 +23,9 @@ public class Squad {
 	private Boolean active;
 	@Column(name="create_date")
 	private LocalDateTime createDate;
+	@ManyToMany(mappedBy="squads")
+	@JsonIgnoreProperties({"squads"})
+	private List<User> users;
 
 	public Squad() {
 		
@@ -63,8 +71,29 @@ public class Squad {
 		this.createDate = createDate;
 	}
 
+	public List<User> getUsers() {
+		return users;
+	}
+
+	public void setUsers(List<User> users) {
+		this.users = users;
+	}
+
+	public void addUser(User user) {
+		if (users == null) {
+			users = new ArrayList<>();
+		}
+		if (!users.contains(user)) {
+			users.add(user);
+			user.addSquad(this);
+		}
+	}
 	
-	
-	
+	public void removeUser(User user) {
+		if (users != null && users.contains(user)) {
+			users.remove(user);
+			user.removeSquad(this);
+		}
+	}
 	
 }

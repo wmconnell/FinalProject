@@ -56,5 +56,10 @@ class UserTest {
 		assertEquals(user.getRole(), "admin");
 		assertTrue(user.getActive());
 	}
+	
+	@Test
+	void test_user_relational_mappings() {
+		assertTrue(user.getSquads().size() == 1);
+	}
 
 }
