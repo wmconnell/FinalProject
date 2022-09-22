@@ -12,10 +12,10 @@ import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-class SquadMessageTest {
+class BadgeRequirementTest {
 	private static EntityManagerFactory emf;
 	private EntityManager em;
-	private SquadMessage squadMessage;
+	private BadgeRequirement requirement;
 
 	@BeforeAll
 	static void setUpBeforeClass() throws Exception {
@@ -30,28 +30,23 @@ class SquadMessageTest {
 	@BeforeEach
 	void setUp() throws Exception {
 		em = emf.createEntityManager();
-		squadMessage = em.find(SquadMessage.class, 1);
+		requirement = em.find(BadgeRequirement.class, 1);
 	}
 
 	@AfterEach
 	void tearDown() throws Exception {
 		em.close();
-		squadMessage = null;
+		requirement = null;
 	}
 
 	@Test
-	void test_squad_message_mappings() {
-		assertNotNull(squadMessage);
-		assertEquals(squadMessage.getContent(), "u up?");
+	void test_requirement_not_null() {
+		assertNotNull(requirement);
 	}
 	
 	@Test
-	void test_squad_message_relationship_mappings() {
-		assertTrue(squadMessage.getSquad().getId() == 1);
-		assertTrue(squadMessage.getSender().getId() == 1);
-		assertTrue(squadMessage.getReplies().size() == 1);
-//		System.out.println("ORIGINAL: " + squadMessage.getOriginal());
-		assertNull(squadMessage.getOriginal());
+	void test_requirement_relationship_mappings() {
+		assertTrue(requirement.getBadge().getId() == 1);
 	}
 
 }

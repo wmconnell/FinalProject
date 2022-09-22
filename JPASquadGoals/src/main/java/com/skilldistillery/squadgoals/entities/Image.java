@@ -33,7 +33,9 @@ public class Image {
 	@JsonIgnore
 	private List<Goal> goals;
 	@ManyToMany
-	@JoinTable(name = "image_has_review", joinColumns = @JoinColumn(name = "image_id"), inverseJoinColumns = {@JoinColumn(name = "goal_id"), @JoinColumn(name="user_id")})
+	@JoinTable(name = "image_has_review",
+		joinColumns = @JoinColumn(name = "image_id"),
+		inverseJoinColumns = {@JoinColumn(name = "review_goal_id"), @JoinColumn(name="review_user_id")})
 	@JsonIgnore
 	private List<Review> reviews;
 

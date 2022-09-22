@@ -1,6 +1,8 @@
 package com.skilldistillery.squadgoals.entities;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 
 import javax.persistence.Column;
@@ -10,8 +12,10 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 @Table(name="squad_message")
@@ -33,6 +37,12 @@ public class SquadMessage {
 	@JoinColumn(name="squad_id")
 	@JsonIgnoreProperties({"squadMessages"})
 	private Squad squad;
+	@ManyToOne
+	@JoinColumn(name="reply_to_id")
+	@JsonIgnore
+	private SquadMessage original;
+	@OneToMany(mappedBy="original")
+	private List<SquadMessage> replies;
 	
 	public SquadMessage() {
 		super();
@@ -78,6 +88,39 @@ public class SquadMessage {
 
 	public void setSquad(Squad squad) {
 		this.squad = squad;
+	}
+
+	public SquadMessage getOriginal() {
+		return original;
+	}
+
+	public void setOriginal(SquadMessage original) {
+		this.original = original;
+	}
+
+	public List<SquadMessage> getReplies() {
+		return replies;
+	}
+
+	public void setReplies(List<SquadMessage> replies) {
+		this.replies = replies;
+	}
+	
+	public void addReply(SquadMessage reply) {
+		if (replies == null) {
+			replies = new ArrayList<>();
+		}
+		if(!replies.contains(reply)) {
+			replies.add(reply);
+			reply.setOriginal(this);
+		}
+	}
+	
+	public void removeReply(SquadMessage reply) {
+		reply.setOriginal(null);
+		if (replies != null && replies.contains(reply)) {
+			replies.remove(reply);
+		}
 	}
 
 	@Override

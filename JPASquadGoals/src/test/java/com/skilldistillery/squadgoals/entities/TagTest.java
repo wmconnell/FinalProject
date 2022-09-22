@@ -1,6 +1,9 @@
 package com.skilldistillery.squadgoals.entities;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
@@ -54,6 +57,14 @@ class TagTest {
 	@Test
 	void test_tag_mappings() {
 		assertEquals(tag.getName(), "fitness");
+		assertNull(tag.getDescription());
+	}
+	
+	@Test
+	void test_tag_relationship_mapping() {
+		assertTrue(tag.getGoals().size() == 0);
+		assertTrue(tag.getSquads().size() == 1);
+		assertTrue(tag.getUsers().size() == 1);
 	}
 
 }

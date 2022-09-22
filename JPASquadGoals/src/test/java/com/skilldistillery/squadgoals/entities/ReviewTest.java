@@ -52,7 +52,14 @@ class ReviewTest {
 	
 	@Test
 	void test_review_mappings() {
-
+		assertEquals(review.getComment(), "Science rules!");
+		assertTrue(review.getRating() == 5);
 	}
 
+	@Test
+	void test_review_relationship_mappings() {
+		assertTrue(review.getGoal().getId() == 1);
+		assertTrue(review.getUser().getId() == 1);
+		assertTrue(review.getImages().size() == 0);
+	}
 }

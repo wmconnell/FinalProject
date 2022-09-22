@@ -8,6 +8,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToMany;
+import javax.persistence.OneToMany;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
@@ -24,6 +25,8 @@ public class Badge {
 	@ManyToMany(mappedBy="badges")
 	@JsonIgnoreProperties({"badges"})
 	private List<Squad> squads;
+	@OneToMany(mappedBy="badge")
+	private List<BadgeRequirement> requirements;
 
 	public Badge() {
 		
@@ -103,4 +106,28 @@ public class Badge {
 		}
 	}
 	
+	public List<BadgeRequirement> getBadgeRequirements() {
+		return requirements;
+	}
+
+	public void setBadgeRequirements(List<BadgeRequirement> requirements) {
+		this.requirements = requirements;
+	}
+
+	public void addBadgeRequirement(BadgeRequirement requirement) {
+		if (requirements == null) {
+			requirements = new ArrayList<>();
+		}
+		if (!requirements.contains(requirement)) {
+			requirements.add(requirement);
+			requirement.setBadge(this);
+		}
+	}
+
+	public void removeBadgeRequirement(BadgeRequirement requirement) {
+		requirement.setBadge(null);
+		if (requirements != null && requirements.contains(requirement)) {
+			requirements.remove(requirement);
+		}
+	}
 }

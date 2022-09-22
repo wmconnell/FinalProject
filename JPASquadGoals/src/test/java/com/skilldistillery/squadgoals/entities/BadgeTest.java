@@ -56,5 +56,12 @@ class BadgeTest {
 		assertEquals(badge.getName(), "Super Squad");
 		assertEquals(badge.getDescription(), "Any squad that reaches 100 pts receives the Super Squad badge!");
 	}
+	
+	@Test
+	void test_badge_relationship_mappings() {
+		assertTrue(badge.getSquads().size() == 1);
+		assertTrue(badge.getUsers().size() == 0);
+		assertTrue(badge.getBadgeRequirements().size() == 1);
+	}
 
 }

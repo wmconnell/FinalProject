@@ -10,6 +10,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
@@ -17,6 +18,7 @@ import javax.persistence.OneToMany;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 @Entity
@@ -64,6 +66,10 @@ public class Goal {
 	@JoinColumn(name="goal_id")
 	@JsonIgnoreProperties({"goal"})
 	private List<Task> tasks;
+	@ManyToMany
+	@JoinTable(name = "tag_has_goal", joinColumns = @JoinColumn(name = "tag_id"), inverseJoinColumns = @JoinColumn(name = "goal_id"))
+	@JsonIgnore
+	private List<Tag> tags;
 	
 
 	public Goal() {
@@ -287,6 +293,31 @@ public class Goal {
 		task.setGoal(null);
 		if (tasks != null && tasks.contains(task)) {
 			tasks.remove(task);
+		}
+	}
+	
+	public List<Tag> getTags() {
+		return tags;
+	}
+
+	public void setTags(List<Tag> tags) {
+		this.tags = tags;
+	}
+	
+	public void addTag(Tag tag) {
+		if (tags == null) { 
+			tags = new ArrayList<>();
+		}
+		if (!tags.contains(tag)) {
+			tags.add(tag);
+			tag.addGoal(this);
+		}
+	}
+	
+	public void removeTag(Tag tag) {
+		if (tags != null && tags.contains(tag)) {
+			tags.remove(tag);
+			tag.removeGoal(this);
 		}
 	}
 }

@@ -24,6 +24,9 @@ public class Tag {
 	@ManyToMany(mappedBy="tags")
 	@JsonIgnoreProperties({"tags"})
 	private List<Squad> squads;
+	@ManyToMany(mappedBy="tags")
+	@JsonIgnoreProperties({"tags"})
+	private List<Goal> goals;
 	
 	public Tag() {
 		
@@ -100,6 +103,31 @@ public class Tag {
 		if (squads != null && squads.contains(squad)) {
 			squads.remove(squad);
 			squad.removeTag(this);
+		}
+	}
+	
+	public List<Goal> getGoals() {
+		return goals;
+	}
+
+	public void setGoals(List<Goal> goals) {
+		this.goals = goals;
+	}
+	
+	public void addGoal(Goal goal) {
+		if (goals == null) { 
+			goals = new ArrayList<>();
+		}
+		if (!goals.contains(goal)) {
+			goals.add(goal);
+			goal.addTag(this);
+		}
+	}
+	
+	public void removeGoal(Goal goal) {
+		if (goals != null && goals.contains(goal)) {
+			goals.remove(goal);
+			goal.removeTag(this);
 		}
 	}
 	

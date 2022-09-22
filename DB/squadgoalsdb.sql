@@ -463,11 +463,11 @@ ENGINE = InnoDB;
 
 
 -- -----------------------------------------------------
--- Table `requirement`
+-- Table `badge_requirement`
 -- -----------------------------------------------------
-DROP TABLE IF EXISTS `requirement` ;
+DROP TABLE IF EXISTS `badge_requirement` ;
 
-CREATE TABLE IF NOT EXISTS `requirement` (
+CREATE TABLE IF NOT EXISTS `badge_requirement` (
   `id` INT NOT NULL AUTO_INCREMENT,
   `badge_id` INT NOT NULL,
   PRIMARY KEY (`id`),
@@ -540,7 +540,7 @@ CREATE TABLE IF NOT EXISTS `squad_message` (
   `content` TEXT NULL,
   `sender_id` INT NOT NULL,
   `squad_id` INT NOT NULL,
-  `reply_to_id` INT NULL,
+  `reply_to_id` INT NULL DEFAULT NULL,
   PRIMARY KEY (`id`),
   INDEX `fk_squad_message_user1_idx` (`sender_id` ASC),
   INDEX `fk_squad_message_squad1_idx` (`squad_id` ASC),
@@ -777,11 +777,11 @@ COMMIT;
 
 
 -- -----------------------------------------------------
--- Data for table `requirement`
+-- Data for table `badge_requirement`
 -- -----------------------------------------------------
 START TRANSACTION;
 USE `squadgoalsdb`;
-INSERT INTO `requirement` (`id`, `badge_id`) VALUES (1, 1);
+INSERT INTO `badge_requirement` (`id`, `badge_id`) VALUES (1, 1);
 
 COMMIT;
 
@@ -791,8 +791,8 @@ COMMIT;
 -- -----------------------------------------------------
 START TRANSACTION;
 USE `squadgoalsdb`;
-INSERT INTO `squad_message` (`id`, `message_date`, `content`, `sender_id`, `squad_id`, `reply_to_id`) VALUES (1, '1/2/12', 'u up?', 1, 1, 1);
-INSERT INTO `squad_message` (`id`, `message_date`, `content`, `sender_id`, `squad_id`, `reply_to_id`) VALUES (2, '1/3/13', 'yeet', 1, 1, 1);
+INSERT INTO `squad_message` (`id`, `message_date`, `content`, `sender_id`, `squad_id`, `reply_to_id`) VALUES (1, '1/2/12', 'u up?', 1, 1, NULL);
+INSERT INTO `squad_message` (`id`, `message_date`, `content`, `sender_id`, `squad_id`, `reply_to_id`) VALUES (2, '1/3/13', 'yeet', 2, 1, 1);
 
 COMMIT;
 
