@@ -725,6 +725,7 @@ COMMIT;
 START TRANSACTION;
 USE `squadgoalsdb`;
 INSERT INTO `squad_message` (`id`, `message_date`, `content`, `sender_id`, `squad_id`, `reply_to_id`) VALUES (1, '1/2/12', 'u up?', 1, 1, 1);
+INSERT INTO `squad_message` (`id`, `message_date`, `content`, `sender_id`, `squad_id`, `reply_to_id`) VALUES (2, '1/3/13', 'yeet', 1, 1, 1);
 
 COMMIT;
 
