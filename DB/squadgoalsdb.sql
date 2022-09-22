@@ -128,7 +128,7 @@ CREATE TABLE IF NOT EXISTS `goal` (
   `public_visibility` TINYINT NULL,
   `public_attendance` TINYINT NULL,
   `recurring` VARCHAR(45) NULL,
-  `creator_id` INT NOT NULL,
+  `creator_id` INT NOT NULL DEFAULT 0,
   `active` TINYINT NULL,
   PRIMARY KEY (`id`),
   INDEX `fk_goal_user1_idx` (`creator_id` ASC),
@@ -175,7 +175,6 @@ DROP TABLE IF EXISTS `squad_has_goal` ;
 CREATE TABLE IF NOT EXISTS `squad_has_goal` (
   `squad_id` INT NOT NULL,
   `goal_id` INT NOT NULL,
-  `points` INT NULL,
   PRIMARY KEY (`squad_id`, `goal_id`),
   INDEX `fk_squad_has_goal_goal1_idx` (`goal_id` ASC),
   INDEX `fk_squad_has_goal_squad1_idx` (`squad_id` ASC),
@@ -359,7 +358,6 @@ DROP TABLE IF EXISTS `user_has_task` ;
 CREATE TABLE IF NOT EXISTS `user_has_task` (
   `user_id` INT NOT NULL,
   `task_id` INT NOT NULL,
-  `points` INT NULL,
   PRIMARY KEY (`user_id`, `task_id`),
   INDEX `fk_user_has_task_task1_idx` (`task_id` ASC),
   INDEX `fk_user_has_task_user1_idx` (`user_id` ASC),
@@ -630,8 +628,18 @@ COMMIT;
 -- -----------------------------------------------------
 START TRANSACTION;
 USE `squadgoalsdb`;
-INSERT INTO `goal` (`id`, `title`, `description`, `created_date`, `updated_date`, `completed_date`, `start_date`, `end_date`, `completed`, `public_visibility`, `public_attendance`, `recurring`, `creator_id`, `active`) VALUES (1, 'Pizza party', 'Some wholesome, after-school fun!', '2022-09-20 19:54:01', '2022-09-20 19:54:01', NULL, '2022-09-23 19:30:00', '2022-09-23 21:00:00', 0, 1, 1, NULL, DEFAULT, NULL);
-INSERT INTO `goal` (`id`, `title`, `description`, `created_date`, `updated_date`, `completed_date`, `start_date`, `end_date`, `completed`, `public_visibility`, `public_attendance`, `recurring`, `creator_id`, `active`) VALUES (2, 'Join Squad Goals', 'The first step', NULL, NULL, NULL, NULL, NULL, 1, 1, 1, NULL, DEFAULT, NULL);
+INSERT INTO `goal` (`id`, `title`, `description`, `created_date`, `updated_date`, `completed_date`, `start_date`, `end_date`, `completed`, `public_visibility`, `public_attendance`, `recurring`, `creator_id`, `active`) VALUES (1, 'Pizza party', 'Some wholesome, after-school fun!', '2022-09-20 19:54:01', '2022-09-20 19:54:01', NULL, '2022-09-23 19:30:00', '2022-09-23 21:00:00', 0, 1, 1, NULL, 1, 1);
+INSERT INTO `goal` (`id`, `title`, `description`, `created_date`, `updated_date`, `completed_date`, `start_date`, `end_date`, `completed`, `public_visibility`, `public_attendance`, `recurring`, `creator_id`, `active`) VALUES (2, 'Join Squad Goals', 'The first step', NULL, NULL, NULL, NULL, NULL, 1, 1, 1, NULL, 1, 1);
+
+COMMIT;
+
+
+-- -----------------------------------------------------
+-- Data for table `review`
+-- -----------------------------------------------------
+START TRANSACTION;
+USE `squadgoalsdb`;
+INSERT INTO `review` (`rating`, `comment`, `goal_id`, `user_id`, `review_date`) VALUES (5, 'Science rules!', 1, 1, NULL);
 
 COMMIT;
 
@@ -641,7 +649,7 @@ COMMIT;
 -- -----------------------------------------------------
 START TRANSACTION;
 USE `squadgoalsdb`;
-INSERT INTO `squad_has_goal` (`squad_id`, `goal_id`, `points`) VALUES (1, 1, NULL);
+INSERT INTO `squad_has_goal` (`squad_id`, `goal_id`) VALUES (1, 1);
 
 COMMIT;
 
@@ -697,6 +705,16 @@ COMMIT;
 START TRANSACTION;
 USE `squadgoalsdb`;
 INSERT INTO `badge_has_squad` (`badge_id`, `squad_id`, `achieved_date`) VALUES (1, 1, NULL);
+
+COMMIT;
+
+
+-- -----------------------------------------------------
+-- Data for table `requirement`
+-- -----------------------------------------------------
+START TRANSACTION;
+USE `squadgoalsdb`;
+INSERT INTO `requirement` (`id`, `badge_id`) VALUES (1, 1);
 
 COMMIT;
 
