@@ -43,7 +43,7 @@ CREATE TABLE IF NOT EXISTS `user` (
   `role` VARCHAR(45) NULL,
   `bio` TEXT NULL,
   `active` TINYINT NULL,
-  `profile_image_id` INT NOT NULL,
+  `profile_image_id` INT NOT NULL DEFAULT 1,
   `create_date` DATETIME NULL,
   PRIMARY KEY (`id`),
   UNIQUE INDEX `username_UNIQUE` (`username` ASC),
@@ -603,8 +603,8 @@ COMMIT;
 -- -----------------------------------------------------
 START TRANSACTION;
 USE `squadgoalsdb`;
-INSERT INTO `user` (`id`, `username`, `password`, `email`, `first_name`, `last_name`, `role`, `bio`, `active`, `profile_image_id`, `create_date`) VALUES (1, 'originaltom', 'myspace', 'tom@myspace.com', 'Tom', 'MySpace', 'admin', 'Hi, I\'m Tom, and I\'m friends with everyone!', 1, 1, NULL);
-INSERT INTO `user` (`id`, `username`, `password`, `email`, `first_name`, `last_name`, `role`, `bio`, `active`, `profile_image_id`, `create_date`) VALUES (2, 'godzilla', 'godzilla', 'godzilla@monster.rawr', 'Go', 'Shira', 'member', 'Hi, name\'s Godzilla. Love smashing cities and chasing damsels up skyscrapers. Oh, is that my cousin, King Kong? Oops.', 1, 2, NULL);
+INSERT INTO `user` (`id`, `username`, `password`, `email`, `first_name`, `last_name`, `role`, `bio`, `active`, `profile_image_id`, `create_date`) VALUES (1, 'originaltom', '$2a$10$/Xbq0O0qj3xvlCPa/kKnv.wbsX11CnIwPw4qLBkzhHdjoKN8k8SOi', 'tom@myspace.com', 'Tom', 'MySpace', 'admin', 'Hi, I\'m Tom, and I\'m friends with everyone!', 1, 1, NULL);
+INSERT INTO `user` (`id`, `username`, `password`, `email`, `first_name`, `last_name`, `role`, `bio`, `active`, `profile_image_id`, `create_date`) VALUES (2, 'godzilla', '$2a$10$aGECJdshmEulChRtSjFetucbW9QWLr2kCGRZmLsHwHH4ZrVnnnaMC', 'godzilla@monster.rawr', 'Go', 'Shira', 'member', 'Hi, name\'s Godzilla. Love smashing cities and chasing damsels up skyscrapers. Oh, is that my cousin, King Kong? Oops.', 1, 2, NULL);
 
 COMMIT;
 

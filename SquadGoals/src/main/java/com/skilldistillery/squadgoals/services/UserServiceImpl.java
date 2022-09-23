@@ -70,6 +70,9 @@ public class UserServiceImpl implements UserService {
 	public User update(String username, int userId, User user) {
 		//	A user with role "member" may only update their own account.
 		//	A user with role "admin" may update any account.
+		System.out.println("IS USER? " + isUser(username));
+		System.out.println("IS SAME USER? " + isSameUser(username, userId));
+		System.out.println("IS ADMIN? " + isAdmin(username));
 		if (isUser(username) && (isSameUser(username, userId) || isAdmin(username))) {
 			Optional<User> userOpt = userRepo.findById(userId);
 			User toUpdate = null;
@@ -143,7 +146,7 @@ public class UserServiceImpl implements UserService {
 	}
 
 	public boolean isAdmin(String username) {
-		return userRepo.findByUsername(username).getRole() == "admin";
+		return userRepo.findByUsername(username).getRole().equals("admin");
 	}
 
 	public boolean isSameUser(String username, int userId) {

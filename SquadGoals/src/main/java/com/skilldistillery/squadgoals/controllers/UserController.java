@@ -11,7 +11,6 @@ import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -31,7 +30,18 @@ public class UserController {
 	@GetMapping("users")
 	public List<User> index(HttpServletRequest req, HttpServletResponse res, Principal principal) {
 		System.out.println("****IN CONTROLLER - INDEX****");
-		return userService.index("originaltom");
+		List<User> users = userService.index("originaltom");
+		if (users.size() > 0) {
+			res.setStatus(200);
+			res.setHeader("Result", "Generated complete user list");
+		} else if (users.size() == 0) {
+			res.setStatus(404);
+			res.setHeader("Result", "No users found.");	
+		} else {
+			res.setStatus(400);
+			res.setHeader("Error", "Unable to generate user list");
+		}
+		return users;
 	}
 	
 	@GetMapping("users/{id}")
@@ -40,6 +50,10 @@ public class UserController {
 		User user = userService.show(principal.getName(), id);
 		if (user == null) {
 			res.setStatus(404);
+			res.setHeader("Result", "No user found with id " + id);	
+		} else {
+			res.setStatus(200);
+			res.setHeader("Result", "Returned user id " + id);
 		}
 		return user;
 	}
@@ -50,7 +64,13 @@ public class UserController {
 		System.out.println("**** USER UPDATE ****" + principal);
 		try {
 			updated = userService.update(principal.getName(), id, user);
-			res.setStatus(200);
+			if (updated == null) {
+				res.setStatus(404);
+				res.setHeader("Error", "User with id " + id + " does not exist");
+			} else {
+				res.setStatus(200);
+				res.setHeader("Result", "Updated user id " + id);
+			}
 		} catch (Exception e) {
 			res.setStatus(400);
 			e.printStackTrace();
