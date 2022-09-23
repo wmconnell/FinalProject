@@ -1,7 +1,7 @@
 package com.skilldistillery.squadgoals.controllers;
 
 import java.security.Principal;
-import java.util.Set;
+import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.skilldistillery.squadgoals.entities.Task;
+import com.skilldistillery.squadgoals.services.TaskService;
 
 @RestController
 @RequestMapping(path = "api")
@@ -25,7 +26,7 @@ public class TaskController {
 	@Autowired TaskService taskService;
 	
 	@GetMapping("tasks")
-	public Set<Task> index(HttpServletRequest req, HttpServletResponse res, Principal principal) {
+	public List<Task> index(HttpServletRequest req, HttpServletResponse res, Principal principal) {
 		return taskService.index(principal.getName());
 	}
 	
@@ -62,7 +63,7 @@ public class TaskController {
 	
 	@DeleteMapping("tasks/{id}")
 	public void destroy(HttpServletRequest req, HttpServletResponse res, @PathVariable int id, Principal principal) {
-		boolean deleted = taskService.destroy(principal.getName(), id);
+		boolean deleted = taskService.disable(principal.getName(), id);
 		if (deleted) {
 			res.setStatus(204);
 		} else {
