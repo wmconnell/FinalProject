@@ -20,6 +20,8 @@ public class BadgeRequirement {
 	@JoinColumn(name="badge_id")
 	@JsonIgnoreProperties({"requirements"})
 	private Badge badge;
+	private String rule;
+	private Boolean active;
 	
 	public BadgeRequirement() {
 		
@@ -40,6 +42,21 @@ public class BadgeRequirement {
 	public void setBadge(Badge badge) {
 		this.badge = badge;
 	}
-	
+
+	public String getRule() {
+		return rule;
+	}
+
+	public void setRule(String rule) {
+		this.rule = rule;
+	}
+
+	public Boolean getActive() {
+		return active;
+	}
+
+	public void setActive(Boolean active) {
+		this.active = active;
+	}
 	
 }

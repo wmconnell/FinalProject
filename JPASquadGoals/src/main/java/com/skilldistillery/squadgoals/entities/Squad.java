@@ -26,8 +26,8 @@ public class Squad {
 	private String name;
 	private String bio;
 	private Boolean active;
-	@Column(name="create_date")
-	private LocalDateTime createDate;
+	@Column(name="created_date")
+	private LocalDateTime createdDate;
 	@ManyToMany(mappedBy="squads")
 	@JsonIgnoreProperties({"squads"})
 	private List<User> users;
@@ -91,11 +91,11 @@ public class Squad {
 	}
 
 	public LocalDateTime getCreateDate() {
-		return createDate;
+		return createdDate;
 	}
 
-	public void setCreateDate(LocalDateTime createDate) {
-		this.createDate = createDate;
+	public void setCreateDate(LocalDateTime createdDate) {
+		this.createdDate = createdDate;
 	}
 
 	public List<User> getUsers() {

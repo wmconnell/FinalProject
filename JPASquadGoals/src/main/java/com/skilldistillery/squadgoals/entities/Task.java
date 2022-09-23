@@ -26,6 +26,7 @@ public class Task {
 	private int id;
 	private String title;
 	private String description;
+	private Boolean active;
 	@CreationTimestamp
 	@Column(name = "created_date")
 	private LocalDateTime createdDate;
@@ -87,6 +88,14 @@ public class Task {
 		this.description = description;
 	}
 
+	public Boolean getActive() {
+		return active;
+	}
+
+
+	public void setActive(Boolean active) {
+		this.active = active;
+	}
 
 	public LocalDateTime getCreatedDate() {
 		return createdDate;
@@ -214,8 +223,7 @@ public class Task {
 		return prerequisites;
 	}
 
-
-	public void setTasks(List<Task> prerequisites) {
+	public void setPrerequisites(List<Task> prerequisites) {
 		this.prerequisites = prerequisites;
 	}
 	

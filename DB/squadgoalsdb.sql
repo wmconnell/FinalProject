@@ -23,6 +23,7 @@ DROP TABLE IF EXISTS `image` ;
 CREATE TABLE IF NOT EXISTS `image` (
   `id` INT NOT NULL AUTO_INCREMENT,
   `url` VARCHAR(499) NULL,
+  `active` TINYINT NULL,
   PRIMARY KEY (`id`))
 ENGINE = InnoDB;
 
@@ -68,7 +69,7 @@ CREATE TABLE IF NOT EXISTS `squad` (
   `active` TINYINT NULL,
   `leader_id` INT NOT NULL,
   `profile_image_id` INT NOT NULL,
-  `create_date` DATETIME NULL,
+  `created_date` DATETIME NULL,
   PRIMARY KEY (`id`),
   UNIQUE INDEX `name_UNIQUE` (`name` ASC),
   INDEX `fk_squad_user1_idx` (`leader_id` ASC),
@@ -151,6 +152,7 @@ CREATE TABLE IF NOT EXISTS `review` (
   `goal_id` INT NOT NULL,
   `user_id` INT NOT NULL,
   `review_date` DATETIME NULL,
+  `active` TINYINT NULL,
   INDEX `fk_review_goal1_idx` (`goal_id` ASC),
   INDEX `fk_review_user1_idx` (`user_id` ASC),
   PRIMARY KEY (`goal_id`, `user_id`),
@@ -224,6 +226,7 @@ CREATE TABLE IF NOT EXISTS `tag` (
   `id` INT NOT NULL AUTO_INCREMENT,
   `name` VARCHAR(45) NULL,
   `description` VARCHAR(255) NULL,
+  `active` TINYINT NULL,
   PRIMARY KEY (`id`))
 ENGINE = InnoDB;
 
@@ -316,6 +319,7 @@ CREATE TABLE IF NOT EXISTS `task` (
   `end_date` DATETIME NULL,
   `completed` TINYINT NULL,
   `goal_id` INT NOT NULL,
+  `active` TINYINT NULL,
   PRIMARY KEY (`id`),
   INDEX `fk_task_goal1_idx` (`goal_id` ASC),
   CONSTRAINT `fk_task_goal1`
@@ -408,6 +412,7 @@ CREATE TABLE IF NOT EXISTS `badge` (
   `id` INT NOT NULL AUTO_INCREMENT,
   `name` VARCHAR(45) NULL,
   `description` VARCHAR(499) NULL,
+  `active` TINYINT NULL,
   PRIMARY KEY (`id`))
 ENGINE = InnoDB;
 
@@ -470,6 +475,8 @@ DROP TABLE IF EXISTS `badge_requirement` ;
 CREATE TABLE IF NOT EXISTS `badge_requirement` (
   `id` INT NOT NULL AUTO_INCREMENT,
   `badge_id` INT NOT NULL,
+  `rule` VARCHAR(45) NULL,
+  `active` TINYINT NULL,
   PRIMARY KEY (`id`),
   INDEX `fk_condition_badge1_idx` (`badge_id` ASC),
   CONSTRAINT `fk_condition_badge1`
@@ -584,9 +591,9 @@ SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS;
 -- -----------------------------------------------------
 START TRANSACTION;
 USE `squadgoalsdb`;
-INSERT INTO `image` (`id`, `url`) VALUES (1, 'https://pbs.twimg.com/profile_images/1237550450/mstom_400x400.jpg');
-INSERT INTO `image` (`id`, `url`) VALUES (2, 'https://static.wikia.nocookie.net/godzilla/images/3/33/Godzilla_2021.jpg/revision/latest?cb=20210314011302');
-INSERT INTO `image` (`id`, `url`) VALUES (3, 'https://static.wikia.nocookie.net/snl/images/6/66/Wild_and_crazy_guys.jpg/revision/latest?cb=20140804162910');
+INSERT INTO `image` (`id`, `url`, `active`) VALUES (1, 'https://pbs.twimg.com/profile_images/1237550450/mstom_400x400.jpg', NULL);
+INSERT INTO `image` (`id`, `url`, `active`) VALUES (2, 'https://static.wikia.nocookie.net/godzilla/images/3/33/Godzilla_2021.jpg/revision/latest?cb=20210314011302', NULL);
+INSERT INTO `image` (`id`, `url`, `active`) VALUES (3, 'https://static.wikia.nocookie.net/snl/images/6/66/Wild_and_crazy_guys.jpg/revision/latest?cb=20140804162910', NULL);
 
 COMMIT;
 
@@ -607,7 +614,7 @@ COMMIT;
 -- -----------------------------------------------------
 START TRANSACTION;
 USE `squadgoalsdb`;
-INSERT INTO `squad` (`id`, `name`, `bio`, `active`, `leader_id`, `profile_image_id`, `create_date`) VALUES (1, 'The OGs', 'We\'re just two wild and crazy guys!', 1, 1, 3, NULL);
+INSERT INTO `squad` (`id`, `name`, `bio`, `active`, `leader_id`, `profile_image_id`, `created_date`) VALUES (1, 'The OGs', 'We\'re just two wild and crazy guys!', 1, 1, 3, NULL);
 
 COMMIT;
 
@@ -639,7 +646,7 @@ COMMIT;
 -- -----------------------------------------------------
 START TRANSACTION;
 USE `squadgoalsdb`;
-INSERT INTO `review` (`rating`, `comment`, `goal_id`, `user_id`, `review_date`) VALUES (5, 'Science rules!', 1, 1, NULL);
+INSERT INTO `review` (`rating`, `comment`, `goal_id`, `user_id`, `review_date`, `active`) VALUES (5, 'Science rules!', 1, 1, NULL, NULL);
 
 COMMIT;
 
@@ -670,9 +677,9 @@ COMMIT;
 -- -----------------------------------------------------
 START TRANSACTION;
 USE `squadgoalsdb`;
-INSERT INTO `tag` (`id`, `name`, `description`) VALUES (1, 'fitness', NULL);
-INSERT INTO `tag` (`id`, `name`, `description`) VALUES (2, 'volunteer', NULL);
-INSERT INTO `tag` (`id`, `name`, `description`) VALUES (3, 'party', NULL);
+INSERT INTO `tag` (`id`, `name`, `description`, `active`) VALUES (1, 'fitness', NULL, NULL);
+INSERT INTO `tag` (`id`, `name`, `description`, `active`) VALUES (2, 'volunteer', NULL, NULL);
+INSERT INTO `tag` (`id`, `name`, `description`, `active`) VALUES (3, 'party', NULL, NULL);
 
 COMMIT;
 
@@ -714,9 +721,9 @@ COMMIT;
 -- -----------------------------------------------------
 START TRANSACTION;
 USE `squadgoalsdb`;
-INSERT INTO `task` (`id`, `title`, `description`, `created_date`, `updated_date`, `completed_date`, `start_date`, `end_date`, `completed`, `goal_id`) VALUES (1, 'Buy the pizza', 'Chicago style, please', NULL, NULL, NULL, NULL, NULL, 0, 1);
-INSERT INTO `task` (`id`, `title`, `description`, `created_date`, `updated_date`, `completed_date`, `start_date`, `end_date`, `completed`, `goal_id`) VALUES (2, 'Get the Mountain Dew', 'Code Red is best, just sayin\'', NULL, NULL, NULL, NULL, NULL, 0, 1);
-INSERT INTO `task` (`id`, `title`, `description`, `created_date`, `updated_date`, `completed_date`, `start_date`, `end_date`, `completed`, `goal_id`) VALUES (3, 'Sign up for Squad Goals', 'Just do it!', NULL, NULL, NULL, NULL, NULL, 1, 2);
+INSERT INTO `task` (`id`, `title`, `description`, `created_date`, `updated_date`, `completed_date`, `start_date`, `end_date`, `completed`, `goal_id`, `active`) VALUES (1, 'Buy the pizza', 'Chicago style, please', NULL, NULL, NULL, NULL, NULL, 0, 1, NULL);
+INSERT INTO `task` (`id`, `title`, `description`, `created_date`, `updated_date`, `completed_date`, `start_date`, `end_date`, `completed`, `goal_id`, `active`) VALUES (2, 'Get the Mountain Dew', 'Code Red is best, just sayin\'', NULL, NULL, NULL, NULL, NULL, 0, 1, NULL);
+INSERT INTO `task` (`id`, `title`, `description`, `created_date`, `updated_date`, `completed_date`, `start_date`, `end_date`, `completed`, `goal_id`, `active`) VALUES (3, 'Sign up for Squad Goals', 'Just do it!', NULL, NULL, NULL, NULL, NULL, 1, 2, NULL);
 
 COMMIT;
 
@@ -749,9 +756,9 @@ COMMIT;
 -- -----------------------------------------------------
 START TRANSACTION;
 USE `squadgoalsdb`;
-INSERT INTO `badge` (`id`, `name`, `description`) VALUES (1, 'Super Squad', 'Any squad that reaches 100 pts receives the Super Squad badge!');
-INSERT INTO `badge` (`id`, `name`, `description`) VALUES (2, 'Mother Teresa', 'Any squad that achieves 3 charitable goals within 1 year receives the Mother Teresa badge!');
-INSERT INTO `badge` (`id`, `name`, `description`) VALUES (3, 'Huge Member', 'Any member who reaches 100 pts receive the Huge Member badge!');
+INSERT INTO `badge` (`id`, `name`, `description`, `active`) VALUES (1, 'Super Squad', 'Any squad that reaches 100 pts receives the Super Squad badge!', NULL);
+INSERT INTO `badge` (`id`, `name`, `description`, `active`) VALUES (2, 'Mother Teresa', 'Any squad that achieves 3 charitable goals within 1 year receives the Mother Teresa badge!', NULL);
+INSERT INTO `badge` (`id`, `name`, `description`, `active`) VALUES (3, 'Huge Member', 'Any member who reaches 100 pts receive the Huge Member badge!', NULL);
 
 COMMIT;
 
@@ -781,7 +788,7 @@ COMMIT;
 -- -----------------------------------------------------
 START TRANSACTION;
 USE `squadgoalsdb`;
-INSERT INTO `badge_requirement` (`id`, `badge_id`) VALUES (1, 1);
+INSERT INTO `badge_requirement` (`id`, `badge_id`, `rule`, `active`) VALUES (1, 1, NULL, NULL);
 
 COMMIT;
 

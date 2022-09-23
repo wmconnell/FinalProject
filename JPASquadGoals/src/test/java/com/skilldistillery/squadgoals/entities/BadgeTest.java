@@ -61,7 +61,7 @@ class BadgeTest {
 	void test_badge_relationship_mappings() {
 		assertTrue(badge.getSquads().size() == 1);
 		assertTrue(badge.getUsers().size() == 0);
-		assertTrue(badge.getBadgeRequirements().size() == 1);
+		assertTrue(badge.getRequirements().size() == 1);
 	}
 
 }
