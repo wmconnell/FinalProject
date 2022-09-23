@@ -9,12 +9,12 @@ public interface ReviewService {
 	//	the appropriate permissions to perform the requested action.
 	
 	//	CREATE
-	Review create(int loginId, Review review);
+	Review create(String username, Review review);
 	//	READ
-	Review show(int loginId, int reviewId);
-	List<Review> index(int loginId);
+	Review show(String username, int reviewId);
+	List<Review> index(String username);
 	//	UPDATE
-	Review update(int loginId, int reviewId, Review review);
+	Review update(String username, int reviewId, Review review);
 	//	DELETE
-	boolean disable(int loginId, int reviewId);
+	boolean disable(String username, int reviewId);
 }

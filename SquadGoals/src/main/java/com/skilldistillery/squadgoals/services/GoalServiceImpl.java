@@ -25,11 +25,12 @@ public class GoalServiceImpl implements GoalService {
 	//
 	// CREATE
 	@Override
-	public Goal create(int loginId, Goal goal) {
+	public Goal create(String username, Goal goal) {
 		//	Users may only create a goal for a squad to which they belong.
-		if (isUser(loginId) && belongsToSquad(loginId, goal.getSquads())) {
+		//	TODO: Make it so only a leader can create a goal
+		if (isUser(username) && belongsToSquad(username, goal.getSquads())) {
 			try {
-				goal.setCreator(getUser(loginId));
+				goal.setCreator(getUser(username));
 				return goalRepo.saveAndFlush(goal);
 			}	catch (Exception e) {
 				e.printStackTrace();
@@ -40,7 +41,7 @@ public class GoalServiceImpl implements GoalService {
 	
 	// READ
 	@Override
-	public List<Goal> index(int loginId) {
+	public List<Goal> index(String username) {
 		//	Any user may retrieve a list of all goals, regardless of which squad they belong to.
 		//	TODO:	We will implement visibility on the front end.
 		//	TODO: 	Consider whether it would be better to instead
@@ -52,17 +53,17 @@ public class GoalServiceImpl implements GoalService {
 		//	Once the user base grows enough, the level of data transfer
 		//	could slow the site. In addition, it may be better for security
 		//	since its precision means that less data is available at any given time.
-		if (isUser(loginId)) {
+		if (isUser(username)) {
 			return goalRepo.findAll();
 		}
 		return new ArrayList<>();
 	}
 
 	@Override
-	public Goal show(int loginId, int goalId) {
+	public Goal show(String username, int goalId) {
 		//	Any user may look up any goal.
 		//	TODO:	We will implement public/private visibility on the front end.
-		if (isUser(loginId)) {
+		if (isUser(username)) {
 			try {
 				Optional<Goal> goalOpt = goalRepo.findById(goalId);
 				if (goalOpt.isPresent()) {
@@ -83,10 +84,10 @@ public class GoalServiceImpl implements GoalService {
 	//	entity. This is achieved via reflection, as seen in the use of
 	//	the Field class and the getDeclaredFields() method, inter alia.
 	@Override
-	public Goal update(int loginId, int goalId, Goal goal) {
+	public Goal update(String username, int goalId, Goal goal) {
 		//	A user with role "member" may only update a goal to which they belong.
 		//	A user with role "admin" may update any goal.
-		if (isUser(loginId) && (belongsToGoal(loginId, goalId) || isAdmin(loginId))) {
+		if (isUser(username) && (belongsToGoal(username, goalId) || isAdmin(username))) {
 			Optional<Goal> goalOpt = goalRepo.findById(goalId);
 			Goal toUpdate = null;
 			//	
@@ -133,11 +134,11 @@ public class GoalServiceImpl implements GoalService {
 	// TODO: Consider providing the user with two options: a pause and a true delete.
 	//
 	@Override
-	public boolean disable(int loginId, int goalId) {
+	public boolean disable(String username, int goalId) {
 		// A user with role "member" can only disable a goal to which they belong.
 		// A user with role "admin" can disable any goal.
-		if (isUser(loginId) && (belongsToGoal(loginId, goalId) || isAdmin(loginId))) {
-			Goal toDisable = show(loginId, goalId);
+		if (isUser(username) && (belongsToGoal(username, goalId) || isAdmin(username))) {
+			Goal toDisable = show(username, goalId);
 			if (toDisable != null) {
 				try {
 					toDisable.setActive(false);
@@ -157,23 +158,21 @@ public class GoalServiceImpl implements GoalService {
 	// logged in and authorized to perform the given action.
 	// Outsourcing the logic to these methods makes the code in the CRUD
 	// methods read more like the actual problem.
-	public User getUser(int userId) {
-		Optional<User> userOpt = userRepo.findById(userId);
-		return userOpt.isPresent() ? userOpt.get() : null;
+	public User getUser(String username) {
+		return userRepo.findByUsername(username);
 	}
 	
-	public boolean isUser(int loginId) {
-		return userRepo.existsById(loginId);
+	public boolean isUser(String username) {
+		return userRepo.existsByUsername(username);
 	}
 
-	public boolean isAdmin(int loginId) {
-		User requestor = getUser(loginId);
-		return requestor.getRole() == "admin";
+	public boolean isAdmin(String username) {
+		return getUser(username).getRole().equals("admin");
 	}
 	
-	public boolean belongsToSquad(int loginId, List<Squad> squads) {
+	public boolean belongsToSquad(String username, List<Squad> squads) {
 		//	TODO: Change squad.users to squad.members
-		User requestor = getUser(loginId);
+		User requestor = getUser(username);
 		if (requestor != null) {
 			for (Squad squad : squads) {
 				if (squad.getUsers().contains(requestor)) {
@@ -184,11 +183,11 @@ public class GoalServiceImpl implements GoalService {
 		return false;
 	}
 
-	public boolean belongsToGoal(int loginId, int goalId) {
+	public boolean belongsToGoal(String username, int goalId) {
 		//	TODO: Change goal.users to goal.members
-		User requestor = getUser(loginId);
+		User requestor = getUser(username);
 		if (requestor != null) {
-			return show(loginId, goalId).getUsers().contains(requestor);
+			return show(username, goalId).getUsers().contains(requestor);
 		}
 		return false;
 	}

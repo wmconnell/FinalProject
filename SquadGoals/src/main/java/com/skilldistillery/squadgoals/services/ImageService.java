@@ -9,12 +9,12 @@ public interface ImageService {
 	//	the appropriate permissions to perform the requested action.
 	
 	//	CREATE
-	Image create(int loginId, Image image);
+	Image create(String username, Image image);
 	//	READ
-	Image show(int loginId, int imageId);
-	List<Image> index(int loginId);
+	Image show(String username, int imageId);
+	List<Image> index(String username);
 	//	UPDATE
-	Image update(int loginId, int imageId, Image image);
+	Image update(String username, int imageId, Image image);
 	//	DELETE
-	boolean disable(int loginId, int imageId);
+	boolean disable(String username, int imageId);
 }

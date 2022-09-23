@@ -24,13 +24,13 @@ public class TagServiceImpl implements TagService {
 	//
 	// CREATE
 	@Override
-	public Tag create(int loginId, Tag tag) {
+	public Tag create(String username, Tag tag) {
 		//	Any user may create a tag.
-		if (isUser(loginId)) {
+		if (isUser(username)) {
 			try {
 				//	Make sure the tag doesn't already exist.
 				//	TODO:	Make "name" the Primary Key for tag, remove "id".
-				if (!index(loginId).contains(tag)) {
+				if (!index(username).contains(tag)) {
 					return tagRepo.saveAndFlush(tag);
 				}
 			}	catch (Exception e) {
@@ -42,18 +42,18 @@ public class TagServiceImpl implements TagService {
 	
 	// READ
 	@Override
-	public List<Tag> index(int loginId) {
+	public List<Tag> index(String username) {
 		//	Any user may retrieve a list of all tags.
-		if (isUser(loginId)) {
+		if (isUser(username)) {
 			return tagRepo.findAll();
 		}
 		return new ArrayList<>();
 	}
 
 	@Override
-	public Tag show(int loginId, int tagId) {
+	public Tag show(String username, int tagId) {
 		//	Any user may look up any tag.
-		if (isUser(loginId)) {
+		if (isUser(username)) {
 			try {
 				Optional<Tag> tagOpt = tagRepo.findById(tagId);
 				if (tagOpt.isPresent()) {
@@ -74,9 +74,9 @@ public class TagServiceImpl implements TagService {
 	//	entity. This is achieved via reflection, as seen in the use of
 	//	the Field class and the getDeclaredFields() method, inter alia.
 	@Override
-	public Tag update(int loginId, int tagId, Tag tag) {
+	public Tag update(String username, int tagId, Tag tag) {
 		//	Only a user with role "admin" may update a tag.
-		if (isUser(loginId) && isAdmin(loginId)) {
+		if (isUser(username) && isAdmin(username)) {
 			Optional<Tag> tagOpt = tagRepo.findById(tagId);
 			Tag toUpdate = null;
 			//	
@@ -120,10 +120,10 @@ public class TagServiceImpl implements TagService {
 	// TODO: Consider providing the user with two options: a pause and a true delete.
 	//
 	@Override
-	public boolean disable(int loginId, int tagId) {
+	public boolean disable(String username, int tagId) {
 		// Only a user with role "admin" may disable a tag.
-		if (isUser(loginId) && isAdmin(loginId)) {
-			Tag toDisable = show(loginId, tagId);
+		if (isUser(username) && isAdmin(username)) {
+			Tag toDisable = show(username, tagId);
 			if (toDisable != null) {
 				try {
 					toDisable.setActive(false);
@@ -143,18 +143,16 @@ public class TagServiceImpl implements TagService {
 	// logged in and authorized to perform the given action.
 	// Outsourcing the logic to these methods makes the code in the CRUD
 	// methods read more like the actual problem.
-	public User getUser(int userId) {
-		Optional<User> userOpt = userRepo.findById(userId);
-		return userOpt.isPresent() ? userOpt.get() : null;
+	public User getUser(String username) {
+		return userRepo.findByUsername(username);
 	}
 	
-	public boolean isUser(int loginId) {
-		return userRepo.existsById(loginId);
+	public boolean isUser(String username) {
+		return userRepo.existsByUsername(username);
 	}
 
-	public boolean isAdmin(int loginId) {
-		User requestor = getUser(loginId);
-		return requestor.getRole() == "admin";
+	public boolean isAdmin(String username) {
+		return getUser(username).getRole().equals("admin");
 	}
 
 }

@@ -9,12 +9,12 @@ public interface BadgeService {
 	//	the appropriate permissions to perform the requested action.
 	
 	//	CREATE
-	Badge create(int loginId, Badge badge);
+	Badge create(String username, Badge badge);
 	//	READ
-	Badge show(int loginId, int badgeId);
-	List<Badge> index(int loginId);
+	Badge show(String username, int badgeId);
+	List<Badge> index(String username);
 	//	UPDATE
-	Badge update(int loginId, int badgeId, Badge badge);
+	Badge update(String username, int badgeId, Badge badge);
 	//	DELETE
-	boolean disable(int loginId, int badgeId);
+	boolean disable(String username, int badgeId);
 }

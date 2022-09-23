@@ -24,13 +24,13 @@ public class BadgeServiceImpl implements BadgeService {
 	//
 	// CREATE
 	@Override
-	public Badge create(int loginId, Badge badge) {
+	public Badge create(String username, Badge badge) {
 		//	Only admins may create badges.
-		if (isUser(loginId) && isAdmin(loginId)) {
+		if (isUser(username) && isAdmin(username)) {
 			try {
 				//	Make sure the badge doesn't already exist.
 				//	TODO:	Make "name" the Primary Key for badge, remove "id".
-				if (!index(loginId).contains(badge)) {
+				if (!index(username).contains(badge)) {
 					return badgeRepo.saveAndFlush(badge);
 				}
 			}	catch (Exception e) {
@@ -42,18 +42,18 @@ public class BadgeServiceImpl implements BadgeService {
 	
 	// READ
 	@Override
-	public List<Badge> index(int loginId) {
+	public List<Badge> index(String username) {
 		//	Any user may retrieve a list of all badges.
-		if (isUser(loginId)) {
+		if (isUser(username)) {
 			return badgeRepo.findAll();
 		}
 		return new ArrayList<>();
 	}
 
 	@Override
-	public Badge show(int loginId, int badgeId) {
+	public Badge show(String username, int badgeId) {
 		//	Any user may look up any badge.
-		if (isUser(loginId)) {
+		if (isUser(username)) {
 			try {
 				Optional<Badge> badgeOpt = badgeRepo.findById(badgeId);
 				if (badgeOpt.isPresent()) {
@@ -74,9 +74,9 @@ public class BadgeServiceImpl implements BadgeService {
 	//	entity. This is achieved via reflection, as seen in the use of
 	//	the Field class and the getDeclaredFields() method, inter alia.
 	@Override
-	public Badge update(int loginId, int badgeId, Badge badge) {
+	public Badge update(String username, int badgeId, Badge badge) {
 		//	Only a user with role "admin" may update a badge.
-		if (isUser(loginId) && isAdmin(loginId)) {
+		if (isUser(username) && isAdmin(username)) {
 			Optional<Badge> badgeOpt = badgeRepo.findById(badgeId);
 			Badge toUpdate = null;
 			//	
@@ -120,10 +120,10 @@ public class BadgeServiceImpl implements BadgeService {
 	// TODO: Consider providing the user with two options: a pause and a true delete.
 	//
 	@Override
-	public boolean disable(int loginId, int badgeId) {
+	public boolean disable(String username, int badgeId) {
 		// Only a user with role "admin" may disable a badge.
-		if (isUser(loginId) && isAdmin(loginId)) {
-			Badge toDisable = show(loginId, badgeId);
+		if (isUser(username) && isAdmin(username)) {
+			Badge toDisable = show(username, badgeId);
 			if (toDisable != null) {
 				try {
 					toDisable.setActive(false);
@@ -143,17 +143,15 @@ public class BadgeServiceImpl implements BadgeService {
 	// logged in and authorized to perform the given action.
 	// Outsourcing the logic to these methods makes the code in the CRUD
 	// methods read more like the actual problem.
-	public User getUser(int userId) {
-		Optional<User> userOpt = userRepo.findById(userId);
-		return userOpt.isPresent() ? userOpt.get() : null;
+	public User getUser(String username) {
+		return userRepo.findByUsername(username);
 	}
 	
-	public boolean isUser(int loginId) {
-		return userRepo.existsById(loginId);
+	public boolean isUser(String username) {
+		return userRepo.existsByUsername(username);
 	}
 
-	public boolean isAdmin(int loginId) {
-		User requestor = getUser(loginId);
-		return requestor.getRole() == "admin";
+	public boolean isAdmin(String username) {
+		return getUser(username).getRole().equals("admin");
 	}
 }

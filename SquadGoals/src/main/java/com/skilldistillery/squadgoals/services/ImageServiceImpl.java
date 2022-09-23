@@ -24,13 +24,13 @@ public class ImageServiceImpl implements ImageService {
 	//
 	// CREATE
 	@Override
-	public Image create(int loginId, Image image) {
+	public Image create(String username, Image image) {
 		//	Users may only create an image for their account.
 		//	Goal images are added by calling the GoalServiceImpl.update() method		TODO: Change this?
 		//	Review images are added by calling the ReviewServiceImpl.update() method	TODO: Change this?
-		if (isUser(loginId)) {
+		if (isUser(username)) {
 			try {
-				image.setUser(getUser(loginId));
+				image.setUser(getUser(username));
 				image.setActive(true);
 				return imageRepo.saveAndFlush(image);
 			}	catch (Exception e) {
@@ -42,7 +42,7 @@ public class ImageServiceImpl implements ImageService {
 	
 	// READ
 	@Override
-	public List<Image> index(int loginId) {
+	public List<Image> index(String username) {
 		//	Any user may retrieve all images.
 		//	TODO:	We will implement visibility on the front end.
 		//	TODO: 	Consider whether it would be better to instead
@@ -53,7 +53,7 @@ public class ImageServiceImpl implements ImageService {
 		//	Once the user base grows enough, the level of data transfer
 		//	could slow the site. In addition, it may be better for security
 		//	since its precision means that less data is available at any given time.
-		if (isUser(loginId)) {
+		if (isUser(username)) {
 			try {
 				return imageRepo.findAll();
 			} catch (Exception e) {
@@ -64,10 +64,10 @@ public class ImageServiceImpl implements ImageService {
 	}
 
 	@Override
-	public Image show(int loginId, int imageId) {
+	public Image show(String username, int imageId) {
 		//	Any user may look up any image.
 		//	TODO: 	Refine this
-		if (isUser(loginId)) {
+		if (isUser(username)) {
 			try {
 				Optional<Image> imageOpt = imageRepo.findById(imageId);
 				if (imageOpt.isPresent()) {
@@ -88,11 +88,11 @@ public class ImageServiceImpl implements ImageService {
 	//	entity. This is achieved via reflection, as seen in the use of
 	//	the Field class and the getDeclaredFields() method, inter alia.
 	@Override
-	public Image update(int loginId, int imageId, Image image) {
+	public Image update(String username, int imageId, Image image) {
 		//	A user with role "member" can only update their profile image.
 		//	TODO: What about images associated with goals to which they belong or reviews they made?
 		//	A user with role "admin" can update any image.
-		if (isUser(loginId) && (isUserProfilePic(loginId, imageId) || isAdmin(loginId))) {
+		if (isUser(username) && (isUserProfilePic(username, imageId) || isAdmin(username))) {
 			Optional<Image> imageOpt = imageRepo.findById(imageId);
 			Image toUpdate = null;
 			//	
@@ -136,11 +136,11 @@ public class ImageServiceImpl implements ImageService {
 	// TODO: Consider providing the user with two options: a pause and a true delete.
 	//
 	@Override
-	public boolean disable(int loginId, int imageId) {
+	public boolean disable(String username, int imageId) {
 		// A user with role "member" can only disable their own profile pic.
 		// A user with role "admin" can disable any image.
-		if (isUser(loginId) && (isUserProfilePic(loginId, imageId) || isAdmin(loginId))) {
-			Image toDisable = show(loginId, imageId);
+		if (isUser(username) && (isUserProfilePic(username, imageId) || isAdmin(username))) {
+			Image toDisable = show(username, imageId);
 			if (toDisable != null) {
 				try {
 					toDisable.setActive(false);
@@ -160,9 +160,8 @@ public class ImageServiceImpl implements ImageService {
 	// logged in and authorized to perform the given action.
 	// Outsourcing the logic to these methods makes the code in the CRUD
 	// methods read more like the actual problem.
-	public User getUser(int userId) {
-		Optional<User> userOpt = userRepo.findById(userId);
-		return userOpt.isPresent() ? userOpt.get() : null;
+	public User getUser(String username) {
+		return userRepo.findByUsername(username);
 	}
 	
 	public Image getImage(int imageId) {
@@ -170,17 +169,16 @@ public class ImageServiceImpl implements ImageService {
 		return imageOpt.isPresent() ? imageOpt.get() : null;
 	}
 	
-	public boolean isUser(int loginId) {
-		return userRepo.existsById(loginId);
+	public boolean isUser(String username) {
+		return userRepo.existsByUsername(username);
 	}
 	
-	public boolean isUserProfilePic(int loginId, int imageId) {
-		return getImage(imageId).getUser().getId() == loginId;
+	public boolean isUserProfilePic(String username, int imageId) {
+		return getImage(imageId).getUser().getUsername().equals(username);
 	}
 
-	public boolean isAdmin(int loginId) {
-		User requestor = getUser(loginId);
-		return requestor.getRole() == "admin";
+	public boolean isAdmin(String username) {
+		return getUser(username).getRole().equals("admin");
 	}
 	
 }
