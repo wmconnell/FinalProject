@@ -8,8 +8,10 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.skilldistillery.squadgoals.entities.Image;
 import com.skilldistillery.squadgoals.entities.Squad;
 import com.skilldistillery.squadgoals.entities.User;
+import com.skilldistillery.squadgoals.repositories.ImageRepository;
 import com.skilldistillery.squadgoals.repositories.SquadRepository;
 import com.skilldistillery.squadgoals.repositories.UserRepository;
 
@@ -19,6 +21,8 @@ public class SquadServiceImpl implements SquadService {
 	private UserRepository userRepo;	//	For authentication
 	@Autowired
 	private SquadRepository squadRepo;
+	@Autowired
+	private ImageRepository imageRepo;
 
 	// CRUD Methods
 	//
@@ -30,6 +34,9 @@ public class SquadServiceImpl implements SquadService {
 			try {
 				//	TODO:	Consider adding a "creator" property to the Squad entity.
 				//			squad.setCreator(userRepo.findById(username);
+				Image newImage = new Image("https://thepowerofthedream.org/wp-content/uploads/2015/09/generic-profile-picture.jpg", true);
+				newImage = imageRepo.saveAndFlush(newImage);
+				squad.setProfilePic(newImage);
 				return squadRepo.saveAndFlush(squad);
 			}	catch (Exception e) {
 				e.printStackTrace();
