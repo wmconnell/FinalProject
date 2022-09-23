@@ -23,6 +23,8 @@ public class UserServiceImpl implements UserService {
 	// READ
 	@Override
 	public List<User> index(String username) {
+		
+		System.out.println("****IN SERVICEIMPL - INDEX****");
 		//	Any user may retrieve a list of all users.
 		//	TODO: We will implement public/private visibility on the front end.
 		//	TODO: Consider whether it would be better to instead

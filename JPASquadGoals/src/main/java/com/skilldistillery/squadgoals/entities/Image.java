@@ -43,6 +43,14 @@ public class Image {
 	public Image() {
 
 	}
+	
+	public Image(String url, Boolean active) {
+		super();
+		this.url = url;
+		this.active = active;
+	}
+
+
 
 	public int getId() {
 		return id;

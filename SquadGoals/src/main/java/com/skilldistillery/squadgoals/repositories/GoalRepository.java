@@ -7,5 +7,5 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import com.skilldistillery.squadgoals.entities.Goal;
 
 public interface GoalRepository extends JpaRepository<Goal, Integer> {
-	List<Goal> findAllByUserUsername(String username);
+	List<Goal> findAllByUsers_Username(String username);
 }
