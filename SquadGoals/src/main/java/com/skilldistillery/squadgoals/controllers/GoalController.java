@@ -1,7 +1,7 @@
 package com.skilldistillery.squadgoals.controllers;
 
 import java.security.Principal;
-import java.util.Set;
+import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -53,7 +53,7 @@ public class GoalController {
 	
 	
 	@GetMapping("goals")
-	public Set<Goal> index(HttpServletRequest req, HttpServletResponse res, Principal principal) {
+	public List<Goal> index(HttpServletRequest req, HttpServletResponse res, Principal principal) {
 		return goalService.index(principal.getName());
 	}
 	
