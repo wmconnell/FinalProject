@@ -19,12 +19,17 @@ public class AuthServiceImpl implements AuthService {
 	
 	@Override
 	public User register(User user) {
-		String encodedPW =  encoder.encode(user.getPassword());
-//		user.setPassword(encodedPW);
-//		user.setActive(true);
-//		user.setRole("standard");
-		userRepo.saveAndFlush(user);
-		return user;
+		User registeredUser = null;
+		try {
+			String encodedPW =  encoder.encode(user.getPassword());
+			user.setPassword(encodedPW);
+			user.setActive(true);
+			user.setRole("member");
+			registeredUser = userRepo.saveAndFlush(user);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return registeredUser;
 	}
 
 	@Override
@@ -40,6 +45,16 @@ public class AuthServiceImpl implements AuthService {
 			user = userOpt.get();
 		}
 		return user;
+	}
+	
+	@Override
+	public boolean usernameTaken(String username) {
+		return userRepo.existsByUsername(username);
+	}
+	
+	@Override
+	public boolean emailAlreadyAssociatedWithAccount(String email) {
+		return userRepo.existsByEmail(email);
 	}
 
 }

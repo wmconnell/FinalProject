@@ -65,7 +65,7 @@ class UserTest {
 		assertTrue(user.getTasks().size() == 2);
 		assertTrue(user.getGoals().size() == 2);
 		assertTrue(user.getReviews().size() == 1);
-		assertTrue(user.getSquadMessages().size() == 2);
+		assertTrue(user.getSquadMessages().size() == 1);
 		assertTrue(user.getTags().size() == 1);
 		assertEquals(user.getTags().get(0).getName(), "fitness");
 		assertEquals(user.getProfilePic().getUrl(), "https://pbs.twimg.com/profile_images/1237550450/mstom_400x400.jpg");

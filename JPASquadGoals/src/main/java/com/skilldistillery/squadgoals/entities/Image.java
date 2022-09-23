@@ -22,6 +22,7 @@ public class Image {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private int id;
 	private String url;
+	private Boolean active;
 	@OneToOne(mappedBy="profilePic")
 	@JsonIgnoreProperties({"profilePic"})
 	private User user;
@@ -57,6 +58,14 @@ public class Image {
 
 	public void setUrl(String url) {
 		this.url = url;
+	}
+
+	public Boolean getActive() {
+		return active;
+	}
+
+	public void setActive(Boolean active) {
+		this.active = active;
 	}
 
 	public User getUser() {

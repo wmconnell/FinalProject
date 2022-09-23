@@ -18,6 +18,7 @@ public class Tag {
 	private int id;
 	private String name;
 	private String description;
+	private Boolean active;
 	@ManyToMany(mappedBy="tags")
 	@JsonIgnoreProperties({"tags"})
 	private List<User> users;
@@ -54,6 +55,14 @@ public class Tag {
 
 	public void setDescription(String description) {
 		this.description = description;
+	}
+	
+	public Boolean getActive() {
+		return active;
+	}
+
+	public void setActive(Boolean active) {
+		this.active = active;
 	}
 
 	public List<User> getUsers() {

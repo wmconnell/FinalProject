@@ -19,6 +19,7 @@ public class Badge {
 	private int id;
 	private String name;
 	private String description;
+	private Boolean active;
 	@ManyToMany(mappedBy="badges")
 	@JsonIgnoreProperties({"badges"})
 	private List<User> users;
@@ -54,6 +55,14 @@ public class Badge {
 
 	public void setDescription(String description) {
 		this.description = description;
+	}
+	
+	public Boolean getActive() {
+		return active;
+	}
+
+	public void setActive(Boolean active) {
+		this.active = active;
 	}
 
 	public List<User> getUsers() {
@@ -106,15 +115,15 @@ public class Badge {
 		}
 	}
 	
-	public List<BadgeRequirement> getBadgeRequirements() {
+	public List<BadgeRequirement> getRequirements() {
 		return requirements;
 	}
 
-	public void setBadgeRequirements(List<BadgeRequirement> requirements) {
+	public void setRequirements(List<BadgeRequirement> requirements) {
 		this.requirements = requirements;
 	}
 
-	public void addBadgeRequirement(BadgeRequirement requirement) {
+	public void addRequirement(BadgeRequirement requirement) {
 		if (requirements == null) {
 			requirements = new ArrayList<>();
 		}
@@ -124,7 +133,7 @@ public class Badge {
 		}
 	}
 
-	public void removeBadgeRequirement(BadgeRequirement requirement) {
+	public void removeRequirement(BadgeRequirement requirement) {
 		requirement.setBadge(null);
 		if (requirements != null && requirements.contains(requirement)) {
 			requirements.remove(requirement);

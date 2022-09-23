@@ -8,7 +8,6 @@ import javax.persistence.Column;
 import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.MapsId;
@@ -23,6 +22,7 @@ public class Review {
 	
 	private int rating;
 	private String comment;
+	private Boolean active;
 	
 	@Column(name="review_date")
 	private LocalDateTime reviewDate;
@@ -47,6 +47,14 @@ public class Review {
 
 	public void setId(ReviewId id) {
 		this.id = id;
+	}
+	
+	public Boolean getActive() {
+		return active;
+	}
+
+	public void setActive(Boolean active) {
+		this.active = active;
 	}
 
 	public User getUser() {

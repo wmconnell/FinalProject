@@ -6,4 +6,6 @@ public interface AuthService {
 	User register(User user);
 	User getUserByUsername(String username);
 	User getUserById(int id);
+	boolean usernameTaken(String username);
+	boolean emailAlreadyAssociatedWithAccount(String email);
 }
