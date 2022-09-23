@@ -38,6 +38,8 @@ public class AuthServiceImpl implements AuthService {
 		}
 		return registeredUser;
 	}
+	
+	//	TODO: Need method for smurfdating password
 
 	@Override
 	public User getUserByUsername(String username) {
