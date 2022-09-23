@@ -9,12 +9,12 @@ public interface SquadService {
 	//	the appropriate permissions to perform the requested action.
 	
 	//	CREATE
-	Squad create(int loginId, Squad squad);
+	Squad create(String username, Squad squad);
 	//	READ
-	Squad show(int loginId, int squadId);
-	List<Squad> index(int loginId);
+	Squad show(String username, int squadId);
+	List<Squad> index(String username);
 	//	UPDATE
-	Squad update(int loginId, int squadId, Squad squad);
+	Squad update(String username, int squadId, Squad squad);
 	//	DELETE
-	boolean disable(int loginId, int squadId);
+	boolean disable(String username, int squadId);
 }

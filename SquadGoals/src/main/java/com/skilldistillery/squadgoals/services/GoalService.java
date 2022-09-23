@@ -9,12 +9,12 @@ public interface GoalService {
 	//	the appropriate permissions to perform the requested action.
 	
 	//	CREATE
-	Goal create(int loginId, Goal goal);
+	Goal create(String username, Goal goal);
 	//	READ
-	Goal show(int loginId, int goalId);
-	List<Goal> index(int loginId);
+	Goal show(String username, int goalId);
+	List<Goal> index(String username);
 	//	UPDATE
-	Goal update(int loginId, int goalId, Goal goal);
+	Goal update(String username, int goalId, Goal goal);
 	//	DELETE
-	boolean disable(int loginId, int goalId);
+	boolean disable(String username, int goalId);
 }

@@ -22,9 +22,9 @@ public class UserServiceImpl implements UserService {
 	//
 	// READ
 	@Override
-	public List<User> index(int loginId) {
+	public List<User> index(String username) {
 		//	Any user may retrieve a list of all users.
-		//	We will implement public/private visibility on the front end.
+		//	TODO: We will implement public/private visibility on the front end.
 		//	TODO: Consider whether it would be better to instead
 		//	create many more specific index methods, such as
 		//		- showAllFellowSquadMembers()
@@ -34,17 +34,17 @@ public class UserServiceImpl implements UserService {
 		//	Once the user base grows enough, the level of data transfer
 		//	could slow the site. In addition, it may be better for security
 		//	since its precision means that less data is available at any given time.
-		if (isUser(loginId)) {
+		if (isUser(username)) {
 			return userRepo.findAll();
 		}
 		return new ArrayList<>();
 	}
 
 	@Override
-	public User show(int loginId, int userId) {
-		// Any user may look up another user, for now at least.
+	public User show(String username, int userId) {
+		// Any user may look up any other user, for now at least.
 		//	TODO:	A stretch goal is to implement public/private profiles.
-		if (isUser(loginId)) {
+		if (isUser(username)) {
 			try {
 				Optional<User> userOpt = userRepo.findById(userId);
 				if (userOpt.isPresent()) {
@@ -65,10 +65,10 @@ public class UserServiceImpl implements UserService {
 	//	entity. This is achieved via reflection, as seen in the use of
 	//	the Field class and the getDeclaredFields() method, inter alia.
 	@Override
-	public User update(int loginId, int userId, User user) {
+	public User update(String username, int userId, User user) {
 		//	A user with role "member" may only update their own account.
 		//	A user with role "admin" may update any account.
-		if (isUser(loginId) && (isSameUser(loginId, userId) || isAdmin(loginId))) {
+		if (isUser(username) && (isSameUser(username, userId) || isAdmin(username))) {
 			Optional<User> userOpt = userRepo.findById(userId);
 			User toUpdate = null;
 			//	We checked to make sure that the initiator of the action was an actual user,
@@ -112,11 +112,11 @@ public class UserServiceImpl implements UserService {
 	// 	TODO: Consider providing the user with two options: a pause and a true delete.
 	//
 	@Override
-	public boolean disable(int loginId, int userId) {
+	public boolean disable(String username, int userId) {
 		//	A user with role "member" can only disable their own account.
 		//	A user with role "admin" can disable any account.
-		if (isUser(loginId) && (isSameUser(loginId, userId) || isAdmin(loginId))) {
-			User toDisable = show(loginId, userId);
+		if (isUser(username) && (isSameUser(username, userId) || isAdmin(username))) {
+			User toDisable = show(username, userId);
 			if (toDisable != null) {
 				try {
 					toDisable.setActive(false);
@@ -136,17 +136,16 @@ public class UserServiceImpl implements UserService {
 	//	logged in and authorized to perform the given action.
 	//	Outsourcing the logic to these methods makes the code in the CRUD
 	//	methods read more like the actual problem.
-	public boolean isUser(int loginId) {
-		return userRepo.existsById(loginId);
+	public boolean isUser(String username) {
+		return userRepo.existsByUsername(username);
 	}
 
-	public boolean isAdmin(int loginId) {
-		User requestor = show(loginId, loginId);
-		return requestor.getRole() == "admin";
+	public boolean isAdmin(String username) {
+		return userRepo.findByUsername(username).getRole() == "admin";
 	}
 
-	public boolean isSameUser(int loginId, int userId) {
-		return loginId == userId;
+	public boolean isSameUser(String username, int userId) {
+		return userRepo.findByUsername(username).getId() == userId;
 	}
 
 }

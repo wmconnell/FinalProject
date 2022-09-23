@@ -9,12 +9,12 @@ public interface BadgeRequirementService {
 	//	the appropriate permissions to perform the requested action.
 	
 	//	CREATE
-	BadgeRequirement create(int loginId, BadgeRequirement badgeRequirement);
+	BadgeRequirement create(String username, BadgeRequirement badgeRequirement);
 	//	READ
-	BadgeRequirement show(int loginId, int badgeRequirementId);
-	List<BadgeRequirement> index(int loginId);
+	BadgeRequirement show(String username, int badgeRequirementId);
+	List<BadgeRequirement> index(String username);
 	//	UPDATE
-	BadgeRequirement update(int loginId, int badgeRequirementId, BadgeRequirement badgeRequirement);
+	BadgeRequirement update(String username, int badgeRequirementId, BadgeRequirement badgeRequirement);
 	//	DELETE
-	boolean disable(int loginId, int badgeRequirementId);
+	boolean disable(String username, int badgeRequirementId);
 }

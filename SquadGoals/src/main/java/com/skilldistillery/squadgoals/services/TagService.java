@@ -9,12 +9,12 @@ public interface TagService {
 	//	the appropriate permissions to perform the requested action.
 	
 	//	CREATE
-	Tag create(int loginId, Tag tag);
+	Tag create(String username, Tag tag);
 	//	READ
-	Tag show(int loginId, int tagId);
-	List<Tag> index(int loginId);
+	Tag show(String username, int tagId);
+	List<Tag> index(String username);
 	//	UPDATE
-	Tag update(int loginId, int tagId, Tag tag);
+	Tag update(String username, int tagId, Tag tag);
 	//	DELETE
-	boolean disable(int loginId, int tagId);
+	boolean disable(String username, int tagId);
 }
