@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.skilldistillery.squadgoals.entities.Goal;
+import com.skilldistillery.squadgoals.services.GoalService;
 
 @RestController
 @RequestMapping(path = "api")
@@ -24,9 +25,21 @@ public class GoalController {
 
 	@Autowired GoalService goalService;
 	
-	@GetMapping("goals")
-	public Set<Goal> index(HttpServletRequest req, HttpServletResponse res, Principal principal) {
-		return goalService.index(principal.getName());
+	@PostMapping("goals")
+	public Goal create(@RequestBody Goal goal, HttpServletRequest req, HttpServletResponse res, Principal principal) {
+		Goal created = null;
+		
+		try {
+			created = goalService.create(principal.getName(), goal);
+			res.setStatus(201);
+			StringBuffer url = req.getRequestURL();
+			url.append("/").append(created.getId());
+			res.setHeader("Location", url.toString());
+		} catch (Exception e) {
+			res.setStatus(400);
+			e.printStackTrace();
+		}
+		return created;
 	}
 	
 	@GetMapping("goals/{id}")
@@ -38,21 +51,10 @@ public class GoalController {
 		return goal;
 	}
 	
-	@PostMapping("users")
-	public Goal create(@RequestBody Goal goal, HttpServletRequest req, HttpServletResponse res, Principal principal) {
-		Goal created = null;
-		
-		try {
-			created = goalService.create(principal.getName(), user);
-			res.setStatus(201);
-			StringBuffer url = req.getRequestURL();
-			url.append("/").append(created.getId());
-			res.setHeader("Location", url.toString());
-		} catch (Exception e) {
-			res.setStatus(400);
-			e.printStackTrace();
-		}
-		return created;
+	
+	@GetMapping("goals")
+	public Set<Goal> index(HttpServletRequest req, HttpServletResponse res, Principal principal) {
+		return goalService.index(principal.getName());
 	}
 	
 	@PutMapping("goals/{id}")
@@ -71,7 +73,7 @@ public class GoalController {
 	
 	@DeleteMapping("goals/{id}")
 	public void destroy(HttpServletRequest req, HttpServletResponse res, @PathVariable int id, Principal principal) {
-		boolean deleted = goalService.destroy(principal.getName(), id);
+		boolean deleted = goalService.disable(principal.getName(), id);
 		if (deleted) {
 			res.setStatus(204);
 		} else {
