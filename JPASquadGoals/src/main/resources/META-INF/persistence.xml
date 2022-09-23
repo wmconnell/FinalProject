@@ -11,6 +11,10 @@
 	<class>com.skilldistillery.squadgoals.entities.Tag</class>
 	<class>com.skilldistillery.squadgoals.entities.Task</class>
 	<class>com.skilldistillery.squadgoals.entities.User</class>
+	<class>com.skilldistillery.squadgoals.entities.BadgeRequirement</class>
+	<class>com.skilldistillery.squadgoals.entities.Requirement</class>
+	<class>com.skilldistillery.squadgoals.entities.ReviewId</class>
+	<class>com.skilldistillery.squadgoals.entities.SquadMessage</class>
 
 	<properties>
       <property name="javax.persistence.jdbc.url" value="jdbc:mysql://localhost:3306/squadgoalsdb?useSSL=false&amp;useLegacyDatetimeCode=false&amp;serverTimezone=US/Mountain" />

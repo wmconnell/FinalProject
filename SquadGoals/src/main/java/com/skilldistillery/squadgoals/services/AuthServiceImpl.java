@@ -6,7 +6,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import com.skilldistillery.squadgoals.entities.Image;
 import com.skilldistillery.squadgoals.entities.User;
+import com.skilldistillery.squadgoals.repositories.ImageRepository;
 import com.skilldistillery.squadgoals.repositories.UserRepository;
 
 @Service
@@ -16,13 +18,18 @@ public class AuthServiceImpl implements AuthService {
 	private PasswordEncoder encoder;
 	@Autowired
 	private UserRepository userRepo;
+	@Autowired
+	private ImageRepository imageRepo;
 	
 	@Override
 	public User register(User user) {
 		User registeredUser = null;
 		try {
 			String encodedPW =  encoder.encode(user.getPassword());
+			Image newImage = new Image("https://thepowerofthedream.org/wp-content/uploads/2015/09/generic-profile-picture.jpg", true);
+			newImage = imageRepo.saveAndFlush(newImage);
 			user.setPassword(encodedPW);
+			user.setProfilePic(newImage);
 			user.setActive(true);
 			user.setRole("member");
 			registeredUser = userRepo.saveAndFlush(user);

@@ -50,7 +50,7 @@ public class TaskServiceImpl implements TaskService {
 		List<Task> tasks = new ArrayList<>();
 		if (isUser(username)) {
 			try {
-				List<Goal> goals = goalRepo.findAllByUserUsername(username);
+				List<Goal> goals = goalRepo.findAllByUsers_Username(username);
 				//	If user belongs to any goals
 				if (goals.size() > 0) {
 					//	Compile a list of all tasks associated with those goals,

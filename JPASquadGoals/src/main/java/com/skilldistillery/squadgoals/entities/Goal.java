@@ -48,9 +48,10 @@ public class Goal {
 	private String recurring;
 	private Boolean active;
 	@OneToMany(mappedBy = "goal")
+	@JsonIgnore
 	private List<Review> reviews;
 	@ManyToMany(mappedBy="goals")
-	@JsonIgnoreProperties({"goals"})
+	@JsonIgnoreProperties({"goals", "goalsCreated"})
 	private List<User> users;
 	@ManyToMany(mappedBy="goals")
 	@JsonIgnoreProperties({"goals"})

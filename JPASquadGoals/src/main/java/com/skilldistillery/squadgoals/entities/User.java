@@ -38,6 +38,7 @@ public class User {
 	@Column(name = "create_date")
 	private LocalDateTime createDate;
 	@OneToMany(mappedBy = "user")
+	@JsonIgnore
 	private List<Review> reviews;
 	@ManyToMany
 	@JoinTable(name = "user_has_squad", joinColumns = @JoinColumn(name = "user_id"), inverseJoinColumns = @JoinColumn(name = "squad_id"))
@@ -56,18 +57,19 @@ public class User {
 	@JsonIgnore
 	private List<Badge> badges;
 	@OneToMany(mappedBy="sender")
+	@JsonIgnore
 	private List<SquadMessage> squadMessages;
 	@ManyToMany
 	@JoinTable(name = "user_has_tag", joinColumns = @JoinColumn(name = "user_id"), inverseJoinColumns = @JoinColumn(name = "tag_id"))
 	@JsonIgnore
 	private List<Tag> tags;
-	@OneToOne(cascade=CascadeType.PERSIST)
+	@OneToOne
 	@JoinColumn(name="profile_image_id")
 	@JsonIgnoreProperties({"user"})
 	private Image profilePic;
 	@OneToMany
 	@JoinColumn(name = "creator_id")
-	@JsonIgnoreProperties({"creator"})
+	@JsonIgnore
 	private List<Goal> goalsCreated;
 	
 

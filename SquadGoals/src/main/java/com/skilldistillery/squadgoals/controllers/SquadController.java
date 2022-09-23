@@ -1,7 +1,7 @@
 package com.skilldistillery.squadgoals.controllers;
 
 import java.security.Principal;
-import java.util.Set;
+import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -17,7 +17,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.skilldistillery.squadgoals.entities.Squad;
-import com.skilldistillery.squadgoals.entities.User;
+import com.skilldistillery.squadgoals.services.SquadService;
 
 @RestController
 @RequestMapping(path = "api")
@@ -26,7 +26,7 @@ public class SquadController {
 	@Autowired SquadService squadService;
 	
 	@GetMapping("squads")
-	public Set<Squad> index(HttpServletRequest req, HttpServletResponse res, Principal principal) {
+	public List<Squad> index(HttpServletRequest req, HttpServletResponse res, Principal principal) {
 		return squadService.index(principal.getName());
 	}
 	
@@ -72,7 +72,7 @@ public class SquadController {
 	
 	@DeleteMapping("squads/{id}")
 	public void destroy(HttpServletRequest req, HttpServletResponse res, @PathVariable int id, Principal principal) {
-		boolean deleted = squadService.destroy(principal.getName(), id);
+		boolean deleted = squadService.disable(principal.getName(), id);
 		if (deleted) {
 			res.setStatus(204);
 		} else {
