@@ -65,5 +65,27 @@ public class AuthServiceImpl implements AuthService {
 	public boolean emailAlreadyAssociatedWithAccount(String email) {
 		return userRepo.existsByEmail(email);
 	}
+	
+	//	Helper Methods
+	//	
+	//	The following methods ensure that the user requesting an action is
+	//	logged in and authorized to perform the given action.
+	//	Outsourcing the logic to these methods makes the code in the CRUD
+	//	methods read more like the actual problem.
+	public boolean isLoggedInUser(String username) {
+		return userRepo.existsByUsername(username);
+	}
+	
+	public boolean userExists(int userId) {
+		return userRepo.existsById(userId);
+	}
+
+	public boolean isAdmin(String username) {
+		return userRepo.findByUsername(username).getRole().equals("admin");
+	}
+
+	public boolean isSameUser(String username, int userId) {
+		return userRepo.findByUsername(username).getId() == userId;
+	}
 
 }
