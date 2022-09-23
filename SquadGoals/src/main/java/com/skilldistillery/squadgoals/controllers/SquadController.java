@@ -16,34 +16,35 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.skilldistillery.squadgoals.entities.Squad;
 import com.skilldistillery.squadgoals.entities.User;
 
 @RestController
 @RequestMapping(path = "api")
-public class UserController {
+public class SquadController {
 
-	@Autowired UserService userService;
+	@Autowired SquadService squadService;
 	
-	@GetMapping("users")
-	public Set<User> index(HttpServletRequest req, HttpServletResponse res, Principal principal) {
-		return userService.index(principal.getName());
+	@GetMapping("squads")
+	public Set<Squad> index(HttpServletRequest req, HttpServletResponse res, Principal principal) {
+		return squadService.index(principal.getName());
 	}
 	
-	@GetMapping("users/{id}")
-	public User show(HttpServletRequest req, HttpServletResponse res, @PathVariable int id, Principal principal) {
-		User user = userService.show(principal.getName(), id);
-		if (user == null) {
+	@GetMapping("squads/{id}")
+	public Squad show(HttpServletRequest req, HttpServletResponse res, @PathVariable int id, Principal principal) {
+		Squad squad = squadService.show(principal.getName(), id);
+		if (squad == null) {
 			res.setStatus(404);
 		}
-		return user;
+		return squad;
 	}
 	
-	@PostMapping("users")
-	public User create(@RequestBody User user, HttpServletRequest req, HttpServletResponse res, Principal principal) {
-		User created = null;
+	@PostMapping("squads")
+	public Squad create(@RequestBody Squad squad, HttpServletRequest req, HttpServletResponse res, Principal principal) {
+		Squad created = null;
 		
 		try {
-			created = userService.create(principal.getName(), user);
+			created = squadService.create(principal.getName(), squad);
 			res.setStatus(201);
 			StringBuffer url = req.getRequestURL();
 			url.append("/").append(created.getId());
@@ -55,12 +56,12 @@ public class UserController {
 		return created;
 	}
 	
-	@PutMapping("users/{id}")
-	public User update(HttpServletRequest req, HttpServletResponse res, @PathVariable int id, @RequestBody User user, Principal principal) {
-		User updated = null;
+	@PutMapping("squads/{id}")
+	public Squad update(HttpServletRequest req, HttpServletResponse res, @PathVariable int id, @RequestBody Squad squad, Principal principal) {
+		Squad updated = null;
 		
 		try {
-			updated = userService.update(principal.getName(), id, user);
+			updated = squadService.update(principal.getName(), id, squad);
 			res.setStatus(200);
 		} catch (Exception e) {
 			res.setStatus(400);
@@ -69,9 +70,9 @@ public class UserController {
 		return updated;
 	}
 	
-	@DeleteMapping("users/{id}")
+	@DeleteMapping("squads/{id}")
 	public void destroy(HttpServletRequest req, HttpServletResponse res, @PathVariable int id, Principal principal) {
-		boolean deleted = userService.destroy(principal.getName(), id);
+		boolean deleted = squadService.destroy(principal.getName(), id);
 		if (deleted) {
 			res.setStatus(204);
 		} else {

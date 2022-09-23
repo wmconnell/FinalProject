@@ -16,34 +16,25 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.skilldistillery.squadgoals.entities.User;
+import com.skilldistillery.squadgoals.entities.Task;
 
 @RestController
 @RequestMapping(path = "api")
-public class UserController {
+public class TaskController {
 
-	@Autowired UserService userService;
+	@Autowired TaskService taskService;
 	
-	@GetMapping("users")
-	public Set<User> index(HttpServletRequest req, HttpServletResponse res, Principal principal) {
-		return userService.index(principal.getName());
+	@GetMapping("tasks")
+	public Set<Task> index(HttpServletRequest req, HttpServletResponse res, Principal principal) {
+		return taskService.index(principal.getName());
 	}
 	
-	@GetMapping("users/{id}")
-	public User show(HttpServletRequest req, HttpServletResponse res, @PathVariable int id, Principal principal) {
-		User user = userService.show(principal.getName(), id);
-		if (user == null) {
-			res.setStatus(404);
-		}
-		return user;
-	}
-	
-	@PostMapping("users")
-	public User create(@RequestBody User user, HttpServletRequest req, HttpServletResponse res, Principal principal) {
-		User created = null;
+	@PostMapping("tasks")
+	public Task create(@RequestBody Task task, HttpServletRequest req, HttpServletResponse res, Principal principal) {
+		Task created = null;
 		
 		try {
-			created = userService.create(principal.getName(), user);
+			created = taskService.create(principal.getName(), task);
 			res.setStatus(201);
 			StringBuffer url = req.getRequestURL();
 			url.append("/").append(created.getId());
@@ -55,12 +46,12 @@ public class UserController {
 		return created;
 	}
 	
-	@PutMapping("users/{id}")
-	public User update(HttpServletRequest req, HttpServletResponse res, @PathVariable int id, @RequestBody User user, Principal principal) {
-		User updated = null;
+	@PutMapping("tasks/{id}")
+	public Task update(HttpServletRequest req, HttpServletResponse res, @PathVariable int id, @RequestBody Task task, Principal principal) {
+		Task updated = null;
 		
 		try {
-			updated = userService.update(principal.getName(), id, user);
+			updated = taskService.update(principal.getName(), id, task);
 			res.setStatus(200);
 		} catch (Exception e) {
 			res.setStatus(400);
@@ -69,9 +60,9 @@ public class UserController {
 		return updated;
 	}
 	
-	@DeleteMapping("users/{id}")
+	@DeleteMapping("tasks/{id}")
 	public void destroy(HttpServletRequest req, HttpServletResponse res, @PathVariable int id, Principal principal) {
-		boolean deleted = userService.destroy(principal.getName(), id);
+		boolean deleted = taskService.destroy(principal.getName(), id);
 		if (deleted) {
 			res.setStatus(204);
 		} else {
