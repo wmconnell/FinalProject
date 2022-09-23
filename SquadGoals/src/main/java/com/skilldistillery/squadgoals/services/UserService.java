@@ -9,13 +9,13 @@ public interface UserService {
 	//	the appropriate permissions to perform the requested action.
 	//	Login Id not included in the create User method, since this will be used for registration.
 	
-	//	CREATE	(This function is achieved via the AuthServiceImpl.)
+	//	CREATE	(This function is achieved via the register method in the AuthServiceImpl.)
 
 	//	READ
-	List<User> index(int loginId);
-	User show(int loginId, int userId);
+	List<User> index(String username);
+	User show(String username, int userId);
 	//	UPDATE
-	User update(int loginId, int userId, User user);
+	User update(String username, int userId, User user);
 	//	DELETE
-	boolean disable(int loginId, int userId);
+	boolean disable(String username, int userId);
 }

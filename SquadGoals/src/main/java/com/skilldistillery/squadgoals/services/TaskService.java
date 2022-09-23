@@ -9,12 +9,12 @@ public interface TaskService {
 	//	the appropriate permissions to perform the requested action.
 	
 	//	CREATE
-	Task create(int loginId, Task task);
+	Task create(String username, Task task);
 	//	READ
-	Task show(int loginId, int taskId);
-	List<Task> index(int loginId);
+	Task show(String username, int taskId);
+	List<Task> index(String username);
 	//	UPDATE
-	Task update(int loginId, int taskId, Task task);
+	Task update(String username, int taskId, Task task);
 	//	DELETE
-	boolean disable(int loginId, int taskId);
+	boolean disable(String username, int taskId);
 }

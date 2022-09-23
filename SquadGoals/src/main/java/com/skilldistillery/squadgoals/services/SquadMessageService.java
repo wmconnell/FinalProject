@@ -9,12 +9,12 @@ public interface SquadMessageService {
 	//	the appropriate permissions to perform the requested action.
 	
 	//	CREATE
-	SquadMessage create(int loginId, SquadMessage squadMessage);
+	SquadMessage create(String username, SquadMessage squadMessage);
 	//	READ
-	SquadMessage show(int loginId, int squadMessageId);
-	List<SquadMessage> index(int loginId);
+	SquadMessage show(String username, int squadMessageId);
+	List<SquadMessage> index(String username);
 	//	UPDATE
-	SquadMessage update(int loginId, int squadMessageId, SquadMessage squadMessage);
+	SquadMessage update(String username, int squadMessageId, SquadMessage squadMessage);
 	//	DELETE
-	SquadMessage disable(int loginId, int squadMessageId);
+	SquadMessage disable(String username, int squadMessageId);
 }

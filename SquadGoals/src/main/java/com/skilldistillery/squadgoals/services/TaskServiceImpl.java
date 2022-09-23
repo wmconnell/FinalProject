@@ -28,12 +28,12 @@ public class TaskServiceImpl implements TaskService {
 	//
 	// CREATE
 	@Override
-	public Task create(int loginId, Task task) {
+	public Task create(String username, Task task) {
 		//	Users may only create a task for a goal to which they belong.
-		if (isUser(loginId) && belongsToGoal(loginId, task.getGoal())) {
+		if (isUser(username) && belongsToGoal(username, task.getGoal())) {
 			try {
 				//	TODO:	Consider adding a "creator" property to the Task entity.
-				//			task.setCreator(userRepo.findById(loginId);
+				//			task.setCreator(userRepo.findById(username);
 				return taskRepo.saveAndFlush(task);
 			}	catch (Exception e) {
 				e.printStackTrace();
@@ -44,13 +44,13 @@ public class TaskServiceImpl implements TaskService {
 	
 	// READ
 	@Override
-	public List<Task> index(int loginId) {
+	public List<Task> index(String username) {
 		//	A user may only retrieve a list of tasks for a goal to which they belong.
 		//	TODO:	We will implement additional visibility options on the front end.
 		List<Task> tasks = new ArrayList<>();
-		if (isUser(loginId)) {
+		if (isUser(username)) {
 			try {
-				List<Goal> goals = goalRepo.findAllByUserId(loginId);
+				List<Goal> goals = goalRepo.findAllByUserUsername(username);
 				//	If user belongs to any goals
 				if (goals.size() > 0) {
 					//	Compile a list of all tasks associated with those goals,
@@ -68,10 +68,10 @@ public class TaskServiceImpl implements TaskService {
 	}
 
 	@Override
-	public Task show(int loginId, int taskId) {
+	public Task show(String username, int taskId) {
 		//	Any user may look up any task that belongs to a goal to which the user also belongs.
 		//	TODO:	We will implement additional visibility on the front end.
-		if (isUser(loginId) && (taskBelongsToUserGoals(loginId, taskId) || isAdmin(loginId))) {
+		if (isUser(username) && (taskBelongsToUserGoals(username, taskId) || isAdmin(username))) {
 			try {
 				Optional<Task> taskOpt = taskRepo.findById(taskId);
 				if (taskOpt.isPresent()) {
@@ -92,10 +92,10 @@ public class TaskServiceImpl implements TaskService {
 	//	entity. This is achieved via reflection, as seen in the use of
 	//	the Field class and the getDeclaredFields() method, inter alia.
 	@Override
-	public Task update(int loginId, int taskId, Task task) {
+	public Task update(String username, int taskId, Task task) {
 		//	A user with role "member" can only update a task assigned to them.
 		//	A user with role "admin" can update any task.
-		if (isUser(loginId) && (assignedToTask(loginId, taskId) || isAdmin(loginId))) {
+		if (isUser(username) && (assignedToTask(username, taskId) || isAdmin(username))) {
 			Optional<Task> taskOpt = taskRepo.findById(taskId);
 			Task toUpdate = null;
 			//	
@@ -141,11 +141,11 @@ public class TaskServiceImpl implements TaskService {
 	// TODO: Consider providing the user with two options: a pause and a true delete.
 	//
 	@Override
-	public boolean disable(int loginId, int taskId) {
+	public boolean disable(String username, int taskId) {
 		// A user with role "member" can only disable a task assigned to them.
 		// A user with role "admin" can disable any task.
-		if (isUser(loginId) && (assignedToTask(loginId, taskId) || isAdmin(loginId))) {
-			Task toDisable = show(loginId, taskId);
+		if (isUser(username) && (assignedToTask(username, taskId) || isAdmin(username))) {
+			Task toDisable = show(username, taskId);
 			if (toDisable != null) {
 				try {
 					toDisable.setActive(false);
@@ -165,9 +165,8 @@ public class TaskServiceImpl implements TaskService {
 	// logged in and authorized to perform the given action.
 	// Outsourcing the logic to these methods makes the code in the CRUD
 	// methods read more like the actual problem.
-	public User getUser(int userId) {
-		Optional<User> userOpt = userRepo.findById(userId);
-		return userOpt.isPresent() ? userOpt.get() : null;
+	public User getUser(String username) {
+		return userRepo.findByUsername(username);
 	}
 	
 	public Task getTask(int taskId) {
@@ -175,33 +174,32 @@ public class TaskServiceImpl implements TaskService {
 		return taskOpt.isPresent() ? taskOpt.get() : null;
 	}
 	
-	public boolean isUser(int loginId) {
-		return userRepo.existsById(loginId);
+	public boolean isUser(String username) {
+		return userRepo.existsByUsername(username);
 	}
 
-	public boolean isAdmin(int loginId) {
-		User requestor = getUser(loginId);
-		return requestor.getRole() == "admin";
+	public boolean isAdmin(String username) {
+		return getUser(username).getRole().equals("admin");
 	}
 	
-	public boolean belongsToGoal(int loginId, Goal goal) {
-		User requestor = getUser(loginId);
+	public boolean belongsToGoal(String username, Goal goal) {
+		User requestor = getUser(username);
 		if (requestor != null) {
 			return goal.getUsers().contains(requestor);
 		}
 		return false;
 	}
 
-	public boolean assignedToTask(int loginId, int taskId) {
-		User requestor = getUser(loginId);
+	public boolean assignedToTask(String username, int taskId) {
+		User requestor = getUser(username);
 		if (requestor != null) {
-			return show(loginId, taskId).getUsers().contains(requestor);
+			return show(username, taskId).getUsers().contains(requestor);
 		}
 		return false;
 	}
 	
-	public boolean taskBelongsToUserGoals(int loginId, int taskId) {
+	public boolean taskBelongsToUserGoals(String username, int taskId) {
 		Task task = getTask(taskId);
-		return index(loginId).contains(task);
+		return index(username).contains(task);
 	}
 }

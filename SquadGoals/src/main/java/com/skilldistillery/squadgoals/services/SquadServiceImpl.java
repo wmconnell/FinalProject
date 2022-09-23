@@ -24,12 +24,12 @@ public class SquadServiceImpl implements SquadService {
 	//
 	// CREATE
 	@Override
-	public Squad create(int loginId, Squad squad) {
+	public Squad create(String username, Squad squad) {
 		//	Any user may create a squad.
-		if (isUser(loginId)) {
+		if (isUser(username)) {
 			try {
 				//	TODO:	Consider adding a "creator" property to the Squad entity.
-				//			squad.setCreator(userRepo.findById(loginId);
+				//			squad.setCreator(userRepo.findById(username);
 				return squadRepo.saveAndFlush(squad);
 			}	catch (Exception e) {
 				e.printStackTrace();
@@ -40,7 +40,7 @@ public class SquadServiceImpl implements SquadService {
 	
 	// READ
 	@Override
-	public List<Squad> index(int loginId) {
+	public List<Squad> index(String username) {
 		//	Any user may retrieve a list of all squads.
 		//	TODO:	We will implement public/private visibility on the front end.
 		//	TODO: 	Consider whether it would be better to instead
@@ -51,17 +51,17 @@ public class SquadServiceImpl implements SquadService {
 		//	Once the user base grows enough, the level of data transfer
 		//	could slow the site. In addition, it may be better for security
 		//	since its precision means that less data is available at any given time.
-		if (isUser(loginId)) {
+		if (isUser(username)) {
 			return squadRepo.findAll();
 		}
 		return new ArrayList<>();
 	}
 
 	@Override
-	public Squad show(int loginId, int squadId) {
+	public Squad show(String username, int squadId) {
 		//	Any user may look up any squad.
 		//	TODO:	We will implement public/private visibility on the front end.
-		if (isUser(loginId)) {
+		if (isUser(username)) {
 			try {
 				Optional<Squad> squadOpt = squadRepo.findById(squadId);
 				if (squadOpt.isPresent()) {
@@ -82,10 +82,10 @@ public class SquadServiceImpl implements SquadService {
 	//	entity. This is achieved via reflection, as seen in the use of
 	//	the Field class and the getDeclaredFields() method, inter alia.
 	@Override
-	public Squad update(int loginId, int squadId, Squad squad) {
+	public Squad update(String username, int squadId, Squad squad) {
 		//	A user with role "member" can only update a squad to which they belong.
 		//	A user with role "admin" can update any squad.
-		if (isUser(loginId) && (belongsToSquad(loginId, squadId) || isAdmin(loginId))) {
+		if (isUser(username) && (belongsToSquad(username, squadId) || isAdmin(username))) {
 			Optional<Squad> squadOpt = squadRepo.findById(squadId);
 			Squad toUpdate = null;
 			//	
@@ -130,11 +130,11 @@ public class SquadServiceImpl implements SquadService {
 	// TODO: Consider providing the user with two options: a pause and a true delete.
 	//
 	@Override
-	public boolean disable(int loginId, int squadId) {
+	public boolean disable(String username, int squadId) {
 		// A user with role "member" may only disable a squad to which they belong.
 		// A user with role "admin" may disable any squad.
-		if (isUser(loginId) && (belongsToSquad(loginId, squadId) || isAdmin(loginId))) {
-			Squad toDisable = show(loginId, squadId);
+		if (isUser(username) && (belongsToSquad(username, squadId) || isAdmin(username))) {
+			Squad toDisable = show(username, squadId);
 			if (toDisable != null) {
 				try {
 					toDisable.setActive(false);
@@ -154,25 +154,23 @@ public class SquadServiceImpl implements SquadService {
 	// logged in and authorized to perform the given action.
 	// Outsourcing the logic to these methods makes the code in the CRUD
 	// methods read more like the actual problem.
-	public User getUser(int userId) {
-		Optional<User> userOpt = userRepo.findById(userId);
-		return userOpt.isPresent() ? userOpt.get() : null;
+	public User getUser(String username) {
+		return userRepo.findByUsername(username);
 	}
 	
-	public boolean isUser(int loginId) {
-		return userRepo.existsById(loginId);
+	public boolean isUser(String username) {
+		return userRepo.existsByUsername(username);
 	}
 
-	public boolean isAdmin(int loginId) {
-		User requestor = getUser(loginId);
-		return requestor.getRole() == "admin";
+	public boolean isAdmin(String username) {
+		return getUser(username).getRole().equals("admin");
 	}
 
-	public boolean belongsToSquad(int loginId, int squadId) {
+	public boolean belongsToSquad(String username, int squadId) {
 		//	TODO: Change squad.users to squad.members
-		User requestor = getUser(loginId);
+		User requestor = getUser(username);
 		if (requestor != null) {
-			return show(loginId, squadId).getUsers().contains(requestor);
+			return show(username, squadId).getUsers().contains(requestor);
 		}
 		return false;
 	}
