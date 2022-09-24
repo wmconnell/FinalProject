@@ -18,7 +18,9 @@ export class LoginComponent implements OnInit {
     console.log(user);
     this.auth.login(user.username,user.password).subscribe({
       next: (user) =>{
-        this.router.navigateByUrl('/todo');
+        console.log(user + '!');
+
+        this.router.navigateByUrl('/user/' + user.username);
 
       },
       error: (err) => {

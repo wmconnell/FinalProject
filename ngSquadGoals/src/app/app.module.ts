@@ -1,3 +1,4 @@
+import { UserService } from './services/user.service';
 import {HttpClientModule } from '@angular/common/http';
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
@@ -13,6 +14,7 @@ import { RegisterComponent } from './components/register/register.component';
 import { NotFoundComponent } from './components/not-found/not-found.component';
 import { AuthService } from './services/auth.service';
 import { AboutComponent } from './components/about/about.component';
+import { UserComponent } from './components/user/user.component';
 
 @NgModule({
   declarations: [
@@ -23,7 +25,8 @@ import { AboutComponent } from './components/about/about.component';
     LogoutComponent,
     RegisterComponent,
     NotFoundComponent,
-    AboutComponent
+    AboutComponent,
+    UserComponent
   ],
   imports: [
     BrowserModule,
@@ -33,7 +36,8 @@ import { AboutComponent } from './components/about/about.component';
   ],
 
     providers:  [
-    AuthService
+    AuthService,
+    UserService
 
     ],
   bootstrap: [AppComponent]

@@ -149,5 +149,8 @@ public class UserServiceImpl implements UserService {
 	public boolean isSameUser(String username, int userId) {
 		return userRepo.findByUsername(username).getId() == userId;
 	}
+	public User getUserByUserName(String username) {
+		return userRepo.findByUsername(username);
+	}
 
 }

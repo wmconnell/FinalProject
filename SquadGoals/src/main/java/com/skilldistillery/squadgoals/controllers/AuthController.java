@@ -25,7 +25,7 @@ public class AuthController {
 	@PostMapping("register")
 	public User register(@RequestBody User user, HttpServletResponse res) {
 	  if (user == null) {
-	     res.setStatus(400);
+	     res.setStatus(400); 
 	     return null;
 	  }
 	  user = authService.register(user);
@@ -35,6 +35,7 @@ public class AuthController {
 	@GetMapping("authenticate")
 	public User authenticate(Principal principal, HttpServletResponse res) {
 		System.out.println("****IN AUTHENTICATE****");
+		System.out.println("********" + principal);
 	  if (principal == null) { // no Authorization header sent
 	     res.setStatus(401);
 	     res.setHeader("WWW-Authenticate", "Basic");

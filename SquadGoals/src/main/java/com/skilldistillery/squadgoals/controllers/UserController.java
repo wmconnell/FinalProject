@@ -34,7 +34,7 @@ public class UserController {
 		return userService.index("originaltom");
 	}
 	
-	@GetMapping("users/{id}")
+	@GetMapping("users/uid/{id}")
 	public User show(HttpServletRequest req, HttpServletResponse res, @PathVariable int id, Principal principal) {
 		System.out.println(principal);
 		User user = userService.show(principal.getName(), id);
@@ -67,6 +67,18 @@ public class UserController {
 			res.setStatus(404);
 		}
 	}
+	@GetMapping("users/{username}")
+	public User show(HttpServletRequest req, HttpServletResponse res, @PathVariable String username, Principal principal) {
+		System.out.println(principal);
+		System.out.println(username+ "***********");
+//		User user = userService.show(principal.getName(), username);
+		User user = userService.getUserByUserName(username);
+		if (user == null) {
+			res.setStatus(404);
+		}
+		return user;
+	}
+	
 	
 	
 	

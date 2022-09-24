@@ -22,7 +22,7 @@ public class SecurityConfig {
     // this bean is created in the application starter class if you're looking for it
     @Autowired
     private PasswordEncoder encoder;
-	
+	 
     @Bean
     public SecurityFilterChain createFilterChain(HttpSecurity http) throws Exception {
         http
