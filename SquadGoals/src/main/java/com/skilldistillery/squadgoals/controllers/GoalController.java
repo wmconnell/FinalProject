@@ -135,7 +135,7 @@ public class GoalController {
 					}
 				} else {
 					res.setStatus(404);
-					res.setHeader("Result", "Goal with id " + id + " does not exist");	
+					res.setHeader("Error", "Goal with id " + id + " does not exist");	
 				}
 			} else {
 				res.setStatus(401);
