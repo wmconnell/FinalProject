@@ -1,14 +1,19 @@
 package com.skilldistillery.squadgoals.services;
 
+import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import com.skilldistillery.squadgoals.entities.Goal;
 import com.skilldistillery.squadgoals.entities.Image;
+import com.skilldistillery.squadgoals.entities.Squad;
 import com.skilldistillery.squadgoals.entities.User;
+import com.skilldistillery.squadgoals.repositories.GoalRepository;
 import com.skilldistillery.squadgoals.repositories.ImageRepository;
+import com.skilldistillery.squadgoals.repositories.SquadRepository;
 import com.skilldistillery.squadgoals.repositories.UserRepository;
 
 @Service
@@ -20,6 +25,10 @@ public class AuthServiceImpl implements AuthService {
 	private UserRepository userRepo;
 	@Autowired
 	private ImageRepository imageRepo;
+	@Autowired
+	private GoalRepository goalRepo;
+	@Autowired
+	private SquadRepository squadRepo;
 	
 	@Override
 	public User register(User user) {
@@ -38,6 +47,8 @@ public class AuthServiceImpl implements AuthService {
 		}
 		return registeredUser;
 	}
+	
+	//	TODO: Need method for smurfdating password
 
 	@Override
 	public User getUserByUsername(String username) {
@@ -62,6 +73,70 @@ public class AuthServiceImpl implements AuthService {
 	@Override
 	public boolean emailAlreadyAssociatedWithAccount(String email) {
 		return userRepo.existsByEmail(email);
+	}
+	
+	//	Helper Methods
+	//	
+	//	The following methods ensure that the user requesting an action is
+	//	logged in and authorized to perform the given action.
+	//	Outsourcing the logic to these methods makes the code in the CRUD
+	//	methods read more like the actual problem.
+	@Override
+	public boolean isLoggedInUser(String username) {
+		return userRepo.existsByUsername(username);
+	}
+	
+	@Override
+	public boolean userExists(int userId) {
+		return userRepo.existsById(userId);
+	}
+	
+	public boolean goalExists(int goalId) {
+		return goalRepo.existsById(goalId);
+	}
+
+	@Override
+	public boolean isAdmin(String username) {
+		return userRepo.findByUsername(username).getRole().equals("admin");
+	}
+
+	@Override
+	public boolean isSameUser(String username, int userId) {
+		return userRepo.findByUsername(username).getId() == userId;
+	}
+
+	public User getUser(String username) {
+		return userRepo.findByUsername(username);
+	}
+	
+	@Override
+	public boolean belongsToSquad(String username, List<Squad> squads) {
+		//	TODO: Change squad.users to squad.members
+		User requestor = getUser(username);
+		if (requestor != null) {
+			if (squads != null ) {
+				for (Squad squad : squads) {
+					Optional<Squad> squadOpt = squadRepo.findById(squad.getId());
+					if (squadOpt.isPresent()) {
+						if (squadOpt.get().getUsers().contains(requestor)) {
+							return true;
+						}
+					}
+				}
+			}
+		}
+		return false;
+	}
+
+	@Override
+	public boolean belongsToGoal(String username, int goalId) {
+		//	TODO: Change goal.users to goal.members
+		User requestor = getUser(username);
+		if (requestor != null) {
+			Optional<Goal> goalOpt = goalRepo.findById(goalId);
+			return goalOpt.isPresent() ? goalOpt.get().getUsers().contains(requestor) : false;
+		}
+		return false;
 	}
 
 }

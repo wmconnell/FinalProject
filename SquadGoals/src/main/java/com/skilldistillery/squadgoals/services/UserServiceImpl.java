@@ -1,7 +1,6 @@
 package com.skilldistillery.squadgoals.services;
 
 import java.lang.reflect.Field;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -23,7 +22,6 @@ public class UserServiceImpl implements UserService {
 	// READ
 	@Override
 	public List<User> index(String username) {
-		
 		System.out.println("****IN SERVICEIMPL - INDEX****");
 		//	Any user may retrieve a list of all users.
 		//	TODO: We will implement public/private visibility on the front end.
@@ -36,10 +34,7 @@ public class UserServiceImpl implements UserService {
 		//	Once the user base grows enough, the level of data transfer
 		//	could slow the site. In addition, it may be better for security
 		//	since its precision means that less data is available at any given time.
-		if (isUser(username)) {
-			return userRepo.findAll();
-		}
-		return new ArrayList<>();
+		return userRepo.findAll();
 	}
 
 	@Override
@@ -70,38 +65,39 @@ public class UserServiceImpl implements UserService {
 	public User update(String username, int userId, User user) {
 		//	A user with role "member" may only update their own account.
 		//	A user with role "admin" may update any account.
-		if (isUser(username) && (isSameUser(username, userId) || isAdmin(username))) {
-			Optional<User> userOpt = userRepo.findById(userId);
-			User toUpdate = null;
-			//	We checked to make sure that the initiator of the action was an actual user,
-			//	but we now have to make sure that the recipient of the action is.
-			if (userOpt.isPresent()) {
-				toUpdate = userOpt.get();
-				Field[] fields = user.getClass().getDeclaredFields();
-				for (Field field : fields) {
-					field.setAccessible(true);
-					Object value = null;
+		System.out.println("IS USER? " + isUser(username));
+		System.out.println("IS SAME USER? " + isSameUser(username, userId));
+		System.out.println("IS ADMIN? " + isAdmin(username));
+		Optional<User> userOpt = userRepo.findById(userId);
+		User toUpdate = null;
+		//	We checked to make sure that the initiator of the action was an actual user,
+		//	but we now have to make sure that the recipient of the action is.
+		if (userOpt.isPresent()) {
+			toUpdate = userOpt.get();
+			Field[] fields = user.getClass().getDeclaredFields();
+			for (Field field : fields) {
+				field.setAccessible(true);
+				Object value = null;
+				try {
+					value = field.get(user);
+				} catch (IllegalAccessException iae) {
+					System.out.println(
+							"UserServiceImpl.update() - Illegal Access Exception: Cannot get " + field.getName());
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+				if (value != null && !field.getName().equals("id") && !field.getName().equals("username")) {
 					try {
-						value = field.get(user);
+						field.set(toUpdate, value);
 					} catch (IllegalAccessException iae) {
-						System.out.println(
-								"UserServiceImpl.update() - Illegal Access Exception: Cannot get " + field.getName());
+						System.out.println("UserServiceImpl.update() - Illegal Access Exception: Cannot set "
+								+ field.getName());
 					} catch (Exception e) {
 						e.printStackTrace();
 					}
-					if (value != null && !field.getName().equals("id") && !field.getName().equals("username")) {
-						try {
-							field.set(toUpdate, value);
-						} catch (IllegalAccessException iae) {
-							System.out.println("UserServiceImpl.update() - Illegal Access Exception: Cannot set "
-									+ field.getName());
-						} catch (Exception e) {
-							e.printStackTrace();
-						}
-					}
 				}
-				return userRepo.saveAndFlush(toUpdate);
 			}
+			return userRepo.saveAndFlush(toUpdate);
 		}
 		return null;
 	}
@@ -117,7 +113,6 @@ public class UserServiceImpl implements UserService {
 	public boolean disable(String username, int userId) {
 		//	A user with role "member" can only disable their own account.
 		//	A user with role "admin" can disable any account.
-		if (isUser(username) && (isSameUser(username, userId) || isAdmin(username))) {
 			User toDisable = show(username, userId);
 			if (toDisable != null) {
 				try {
@@ -128,7 +123,6 @@ public class UserServiceImpl implements UserService {
 					e.printStackTrace();
 				}
 			}
-		}
 		return false;
 	}
 
@@ -143,7 +137,7 @@ public class UserServiceImpl implements UserService {
 	}
 
 	public boolean isAdmin(String username) {
-		return userRepo.findByUsername(username).getRole() == "admin";
+		return userRepo.findByUsername(username).getRole().equals("admin");
 	}
 
 	public boolean isSameUser(String username, int userId) {

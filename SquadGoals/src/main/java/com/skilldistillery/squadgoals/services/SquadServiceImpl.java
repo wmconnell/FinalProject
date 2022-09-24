@@ -8,8 +8,10 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.skilldistillery.squadgoals.entities.Image;
 import com.skilldistillery.squadgoals.entities.Squad;
 import com.skilldistillery.squadgoals.entities.User;
+import com.skilldistillery.squadgoals.repositories.ImageRepository;
 import com.skilldistillery.squadgoals.repositories.SquadRepository;
 import com.skilldistillery.squadgoals.repositories.UserRepository;
 
@@ -19,6 +21,8 @@ public class SquadServiceImpl implements SquadService {
 	private UserRepository userRepo;	//	For authentication
 	@Autowired
 	private SquadRepository squadRepo;
+	@Autowired
+	private ImageRepository imageRepo;
 
 	// CRUD Methods
 	//
@@ -30,7 +34,22 @@ public class SquadServiceImpl implements SquadService {
 			try {
 				//	TODO:	Consider adding a "creator" property to the Squad entity.
 				//			squad.setCreator(userRepo.findById(username);
-				return squadRepo.saveAndFlush(squad);
+				Image newImage = new Image("https://thepowerofthedream.org/wp-content/uploads/2015/09/generic-profile-picture.jpg", true);
+				newImage = imageRepo.saveAndFlush(newImage);
+				squad.setProfilePic(newImage);
+				List<User> users = new ArrayList<>(squad.getUsers());
+				squad.setUsers(new ArrayList<>());
+				squad = squadRepo.saveAndFlush(squad);
+					
+				for (User user : users) {
+					Optional<User> userOp = userRepo.findById(user.getId());
+					if (userOp.isPresent()) {
+						User managedUser = userOp.get();
+						managedUser.addSquad(squad);
+						userRepo.saveAndFlush(managedUser);
+					}
+				}
+				return show(username, squad.getId());
 			}	catch (Exception e) {
 				e.printStackTrace();
 			}
@@ -85,6 +104,9 @@ public class SquadServiceImpl implements SquadService {
 	public Squad update(String username, int squadId, Squad squad) {
 		//	A user with role "member" can only update a squad to which they belong.
 		//	A user with role "admin" can update any squad.
+		System.out.println("**** UPDATE SQUAD ****");
+		System.out.println(squad.getUsers());
+		System.out.println("**** UPDATE SQUAD ****");
 		if (isUser(username) && (belongsToSquad(username, squadId) || isAdmin(username))) {
 			Optional<Squad> squadOpt = squadRepo.findById(squadId);
 			Squad toUpdate = null;

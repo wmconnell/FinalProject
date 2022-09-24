@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.skilldistillery.squadgoals.entities.Squad;
+import com.skilldistillery.squadgoals.entities.User;
 import com.skilldistillery.squadgoals.services.SquadService;
 
 @RestController
@@ -44,6 +45,12 @@ public class SquadController {
 		Squad created = null;
 		
 		try {
+			System.out.println("IN SQUAD CONTROLLER CREATE");
+			for (User user: squad.getUsers()) {
+				System.out.println(user.getUsername());
+				System.out.println(user.getId());
+			}
+			System.out.println("IN SQUAD CONTROLLER CREATE");
 			created = squadService.create(principal.getName(), squad);
 			res.setStatus(201);
 			StringBuffer url = req.getRequestURL();
@@ -61,6 +68,7 @@ public class SquadController {
 		Squad updated = null;
 		
 		try {
+			
 			updated = squadService.update(principal.getName(), id, squad);
 			res.setStatus(200);
 		} catch (Exception e) {

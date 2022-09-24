@@ -4,6 +4,7 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -12,6 +13,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 
@@ -29,7 +31,7 @@ public class Squad {
 	@Column(name="created_date")
 	private LocalDateTime createdDate;
 	@ManyToMany(mappedBy="squads")
-	@JsonIgnoreProperties({"squads"})
+//	@JsonIgnoreProperties({"squads"})
 	private List<User> users;
 	@ManyToMany
 	@JoinTable(name = "squad_has_goal", joinColumns = @JoinColumn(name = "squad_id"), inverseJoinColumns = @JoinColumn(name = "goal_id"))
@@ -53,9 +55,29 @@ public class Squad {
 	@JoinColumn(name="profile_image_id")
 	@JsonIgnoreProperties({"squad"})
 	private Image profilePic;
+	@ManyToOne
+	@JoinColumn(name="leader_id")
+	private User leader;
+
 
 	public Squad() {
 		
+	}
+	
+	public LocalDateTime getCreatedDate() {
+		return createdDate;
+	}
+	
+	public void setCreatedDate(LocalDateTime createdDate) {
+		this.createdDate = createdDate;
+	}
+	
+	public User getLeader() {
+		return leader;
+	}
+	
+	public void setLeader(User leader) {
+		this.leader = leader;
 	}
 
 	public int getId() {
