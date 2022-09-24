@@ -18,4 +18,6 @@ public interface UserService {
 	User update(String username, int userId, User user);
 	//	DELETE
 	boolean disable(String username, int userId);
+	public User getUserByUserName(String username);
+
 }

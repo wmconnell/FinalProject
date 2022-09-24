@@ -48,7 +48,7 @@ public class UserController {
 		return users;
 	}
 	
-	@GetMapping("users/{id}")
+	@GetMapping("users/uid/{id}")
 	public User show(HttpServletRequest req, HttpServletResponse res, @PathVariable int id, Principal principal) {
 		System.out.println(principal);
 		User user = null;
@@ -126,4 +126,5 @@ public class UserController {
 			res.setHeader("Error", "Client must be logged in to perform this action");
 		}
 	}
+
 }
