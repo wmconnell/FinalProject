@@ -1,6 +1,7 @@
 package com.skilldistillery.squadgoals.services;
 
 import java.lang.reflect.Field;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -8,12 +9,16 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.skilldistillery.squadgoals.entities.Goal;
+import com.skilldistillery.squadgoals.entities.Squad;
 import com.skilldistillery.squadgoals.repositories.GoalRepository;
+import com.skilldistillery.squadgoals.repositories.SquadRepository;
 
 @Service
 public class GoalServiceImpl implements GoalService {
 	@Autowired
 	private GoalRepository goalRepo;
+	@Autowired
+	private SquadRepository squadRepo;
 
 	// CRUD Methods
 	//
@@ -21,6 +26,13 @@ public class GoalServiceImpl implements GoalService {
 	@Override
 	public Goal create(String username, Goal goal) {
 		try {
+			List<Squad> squads = new ArrayList<>();
+			for (Squad squad : goal.getSquads()) {
+				Optional<Squad> squadOpt = squadRepo.findById(squad.getId());
+				if (squadOpt.isPresent()) {
+					squads.add(squad);
+				}
+			}
 			return goalRepo.saveAndFlush(goal);
 		} catch (Exception e) {
 			e.printStackTrace();

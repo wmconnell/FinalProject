@@ -13,6 +13,7 @@ import com.skilldistillery.squadgoals.entities.Squad;
 import com.skilldistillery.squadgoals.entities.User;
 import com.skilldistillery.squadgoals.repositories.GoalRepository;
 import com.skilldistillery.squadgoals.repositories.ImageRepository;
+import com.skilldistillery.squadgoals.repositories.SquadRepository;
 import com.skilldistillery.squadgoals.repositories.UserRepository;
 
 @Service
@@ -26,6 +27,8 @@ public class AuthServiceImpl implements AuthService {
 	private ImageRepository imageRepo;
 	@Autowired
 	private GoalRepository goalRepo;
+	@Autowired
+	private SquadRepository squadRepo;
 	
 	@Override
 	public User register(User user) {
@@ -111,9 +114,14 @@ public class AuthServiceImpl implements AuthService {
 		//	TODO: Change squad.users to squad.members
 		User requestor = getUser(username);
 		if (requestor != null) {
-			for (Squad squad : squads) {
-				if (squad.getUsers().contains(requestor)) {
-					return true;
+			if (squads != null ) {
+				for (Squad squad : squads) {
+					Optional<Squad> squadOpt = squadRepo.findById(squad.getId());
+					if (squadOpt.isPresent()) {
+						if (squadOpt.get().getUsers().contains(requestor)) {
+							return true;
+						}
+					}
 				}
 			}
 		}

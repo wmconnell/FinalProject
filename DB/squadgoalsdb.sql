@@ -594,6 +594,8 @@ USE `squadgoalsdb`;
 INSERT INTO `image` (`id`, `url`, `active`) VALUES (1, 'https://pbs.twimg.com/profile_images/1237550450/mstom_400x400.jpg', NULL);
 INSERT INTO `image` (`id`, `url`, `active`) VALUES (2, 'https://static.wikia.nocookie.net/godzilla/images/3/33/Godzilla_2021.jpg/revision/latest?cb=20210314011302', NULL);
 INSERT INTO `image` (`id`, `url`, `active`) VALUES (3, 'https://static.wikia.nocookie.net/snl/images/6/66/Wild_and_crazy_guys.jpg/revision/latest?cb=20140804162910', NULL);
+INSERT INTO `image` (`id`, `url`, `active`) VALUES (4, 'https://thepowerofthedream.org/wp-content/uploads/2015/09/generic-profile-picture.jpg', NULL);
+INSERT INTO `image` (`id`, `url`, `active`) VALUES (5, 'https://thepowerofthedream.org/wp-content/uploads/2015/09/generic-profile-picture.jpg', NULL);
 
 COMMIT;
 
@@ -605,6 +607,8 @@ START TRANSACTION;
 USE `squadgoalsdb`;
 INSERT INTO `user` (`id`, `username`, `password`, `email`, `first_name`, `last_name`, `role`, `bio`, `active`, `profile_image_id`, `create_date`) VALUES (1, 'originaltom', '$2a$10$/Xbq0O0qj3xvlCPa/kKnv.wbsX11CnIwPw4qLBkzhHdjoKN8k8SOi', 'tom@myspace.com', 'Tom', 'MySpace', 'admin', 'Hi, I\'m Tom, and I\'m friends with everyone!', 1, 1, NULL);
 INSERT INTO `user` (`id`, `username`, `password`, `email`, `first_name`, `last_name`, `role`, `bio`, `active`, `profile_image_id`, `create_date`) VALUES (2, 'godzilla', '$2a$10$aGECJdshmEulChRtSjFetucbW9QWLr2kCGRZmLsHwHH4ZrVnnnaMC', 'godzilla@monster.rawr', 'Go', 'Shira', 'member', 'Hi, name\'s Godzilla. Love smashing cities and chasing damsels up skyscrapers. Oh, is that my cousin, King Kong? Oops.', 1, 2, NULL);
+INSERT INTO `user` (`id`, `username`, `password`, `email`, `first_name`, `last_name`, `role`, `bio`, `active`, `profile_image_id`, `create_date`) VALUES (3, 'member', '$2a$10$e2Unk84kCZ0.rZlRjANvTOivefToO1OeSSwkbZq3QYMFDxkY0/Rsq', 'member@member.com', 'member', 'member', 'member', 'I\'m just a basic member.', 1, 4, NULL);
+INSERT INTO `user` (`id`, `username`, `password`, `email`, `first_name`, `last_name`, `role`, `bio`, `active`, `profile_image_id`, `create_date`) VALUES (4, 'admin', '$2a$10$onMulIN7BqbrfUpsjojPzeBLC4UhGOZRce3/o6qFTuXgbMECOm.U6', 'admin@admin.com', 'admin', 'admin', 'admin', 'I\'m an admin. Jealous?', 1, 5, NULL);
 
 COMMIT;
 
