@@ -30,9 +30,18 @@ public class GoalServiceImpl implements GoalService {
 			for (Squad squad : goal.getSquads()) {
 				Optional<Squad> squadOpt = squadRepo.findById(squad.getId());
 				if (squadOpt.isPresent()) {
-					squads.add(squad);
+					squads.add(squadOpt.get());
 				}
 			}
+			System.out.println("All squads in squads");
+			for (Squad squad : squads) {
+				System.out.println(squad.getId());
+			}
+			System.out.println("All squads in goal.getSquads()");
+			for (Squad squad : goal.getSquads()) {
+				System.out.println(squad.getId());
+			}
+			goal.setSquads(squads);
 			return goalRepo.saveAndFlush(goal);
 		} catch (Exception e) {
 			e.printStackTrace();
