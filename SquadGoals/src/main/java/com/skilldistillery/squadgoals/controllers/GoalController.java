@@ -39,23 +39,28 @@ public class GoalController {
 		//	TODO: Make it so only a leader can create a goal
 		if (authService.isLoggedInUser(principal.getName())) {
 			if (authService.belongsToSquad(principal.getName(), goal.getSquads()) || authService.isAdmin(principal.getName())) {
-				try {
-					goal.setCreator(authService.getUser(principal.getName()));
-					created = goalService.create(principal.getName(), goal);
-					if (created == null) {
+				if (goal.getSquads() != null) {
+					try {
+						goal.setCreator(authService.getUser(principal.getName()));
+						created = goalService.create(principal.getName(), goal);
+						if (created == null) {
+							res.setStatus(400);
+							res.setHeader("Error", "Unable to create new goal");	
+						} else {
+							res.setStatus(201);
+							StringBuffer url = req.getRequestURL();
+							url.append("/").append(created.getId());
+							res.setHeader("Location", url.toString());
+							res.setHeader("Result", "Created goal with id " + created.getId());
+						}
+					} catch (Exception e) {
 						res.setStatus(400);
-						res.setHeader("Result", "Unable to create new goal");	
-					} else {
-						res.setStatus(201);
-						StringBuffer url = req.getRequestURL();
-						url.append("/").append(created.getId());
-						res.setHeader("Location", url.toString());
-						res.setHeader("Result", "Created goal with id " + created.getId());
+						res.setHeader("Error", "Unable to create new goal");	
+						e.printStackTrace();
 					}
-				} catch (Exception e) {
+				} else {
 					res.setStatus(400);
-					res.setHeader("Result", "Unable to create new goal");	
-					e.printStackTrace();
+					res.setHeader("Error", "This entity must be associated with one or more squads.");	
 				}
 			} else {
 			res.setStatus(401);
