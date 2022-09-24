@@ -70,12 +70,15 @@ public class User {
 	@JoinColumn(name = "creator_id")
 	@JsonIgnore
 	private List<Goal> goalsCreated;
+	@OneToMany
+	@JoinColumn(name = "leader_id")
+	private List<Squad> squadsCreated;
 	
 
 	public User() {
 
 	}
-
+	
 	public LocalDateTime getCreateDate() {
 		return createDate;
 	}
