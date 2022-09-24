@@ -51,13 +51,19 @@ public class UserController {
 	@GetMapping("users/{id}")
 	public User show(HttpServletRequest req, HttpServletResponse res, @PathVariable int id, Principal principal) {
 		System.out.println(principal);
-		User user = userService.show(principal.getName(), id);
-		if (user == null) {
-			res.setStatus(404);
-			res.setHeader("Result", "User with id " + id + " does not exist");	
+		User user = null;
+		if (authService.isLoggedInUser(principal.getName())) {
+			user = userService.show(principal.getName(), id);
+			if (user == null) {
+				res.setStatus(404);
+				res.setHeader("Result", "User with id " + id + " does not exist");	
+			} else {
+				res.setStatus(200);
+				res.setHeader("Result", "Returned user with id " + id);
+			}
 		} else {
-			res.setStatus(200);
-			res.setHeader("Result", "Returned user id " + id);
+			res.setStatus(401);
+			res.setHeader("Error", "Client must be logged in to perform this action");
 		}
 		return user;
 	}
