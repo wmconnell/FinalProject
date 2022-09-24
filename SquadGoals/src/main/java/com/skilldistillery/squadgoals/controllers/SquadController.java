@@ -18,19 +18,24 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.skilldistillery.squadgoals.entities.Squad;
 import com.skilldistillery.squadgoals.entities.User;
+import com.skilldistillery.squadgoals.services.AuthService;
 import com.skilldistillery.squadgoals.services.SquadService;
 
 @RestController
 @RequestMapping(path = "api")
 public class SquadController {
 
-	@Autowired SquadService squadService;
-	
+	@Autowired
+	private SquadService squadService;
+
+	@Autowired
+	private AuthService authService;
+
 	@GetMapping("squads")
 	public List<Squad> index(HttpServletRequest req, HttpServletResponse res, Principal principal) {
 		return squadService.index(principal.getName());
 	}
-	
+
 	@GetMapping("squads/{id}")
 	public Squad show(HttpServletRequest req, HttpServletResponse res, @PathVariable int id, Principal principal) {
 		Squad squad = squadService.show(principal.getName(), id);
@@ -39,36 +44,42 @@ public class SquadController {
 		}
 		return squad;
 	}
-	
+
 	@PostMapping("squads")
-	public Squad create(@RequestBody Squad squad, HttpServletRequest req, HttpServletResponse res, Principal principal) {
+	public Squad create(@RequestBody Squad squad, HttpServletRequest req, HttpServletResponse res,
+			Principal principal) {
 		Squad created = null;
-		
-		try {
-			System.out.println("IN SQUAD CONTROLLER CREATE");
-			for (User user: squad.getUsers()) {
-				System.out.println(user.getUsername());
-				System.out.println(user.getId());
+		if (authService.isLoggedInUser(principal.getName())) {
+			try {
+				System.out.println("IN SQUAD CONTROLLER CREATE");
+				for (User user : squad.getUsers()) {
+					System.out.println(user.getUsername());
+					System.out.println(user.getId());
+				}
+				System.out.println("IN SQUAD CONTROLLER CREATE");
+				created = squadService.create(principal.getName(), squad);
+				res.setStatus(201);
+				StringBuffer url = req.getRequestURL();
+				url.append("/").append(created.getId());
+				res.setHeader("Location", url.toString());
+			} catch (Exception e) {
+				res.setStatus(400);
+				e.printStackTrace();
 			}
-			System.out.println("IN SQUAD CONTROLLER CREATE");
-			created = squadService.create(principal.getName(), squad);
-			res.setStatus(201);
-			StringBuffer url = req.getRequestURL();
-			url.append("/").append(created.getId());
-			res.setHeader("Location", url.toString());
-		} catch (Exception e) {
-			res.setStatus(400);
-			e.printStackTrace();
+		} else {
+			res.setStatus(401);
+			res.setHeader("Error", "Client must be logged in to perform this action");
 		}
 		return created;
 	}
-	
+
 	@PutMapping("squads/{id}")
-	public Squad update(HttpServletRequest req, HttpServletResponse res, @PathVariable int id, @RequestBody Squad squad, Principal principal) {
+	public Squad update(HttpServletRequest req, HttpServletResponse res, @PathVariable int id, @RequestBody Squad squad,
+			Principal principal) {
 		Squad updated = null;
-		
+
 		try {
-			
+
 			updated = squadService.update(principal.getName(), id, squad);
 			res.setStatus(200);
 		} catch (Exception e) {
@@ -77,7 +88,7 @@ public class SquadController {
 		}
 		return updated;
 	}
-	
+
 	@DeleteMapping("squads/{id}")
 	public void destroy(HttpServletRequest req, HttpServletResponse res, @PathVariable int id, Principal principal) {
 		boolean deleted = squadService.disable(principal.getName(), id);
@@ -87,7 +98,5 @@ public class SquadController {
 			res.setStatus(404);
 		}
 	}
-	
-	
-	
+
 }

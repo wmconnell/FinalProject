@@ -9,10 +9,13 @@ import org.springframework.stereotype.Service;
 
 import com.skilldistillery.squadgoals.entities.Goal;
 import com.skilldistillery.squadgoals.entities.Image;
+import com.skilldistillery.squadgoals.entities.Review;
+import com.skilldistillery.squadgoals.entities.ReviewId;
 import com.skilldistillery.squadgoals.entities.Squad;
 import com.skilldistillery.squadgoals.entities.User;
 import com.skilldistillery.squadgoals.repositories.GoalRepository;
 import com.skilldistillery.squadgoals.repositories.ImageRepository;
+import com.skilldistillery.squadgoals.repositories.ReviewRepository;
 import com.skilldistillery.squadgoals.repositories.SquadRepository;
 import com.skilldistillery.squadgoals.repositories.UserRepository;
 
@@ -29,6 +32,8 @@ public class AuthServiceImpl implements AuthService {
 	private GoalRepository goalRepo;
 	@Autowired
 	private SquadRepository squadRepo;
+	@Autowired
+	private ReviewRepository reviewRepo;
 	
 	@Override
 	public User register(User user) {
@@ -94,6 +99,13 @@ public class AuthServiceImpl implements AuthService {
 	public boolean goalExists(int goalId) {
 		return goalRepo.existsById(goalId);
 	}
+	
+	public boolean reviewExists(int goalId, int userId) {
+		ReviewId rid = new ReviewId();
+		rid.setGoalId(goalId);
+		rid.setUserId(userId);
+		return reviewRepo.existsById(rid);
+	}
 
 	@Override
 	public boolean isAdmin(String username) {
@@ -108,6 +120,13 @@ public class AuthServiceImpl implements AuthService {
 	public User getUser(String username) {
 		return userRepo.findByUsername(username);
 	}
+	
+	public Goal getGoal(int goalId) {
+		Optional<Goal> goalOp = goalRepo.findById(goalId);
+		return goalOp.isPresent() ? goalOp.get() : null;
+	}
+	
+	
 	
 	@Override
 	public boolean belongsToSquad(String username, List<Squad> squads) {
@@ -138,5 +157,15 @@ public class AuthServiceImpl implements AuthService {
 		}
 		return false;
 	}
+
+	public boolean createdReview(String username, int userId) {
+			User requestor = getUser(username);
+			if (requestor != null) {
+				return requestor.getId() == userId;
+			}
+			return false;
+		}
+	
+	
 
 }

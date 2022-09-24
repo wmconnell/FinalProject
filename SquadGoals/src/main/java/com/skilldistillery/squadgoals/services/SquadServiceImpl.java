@@ -30,7 +30,6 @@ public class SquadServiceImpl implements SquadService {
 	@Override
 	public Squad create(String username, Squad squad) {
 		//	Any user may create a squad.
-		if (isUser(username)) {
 			try {
 				//	TODO:	Consider adding a "creator" property to the Squad entity.
 				//			squad.setCreator(userRepo.findById(username);
@@ -53,7 +52,6 @@ public class SquadServiceImpl implements SquadService {
 			}	catch (Exception e) {
 				e.printStackTrace();
 			}
-		}
 		return null;
 	}
 	
