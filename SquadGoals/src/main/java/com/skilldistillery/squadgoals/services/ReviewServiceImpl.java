@@ -10,82 +10,100 @@ import org.springframework.stereotype.Service;
 
 import com.skilldistillery.squadgoals.entities.Goal;
 import com.skilldistillery.squadgoals.entities.Review;
+import com.skilldistillery.squadgoals.entities.ReviewId;
 import com.skilldistillery.squadgoals.entities.User;
+import com.skilldistillery.squadgoals.repositories.GoalRepository;
 import com.skilldistillery.squadgoals.repositories.ReviewRepository;
 import com.skilldistillery.squadgoals.repositories.UserRepository;
 
 @Service
 public class ReviewServiceImpl implements ReviewService {
 	@Autowired
-	private UserRepository userRepo;	//	For authentication
+	private UserRepository userRepo; // For authentication
 	@Autowired
 	private ReviewRepository reviewRepo;
+	@Autowired
+	private GoalRepository goalRepo;
 
 	// CRUD Methods
 	//
 	// CREATE
 	@Override
-	public Review create(String username, Review review) {
-		//	Users may only create a review for a goal to which they belong.
-		
-		if (isUser(username) && review.getGoal() != null && belongsToGoal(username, review.getGoal())) {
-			try {
-				review.setUser(getUser(username));
-				return reviewRepo.saveAndFlush(review);
-			}	catch (Exception e) {
-				e.printStackTrace();
+	public Review create(String username, Review review, int gid) {
+		// Users may only create a review for a goal to which they belong.
+
+		try {
+			ReviewId rid = new ReviewId();
+			User user = userRepo.findByUsername(username);
+			rid.setGoalId(gid);
+			rid.setUserId(user.getId());
+			review.setId(rid);
+			review.setUser(user);
+			review.setActive(true);
+			Optional<Goal> goalOp = goalRepo.findById(gid);
+			if (goalOp.isPresent()) {
+				review.setGoal(goalOp.get());
 			}
+			return reviewRepo.saveAndFlush(review);
+		} catch (Exception e) {
+			e.printStackTrace();
 		}
+
 		return null;
 	}
-	
+
 	// READ
 	@Override
 	public List<Review> index(String username) {
-		//	Any user may view any review for any goal.
-		//	TODO:	We will implement additional visibility options on the front end.
-		if (isUser(username)) {
+		// Any user may view any review for any goal.
+		// TODO: We will implement additional visibility options on the front end.
 			try {
 				return reviewRepo.findAll();
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
-		}
 		return new ArrayList<>();
 	}
 
 	@Override
-	public Review show(String username, int reviewId) {
-		//	Any user may look up any review.
-		//	TODO:	We will implement additional visibility on the front end.
-		if (isUser(username)) {
+	public Review show(String username, int goalId, int userId) {
+		// Any user may look up any review.
+		// TODO: We will implement additional visibility on the front end.
 			try {
-				Optional<Review> reviewOpt = reviewRepo.findById(reviewId);
+				ReviewId rid = new ReviewId();
+				rid.setGoalId(goalId);
+				rid.setUserId(userId);
+				Optional<Review> reviewOpt = reviewRepo.findById(rid);
+				System.out.println(reviewOpt.isPresent());
 				if (reviewOpt.isPresent()) {
+					System.out.println("Review comment:" + reviewOpt.get().getComment());
 					return reviewOpt.get();
 				}
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
-		}
+		
 		return null;
 	}
 
-	//	UPDATE
+	// UPDATE
 	//
-	//	This update method allows for a partially defined entity to
-	//	be passed as an argument. The method then simply uses this partially
-	//	defined entity to overwrite any permissible fields of the target
-	//	entity. This is achieved via reflection, as seen in the use of
-	//	the Field class and the getDeclaredFields() method, inter alia.
+	// This update method allows for a partially defined entity to
+	// be passed as an argument. The method then simply uses this partially
+	// defined entity to overwrite any permissible fields of the target
+	// entity. This is achieved via reflection, as seen in the use of
+	// the Field class and the getDeclaredFields() method, inter alia.
 	@Override
-	public Review update(String username, int reviewId, Review review) {
-		//	A user with role "member" can only update a review that they created.
-		//	A user with role "admin" can update any review.
-		if (isUser(username) && (createdReview(username, reviewId) || isAdmin(username))) {
-			Optional<Review> reviewOpt = reviewRepo.findById(reviewId);
+	public Review update(int goalId, int userId, Review review) {
+		// A user with role "member" can only update a review that they created.
+		// A user with role "admin" can update any review.
+		
 			Review toUpdate = null;
-			//	
+			ReviewId rid = new ReviewId();
+			rid.setGoalId(goalId);
+			rid.setUserId(userId);
+			Optional<Review> reviewOpt = reviewRepo.findById(rid);
+			//
 			if (reviewOpt.isPresent()) {
 				toUpdate = reviewOpt.get();
 				Field[] fields = review.getClass().getDeclaredFields();
@@ -100,11 +118,8 @@ public class ReviewServiceImpl implements ReviewService {
 					} catch (Exception e) {
 						e.printStackTrace();
 					}
-					if (value != null &&
-							!field.getName().equals("id") &&
-							!field.getName().equals("reviewDate") &&
-							!field.getName().equals("goal") &&
-							!field.getName().equals("user")) {
+					if (value != null && !field.getName().equals("id") && !field.getName().equals("reviewDate")
+							&& !field.getName().equals("goal") && !field.getName().equals("user")) {
 						try {
 							field.set(toUpdate, value);
 						} catch (IllegalAccessException iae) {
@@ -117,7 +132,7 @@ public class ReviewServiceImpl implements ReviewService {
 				}
 				return reviewRepo.saveAndFlush(toUpdate);
 			}
-		}
+		
 		return null;
 	}
 
@@ -126,24 +141,26 @@ public class ReviewServiceImpl implements ReviewService {
 	// Note: "Delete" functionality is implemented by rendering the review inactive,
 	// making the action reversible.
 	//
-	// TODO: Consider providing the user with two options: a pause and a true delete.
+	// TODO: Consider providing the user with two options: a pause and a true
+	// delete.
 	//
 	@Override
-	public boolean disable(String username, int reviewId) {
+	public boolean disable(String username, int goalId, int userId) {
 		// A user with role "member" can only disable a review they created.
 		// A user with role "admin" can disable any review.
-		if (isUser(username) && (createdReview(username, reviewId) || isAdmin(username))) {
-			Review toDisable = show(username, reviewId);
-			if (toDisable != null) {
-				try {
-					toDisable.setActive(false);
-					reviewRepo.save(toDisable);
-					return true;
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
+
+		Review toDisable = show(username, goalId, userId);
+		System.out.println("ToDisable:" + toDisable);
+		if (toDisable != null) {
+			try {
+				toDisable.setActive(false);
+				reviewRepo.save(toDisable);
+				return true;
+			} catch (Exception e) {
+				e.printStackTrace();
 			}
 		}
+
 		return false;
 	}
 
@@ -153,31 +170,5 @@ public class ReviewServiceImpl implements ReviewService {
 	// logged in and authorized to perform the given action.
 	// Outsourcing the logic to these methods makes the code in the CRUD
 	// methods read more like the actual problem.
-	public User getUser(String username) {
-		return userRepo.findByUsername(username);
-	}
-	
-	public boolean isUser(String username) {
-		return userRepo.existsByUsername(username);
-	}
 
-	public boolean isAdmin(String username) {
-		return getUser(username).getRole().equals("admin");
-	}
-	
-	public boolean belongsToGoal(String username, Goal goal) {
-		User requestor = getUser(username);
-		if (requestor != null) {
-			return goal.getUsers().contains(requestor);
-		}
-		return false;
-	}
-
-	public boolean createdReview(String username, int reviewId) {
-		User requestor = getUser(username);
-		if (requestor != null) {
-			return show(username, reviewId).getUser().getId() == reviewId;
-		}
-		return false;
-	}
 }
