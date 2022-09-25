@@ -152,7 +152,7 @@ CREATE TABLE IF NOT EXISTS `review` (
   `goal_id` INT NOT NULL,
   `user_id` INT NOT NULL,
   `review_date` DATETIME NULL,
-  `active` TINYINT NULL,
+  `active` TINYINT NULL DEFAULT 1,
   INDEX `fk_review_goal1_idx` (`goal_id` ASC),
   INDEX `fk_review_user1_idx` (`user_id` ASC),
   PRIMARY KEY (`goal_id`, `user_id`),

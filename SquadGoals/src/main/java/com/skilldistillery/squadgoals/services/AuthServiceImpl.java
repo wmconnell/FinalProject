@@ -12,11 +12,13 @@ import com.skilldistillery.squadgoals.entities.Goal;
 import com.skilldistillery.squadgoals.entities.Image;
 import com.skilldistillery.squadgoals.entities.ReviewId;
 import com.skilldistillery.squadgoals.entities.Squad;
+import com.skilldistillery.squadgoals.entities.Task;
 import com.skilldistillery.squadgoals.entities.User;
 import com.skilldistillery.squadgoals.repositories.GoalRepository;
 import com.skilldistillery.squadgoals.repositories.ImageRepository;
 import com.skilldistillery.squadgoals.repositories.ReviewRepository;
 import com.skilldistillery.squadgoals.repositories.SquadRepository;
+import com.skilldistillery.squadgoals.repositories.TaskRepository;
 import com.skilldistillery.squadgoals.repositories.UserRepository;
 
 @Service
@@ -34,6 +36,8 @@ public class AuthServiceImpl implements AuthService {
 	private SquadRepository squadRepo;
 	@Autowired
 	private ReviewRepository reviewRepo;
+	@Autowired
+	private TaskRepository taskRepo;
 	
 	@Override
 	public User register(User user) {
@@ -122,6 +126,10 @@ public class AuthServiceImpl implements AuthService {
 		System.out.println("Squads size = " + squads.size());
 		return squads.size() == goalSquads.size();
 	}
+	
+	public boolean taskExists(int taskId) {
+		return taskRepo.existsById(taskId);
+	}
 
 	@Override
 	public boolean isAdmin(String username) {
@@ -141,8 +149,21 @@ public class AuthServiceImpl implements AuthService {
 		Optional<Goal> goalOp = goalRepo.findById(goalId);
 		return goalOp.isPresent() ? goalOp.get() : null;
 	}
+
+	public Task getTask(int taskId) {
+		Optional<Task> taskOpt = taskRepo.findById(taskId);
+		return taskOpt.isPresent() ? taskOpt.get() : null;
+	}
 	
-	
+	public boolean assignedToTask(String username, int taskId) {
+		User requestor = getUser(username);
+		System.out.println(requestor);
+		if (requestor != null) {
+			System.out.println(getTask(taskId).getUsers().contains(requestor));
+			return getTask(taskId).getUsers().contains(requestor);
+		}
+		return false;
+	}
 	
 	@Override
 	public boolean belongsToSquad(String username, List<Squad> squads) {

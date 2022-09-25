@@ -19,10 +19,12 @@ public interface AuthService {
 	boolean goalExists(int goalId);
 	boolean reviewExists(int goalId, int userId);
 	boolean squadsExist(List<Squad> goalSquads);
+	boolean taskExists(int taskId);
 	boolean isAdmin(String username);
 	boolean isSameUser(String username, int userId);
 	User getUser(String username);
 	Goal getGoal(int goalId);
+	boolean assignedToTask(String username, int taskId);
 	boolean belongsToSquad(String username, List<Squad> squads);
 	boolean belongsToGoal(String username, int goalId);
 	boolean createdReview(String username, int userId);
