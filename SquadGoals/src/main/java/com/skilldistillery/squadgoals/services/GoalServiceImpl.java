@@ -35,13 +35,14 @@ public class GoalServiceImpl implements GoalService {
 			}
 			System.out.println("All squads in squads");
 			for (Squad squad : squads) {
-				System.out.println(squad.getId());
+				squad.addGoal(goal);
 			}
-			System.out.println("All squads in goal.getSquads()");
-			for (Squad squad : goal.getSquads()) {
-				System.out.println(squad.getId());
-			}
-			goal.setSquads(squads);
+//	DOESN"T DO ANYTHING?
+//			System.out.println("All squads in goal.getSquads()");
+//			for (Squad squad : goal.getSquads()) {
+//				System.out.println(squad.getId());
+//			}
+//			goal.setSquads(squads);
 			return goalRepo.saveAndFlush(goal);
 		} catch (Exception e) {
 			e.printStackTrace();

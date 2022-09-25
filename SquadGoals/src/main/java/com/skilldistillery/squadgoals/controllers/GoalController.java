@@ -27,44 +27,50 @@ public class GoalController {
 
 	@Autowired
 	private GoalService goalService;
-	
+
 	@Autowired
 	private AuthService authService;
-	
+
 	@PostMapping("goals")
 	public Goal create(@RequestBody Goal goal, HttpServletRequest req, HttpServletResponse res, Principal principal) {
 		Goal created = null;
-		//	ACCESS RULES:
-		//	Users may only create a goal for a squad to which they belong.
-		//	TODO: Make it so only a leader can create a goal
+		// ACCESS RULES:
+		// Users may only create a goal for a squad to which they belong.
+		// TODO: Make it so only a leader can create a goal
 		if (authService.isLoggedInUser(principal.getName())) {
-			if (authService.belongsToSquad(principal.getName(), goal.getSquads()) || authService.isAdmin(principal.getName())) {
-				if (goal.getSquads() != null) {
-					try {
-						goal.setCreator(authService.getUser(principal.getName()));
-						created = goalService.create(principal.getName(), goal);
-						if (created == null) {
+			if (goal.getSquads() != null) {
+				if (authService.squadsExist(goal.getSquads())) {
+					if (authService.belongsToSquad(principal.getName(), goal.getSquads())
+							|| authService.isAdmin(principal.getName())) {
+						try {
+							goal.setCreator(authService.getUser(principal.getName()));
+							created = goalService.create(principal.getName(), goal);
+							if (created == null) {
+								res.setStatus(400);
+								res.setHeader("Error", "Unable to create new goal");
+							} else {
+								res.setStatus(201);
+								StringBuffer url = req.getRequestURL();
+								url.append("/").append(created.getId());
+								res.setHeader("Location", url.toString());
+								res.setHeader("Result", "Created goal with id " + created.getId());
+							}
+						} catch (Exception e) {
 							res.setStatus(400);
-							res.setHeader("Error", "Unable to create new goal");	
-						} else {
-							res.setStatus(201);
-							StringBuffer url = req.getRequestURL();
-							url.append("/").append(created.getId());
-							res.setHeader("Location", url.toString());
-							res.setHeader("Result", "Created goal with id " + created.getId());
+							res.setHeader("Error", "Unable to create new goal");
+							e.printStackTrace();
 						}
-					} catch (Exception e) {
-						res.setStatus(400);
-						res.setHeader("Error", "Unable to create new goal");	
-						e.printStackTrace();
+					} else {
+						res.setStatus(401);
+						res.setHeader("Error", "User does not have permission to perform this action");
 					}
 				} else {
 					res.setStatus(400);
-					res.setHeader("Error", "This entity must be associated with one or more squads.");	
+					res.setHeader("Error", "Entity is associated with one or more non-existent squads.");
 				}
 			} else {
-			res.setStatus(401);
-			res.setHeader("Error", "User does not have permission to perform this action");
+				res.setStatus(400);
+				res.setHeader("Error", "This entity must be associated with one or more squads.");
 			}
 		} else {
 			res.setStatus(401);
@@ -72,7 +78,7 @@ public class GoalController {
 		}
 		return created;
 	}
-	
+
 	@GetMapping("goals/{id}")
 	public Goal show(HttpServletRequest req, HttpServletResponse res, @PathVariable int id, Principal principal) {
 		// ACCESS RULES:
@@ -83,7 +89,7 @@ public class GoalController {
 			goal = goalService.show(principal.getName(), id);
 			if (goal == null) {
 				res.setStatus(404);
-				res.setHeader("Result", "Goal with id " + id + " does not exist");	
+				res.setHeader("Result", "Goal with id " + id + " does not exist");
 			} else {
 				res.setStatus(200);
 				res.setHeader("Result", "Returned goal with id " + id);
@@ -94,8 +100,7 @@ public class GoalController {
 		}
 		return goal;
 	}
-	
-	
+
 	@GetMapping("goals")
 	public List<Goal> index(HttpServletRequest req, HttpServletResponse res, Principal principal) {
 		// Any user may retrieve a list of all goals, regardless of which squad they
@@ -110,16 +115,17 @@ public class GoalController {
 		}
 		return goals;
 	}
-	
+
 	@PutMapping("goals/{id}")
-	public Goal update(HttpServletRequest req, HttpServletResponse res, @PathVariable int id, @RequestBody Goal goal, Principal principal) {
+	public Goal update(HttpServletRequest req, HttpServletResponse res, @PathVariable int id, @RequestBody Goal goal,
+			Principal principal) {
 		Goal updated = null;
-		//	ACCESS RULES:
-		//	A user with role "member" may only update a goal to which they belong.
-		//	A user with role "admin" may update any goal.
+		// ACCESS RULES:
+		// A user with role "member" may only update a goal to which they belong.
+		// A user with role "admin" may update any goal.
 		if (authService.isLoggedInUser(principal.getName())) {
-			if (authService.belongsToGoal(principal.getName(), id) || authService.isAdmin(principal.getName())) {
-				if (authService.goalExists(id)) {
+			if (authService.goalExists(id)) {
+				if (authService.belongsToGoal(principal.getName(), id) || authService.isAdmin(principal.getName())) {
 					try {
 						updated = goalService.update(principal.getName(), id, goal);
 						if (updated == null) {
@@ -134,12 +140,12 @@ public class GoalController {
 						e.printStackTrace();
 					}
 				} else {
-					res.setStatus(404);
-					res.setHeader("Error", "Goal with id " + id + " does not exist");	
+					res.setStatus(401);
+					res.setHeader("Error", "User does not have permission to perform this action");
 				}
 			} else {
-				res.setStatus(401);
-				res.setHeader("Error", "User does not have permission to perform this action");
+				res.setStatus(404);
+				res.setHeader("Error", "Goal with id " + id + " does not exist");
 			}
 		} else {
 			res.setStatus(401);
@@ -147,32 +153,35 @@ public class GoalController {
 		}
 		return updated;
 	}
-	
+
 	@DeleteMapping("goals/{id}")
 	public void destroy(HttpServletRequest req, HttpServletResponse res, @PathVariable int id, Principal principal) {
 		// ACCESS RULES:
 		// A user with role "member" can only disable a goal to which they belong.
 		// A user with role "admin" can disable any goal.
 		if (authService.isLoggedInUser(principal.getName())) {
-			if (authService.belongsToGoal(principal.getName(), id) || authService.isAdmin(principal.getName())) {
-				boolean deleted = goalService.disable(principal.getName(), id);
-				if (deleted) {
-					res.setStatus(204);
-					res.setHeader("Result", "Deactivated goal id " + id);
+			if (authService.goalExists(id)) {
+				if (authService.belongsToGoal(principal.getName(), id) || authService.isAdmin(principal.getName())) {
+					boolean deleted = goalService.disable(principal.getName(), id);
+					if (deleted) {
+						res.setStatus(204);
+						res.setHeader("Result", "Deactivated goal id " + id);
+					} else {
+						res.setStatus(404);
+						res.setHeader("Result", "Goal with id " + id + " does not exist");
+					}
 				} else {
-					res.setStatus(404);
-					res.setHeader("Result", "Goal with id " + id + " does not exist");	
+					res.setStatus(401);
+					res.setHeader("Error", "User does not have permission to perform this action");
 				}
 			} else {
-				res.setStatus(401);
-				res.setHeader("Error", "User does not have permission to perform this action");
+				res.setStatus(404);
+				res.setHeader("Error", "Goal with id " + id + " does not exist");
 			}
 		} else {
 			res.setStatus(401);
 			res.setHeader("Error", "Client must be logged in to perform this action");
 		}
 	}
-	
-	
-	
+
 }

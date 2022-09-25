@@ -1,5 +1,6 @@
 package com.skilldistillery.squadgoals.services;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -9,7 +10,6 @@ import org.springframework.stereotype.Service;
 
 import com.skilldistillery.squadgoals.entities.Goal;
 import com.skilldistillery.squadgoals.entities.Image;
-import com.skilldistillery.squadgoals.entities.Review;
 import com.skilldistillery.squadgoals.entities.ReviewId;
 import com.skilldistillery.squadgoals.entities.Squad;
 import com.skilldistillery.squadgoals.entities.User;
@@ -106,6 +106,22 @@ public class AuthServiceImpl implements AuthService {
 		rid.setUserId(userId);
 		return reviewRepo.existsById(rid);
 	}
+	
+	public boolean squadsExist(List<Squad> goalSquads) {
+		List<Squad> squads = new ArrayList<>();
+		System.out.println("Empty squad list: " + squads);
+		for (Squad squad : goalSquads) {
+			System.out.println("GoalSquad.getId() = " + squad.getId());
+			Optional<Squad> squadOpt = squadRepo.findById(squad.getId());
+			System.out.println("Is present? " + squadOpt.isPresent());
+			if (squadOpt.isPresent()) {
+				squads.add(squadOpt.get());
+				System.out.println("You gon' get! " + squadOpt.get());
+			}
+		}
+		System.out.println("Squads size = " + squads.size());
+		return squads.size() == goalSquads.size();
+	}
 
 	@Override
 	public boolean isAdmin(String username) {
@@ -153,6 +169,13 @@ public class AuthServiceImpl implements AuthService {
 		User requestor = getUser(username);
 		if (requestor != null) {
 			Optional<Goal> goalOpt = goalRepo.findById(goalId);
+			if (goalOpt.isPresent()) {
+				for (Squad squad : goalOpt.get().getSquads()) {
+					if (squad.getUsers().contains(requestor)) {
+						return true;
+					}
+				}
+			}
 			return goalOpt.isPresent() ? goalOpt.get().getUsers().contains(requestor) : false;
 		}
 		return false;

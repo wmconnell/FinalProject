@@ -18,6 +18,7 @@ public interface AuthService {
 	boolean userExists(int userId);
 	boolean goalExists(int goalId);
 	boolean reviewExists(int goalId, int userId);
+	boolean squadsExist(List<Squad> goalSquads);
 	boolean isAdmin(String username);
 	boolean isSameUser(String username, int userId);
 	User getUser(String username);
