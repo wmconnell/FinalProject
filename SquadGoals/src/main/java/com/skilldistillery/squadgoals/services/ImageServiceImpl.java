@@ -19,6 +19,8 @@ public class ImageServiceImpl implements ImageService {
 	private UserRepository userRepo;	//	For authentication
 	@Autowired
 	private ImageRepository imageRepo;
+	@Autowired
+	private AuthService authService;
 
 	// CRUD Methods
 	//
@@ -28,15 +30,13 @@ public class ImageServiceImpl implements ImageService {
 		//	Users may only create an image for their account.
 		//	Goal images are added by calling the GoalServiceImpl.update() method		TODO: Change this?
 		//	Review images are added by calling the ReviewServiceImpl.update() method	TODO: Change this?
-		if (isUser(username)) {
 			try {
-				image.setUser(getUser(username));
+				image.setUser(authService.getUser(username));
 				image.setActive(true);
 				return imageRepo.saveAndFlush(image);
 			}	catch (Exception e) {
 				e.printStackTrace();
 			}
-		}
 		return null;
 	}
 	
@@ -53,13 +53,11 @@ public class ImageServiceImpl implements ImageService {
 		//	Once the user base grows enough, the level of data transfer
 		//	could slow the site. In addition, it may be better for security
 		//	since its precision means that less data is available at any given time.
-		if (isUser(username)) {
 			try {
 				return imageRepo.findAll();
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
-		}
 		return new ArrayList<>();
 	}
 
@@ -67,7 +65,6 @@ public class ImageServiceImpl implements ImageService {
 	public Image show(String username, int imageId) {
 		//	Any user may look up any image.
 		//	TODO: 	Refine this
-		if (isUser(username)) {
 			try {
 				Optional<Image> imageOpt = imageRepo.findById(imageId);
 				if (imageOpt.isPresent()) {
@@ -76,7 +73,6 @@ public class ImageServiceImpl implements ImageService {
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
-		}
 		return null;
 	}
 
@@ -92,7 +88,7 @@ public class ImageServiceImpl implements ImageService {
 		//	A user with role "member" can only update their profile image.
 		//	TODO: What about images associated with goals to which they belong or reviews they made?
 		//	A user with role "admin" can update any image.
-		if (isUser(username) && (isUserProfilePic(username, imageId) || isAdmin(username))) {
+		
 			Optional<Image> imageOpt = imageRepo.findById(imageId);
 			Image toUpdate = null;
 			//	
@@ -124,7 +120,6 @@ public class ImageServiceImpl implements ImageService {
 				}
 				return imageRepo.saveAndFlush(toUpdate);
 			}
-		}
 		return null;
 	}
 
@@ -139,7 +134,6 @@ public class ImageServiceImpl implements ImageService {
 	public boolean disable(String username, int imageId) {
 		// A user with role "member" can only disable their own profile pic.
 		// A user with role "admin" can disable any image.
-		if (isUser(username) && (isUserProfilePic(username, imageId) || isAdmin(username))) {
 			Image toDisable = show(username, imageId);
 			if (toDisable != null) {
 				try {
@@ -150,35 +144,8 @@ public class ImageServiceImpl implements ImageService {
 					e.printStackTrace();
 				}
 			}
-		}
 		return false;
 	}
 
-	// Helper Methods
-	//
-	// The following methods ensure that the user requesting an action is
-	// logged in and authorized to perform the given action.
-	// Outsourcing the logic to these methods makes the code in the CRUD
-	// methods read more like the actual problem.
-	public User getUser(String username) {
-		return userRepo.findByUsername(username);
-	}
-	
-	public Image getImage(int imageId) {
-		Optional<Image> imageOpt = imageRepo.findById(imageId);
-		return imageOpt.isPresent() ? imageOpt.get() : null;
-	}
-	
-	public boolean isUser(String username) {
-		return userRepo.existsByUsername(username);
-	}
-	
-	public boolean isUserProfilePic(String username, int imageId) {
-		return getImage(imageId).getUser().getUsername().equals(username);
-	}
-
-	public boolean isAdmin(String username) {
-		return getUser(username).getRole().equals("admin");
-	}
-	
+		
 }

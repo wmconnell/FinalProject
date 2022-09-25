@@ -95,6 +95,10 @@ public class AuthServiceImpl implements AuthService {
 		return userRepo.existsByUsername(username);
 	}
 	
+	public boolean imageExists(int imageId) {
+		return imageRepo.existsById(imageId);
+	}
+	
 	@Override
 	public boolean userExists(int userId) {
 		return userRepo.existsById(userId);
@@ -139,6 +143,15 @@ public class AuthServiceImpl implements AuthService {
 	@Override
 	public boolean isSameUser(String username, int userId) {
 		return userRepo.findByUsername(username).getId() == userId;
+	}
+	
+	public boolean isUserProfilePic(String username, int imageId) {
+		return getImage(imageId).getUser().getUsername().equals(username);
+	}
+	
+	public Image getImage(int imageId) {
+		Optional<Image> imageOpt = imageRepo.findById(imageId);
+		return imageOpt.isPresent() ? imageOpt.get() : null;
 	}
 
 	public User getUser(String username) {
