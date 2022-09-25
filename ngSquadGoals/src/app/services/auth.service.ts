@@ -1,16 +1,17 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { tap, catchError, throwError, Observable } from 'rxjs';
-import { environment } from 'src/environments/environment';
+import { environment } from '../../environments/environment';
 import { User } from '../models/user';
 import { Buffer } from "buffer";
+
 @Injectable({
   providedIn: 'root',
 })
 export class AuthService {
   // Set port number to server's port
-  private baseUrl = 'http://localhost:8088/'; // change 'todos' to your API path
-  private url = this.baseUrl + 'api/users'; // change 'todos' to your API path
+  private baseUrl = environment.baseUrl;
+  private url = this.baseUrl + 'api/users';
 
 
   constructor(private http: HttpClient) { }
@@ -37,9 +38,9 @@ export class AuthService {
         'X-Requested-With': 'XMLHttpRequest',
       }),
     };
-
+    console.log("HTTPRequestUrl: " + this.baseUrl);
     // Create GET request to authenticate credentials
-    return this.http.get<User>(this.baseUrl + 'authenticate', httpOptions).pipe(
+    return this.http.get<User>(this.baseUrl + '/authenticate', httpOptions).pipe(
       tap((newUser) => {
         console.log(newUser);
 
@@ -63,29 +64,28 @@ export class AuthService {
     localStorage.removeItem('username');
   }
 
-  // getLoggedInUser(): Observable<User> {
-  //   if (!this.checkLogin()) {
-  //     return throwError(() => {
-  //       new Error('Not logged in.');
-  //     });
-  //   }
-  //   let httpOptions = {
-  //     headers: {
-  //       Authorization: 'Basic ' + this.getCredentials(),
-  //       'X-Requested-with': 'XMLHttpRequest',
-  //     },
-  //   };
-  //   return this.http
-  //   .get<User>(environment.baseUrl + 'authenticate', httpOptions)
-  //   .pipe(
-  //     catchError((err: any) => {
-  //       console.log(err);
-  //       return throwError(
-  //         () => new Error( 'AuthService.getUserById(): error retrieving user: ' + err )
-  //         );
-  //       })
-  //     );
-  // }
+  getLoggedInUser(): Observable<User> {
+    if (!this.checkLogin()) {
+      console.error("ERROR: User not logged in");
+    }
+    let httpOptions = {
+      headers: {
+        Authorization: 'Basic ' + this.getCredentials(),
+        'X-Requested-with': 'XMLHttpRequest',
+      },
+    };
+    return this.http
+      .get<User>(environment.baseUrl + '/authenticate', httpOptions)
+      .pipe(
+        catchError((err: any) => {
+          console.log(err);
+          return throwError(
+            () => new Error( 'AuthService.getUserById(): error retrieving user: ' + err )
+          );
+        })
+      );
+  }
+
   getUser(username: string): Observable<User> {
     return this.http.get<User>(`${this.url}/${username}`).pipe(
       catchError((err: any) => {

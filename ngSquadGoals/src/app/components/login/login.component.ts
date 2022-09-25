@@ -10,17 +10,17 @@ import { AuthService } from 'src/app/services/auth.service';
 })
 export class LoginComponent implements OnInit {
   loginUser = new User();
-    constructor(private auth: AuthService, private router: Router) { }
 
-    ngOnInit(): void {
-    }
+  constructor(private auth: AuthService, private router: Router) { }
+
+  ngOnInit(): void { }
+
   login(user: User){
     console.log(user);
-    this.auth.login(user.username,user.password).subscribe({
+    this.auth.login(user.username, user.password).subscribe({
       next: (user) =>{
         console.log(user + '!');
-
-        this.router.navigateByUrl('/user/' + user.username);
+        this.router.navigateByUrl('user');
 
       },
       error: (err) => {

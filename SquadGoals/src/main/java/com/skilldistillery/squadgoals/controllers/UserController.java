@@ -22,7 +22,7 @@ import com.skilldistillery.squadgoals.services.UserService;
 
 @RestController
 @RequestMapping(path = "api")
-@CrossOrigin({"*", "http://localhost/"})
+@CrossOrigin({"*", "*"})
 public class UserController {
 
 	@Autowired 
