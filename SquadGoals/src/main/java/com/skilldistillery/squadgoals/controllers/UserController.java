@@ -126,5 +126,16 @@ public class UserController {
 			res.setHeader("Error", "Client must be logged in to perform this action");
 		}
 	}
+	@GetMapping("users/{username}")
+	public User show(HttpServletRequest req, HttpServletResponse res, @PathVariable String username, Principal principal) {
+		System.out.println(principal);
+		System.out.println(username+ "***********");
+//		User user = userService.show(principal.getName(), username);
+		User user = userService.getUserByUserName(username);
+		if (user == null) {
+			res.setStatus(404);
+		}
+		return user;
+	}
 
 }
