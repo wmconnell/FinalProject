@@ -3,6 +3,7 @@ package com.skilldistillery.squadgoals.services;
 import java.util.List;
 
 import com.skilldistillery.squadgoals.entities.Goal;
+import com.skilldistillery.squadgoals.entities.Image;
 import com.skilldistillery.squadgoals.entities.Squad;
 import com.skilldistillery.squadgoals.entities.User;
 
@@ -15,6 +16,7 @@ public interface AuthService {
 	
 	//	Helper Methods
 	boolean isLoggedInUser(String username);
+	boolean imageExists(int imageId);
 	boolean userExists(int userId);
 	boolean goalExists(int goalId);
 	boolean reviewExists(int goalId, int userId);
@@ -24,6 +26,8 @@ public interface AuthService {
 	boolean isSameUser(String username, int userId);
 	User getUser(String username);
 	Goal getGoal(int goalId);
+	Image getImage(int imageId);
+	boolean isUserProfilePic(String username, int imageId);
 	boolean assignedToTask(String username, int taskId);
 	boolean belongsToSquad(String username, List<Squad> squads);
 	boolean belongsToGoal(String username, int goalId);
