@@ -103,6 +103,18 @@ export class AuthService {
     return false;
   }
 
+  checkUsernameUnique(username: string): Observable<boolean> {
+    return this.http.get<boolean>(this.baseUrl + "/checkusernameunique/" + username).pipe(
+      catchError((err: any) => {
+        console.log(err);
+        return throwError(
+          () => new Error('AuthService.checkUsernameUnique() - error: ' + err)
+        );
+      }
+    )
+    );
+  }
+
   generateBasicAuthCredentials(username: string, password: string): string {
     return Buffer.from(`${username}:${password}`).toString('base64');
   }
