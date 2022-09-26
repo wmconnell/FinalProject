@@ -5,6 +5,7 @@ import { HomeComponent } from './components/home/home.component';
 import { LoginComponent } from './components/login/login.component';
 import { NotFoundComponent } from './components/not-found/not-found.component';
 import { RegisterComponent } from './components/register/register.component';
+import { SquadComponent } from './components/squad/squad.component';
 import { UserComponent } from './components/user/user.component';
 
 const routes: Routes = [
@@ -14,6 +15,7 @@ const routes: Routes = [
 { path: 'login', component: LoginComponent },
 { path: 'about', component: AboutComponent },
 { path: 'user', component: UserComponent },
+{ path: 'squad', component: SquadComponent },
 { path: 'user/:username', component: UserComponent },
 { path: '**', component: NotFoundComponent}
 ]
