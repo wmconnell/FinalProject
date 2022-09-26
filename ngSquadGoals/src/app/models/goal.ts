@@ -2,11 +2,11 @@ export class Goal {
   id: number = 0;
   title: string = '';
   description: string = '';
-  createdDate: Date;  //dates not initialized
-  updatedDate: Date;
-  completedDate: Date;
-  startDate: Date;
-  endDate: Date;
+  createdDate: Date | null = null;  //dates not initialized
+  updatedDate: Date | null = null;
+  completedDate: Date | null = null;
+  startDate: Date | null = null;
+  endDate: Date | null = null;
   completed: boolean = false;
   publicVisibility: boolean = false;
   publicAttendance: boolean = false;
@@ -24,11 +24,11 @@ export class Goal {
     id: number = 0,
   title: string = '',
   description: string = '',
-  createdDate: Date,
-  updatedDate: Date,
-  completedDate: Date,
-  startDate: Date,
-  endDate: Date,
+  createdDate: Date | null = null,
+  updatedDate: Date | null = null,
+  completedDate: Date | null = null,
+  startDate: Date | null = null,
+  endDate: Date | null = null,
   completed: boolean = false,
   publicVisibility: boolean = false,
   publicAttendance: boolean = false,

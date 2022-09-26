@@ -8,7 +8,7 @@ lastName: string = '';
 role: string = '';
 bio: string = '';
 active: boolean = false;
-createDate: Date| null; //dates not initialized
+createDate: Date | null = null; //dates not initialized
 reviews: any[] = [];
 squads: any[] = [];
 goals: any[] = [];

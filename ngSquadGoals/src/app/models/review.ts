@@ -2,7 +2,7 @@ export class Review {
   id: any = null; //**VERIFY** EMBEDDED ID
   rating: number = 0;
   comment: string = '';
-  reviewDate: Date; //dates not initialized
+  reviewDate: Date | null = null; //dates not initialized
   user: any = null;
   goal: any = null;
   images: any[] = [];
@@ -11,7 +11,7 @@ export class Review {
     id: any = null, //**VERIFY** EMBEDDED ID
   rating: number = 0,
   comment: string = '',
-  reviewDate: Date,
+  reviewDate: Date | null = null,
   user: any = null,
   goal: any = null,
   images: any[] = []
