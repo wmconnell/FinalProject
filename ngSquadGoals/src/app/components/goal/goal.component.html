@@ -3,26 +3,39 @@
 <div name="myGoals">
   <table *ngIf="loggedIn">
     <tr><td>Username: {{loggedIn.username}}</td></tr>
+    <tr><td>Number of Active Goals: {{loggedIn.goals.length}}</td></tr>
     <tr *ngFor="let goal of loggedIn.goals">
-      <td>Goal: {{goal.description}}</td>
-      <td>Goal: {{goal.completed}}</td>
-      <td>Goal: {{goal.active}}</td>
-      <td>Goal: {{goal.endDate}}</td>
-      <td>Goal: {{goal.creator}}</td>
+      <td>Goal: {{goal.title}}</td>
+      <td>Description: {{goal.description}}</td>
+      <td>Completed: {{goal.completed}}</td>
+      <td>End Date: {{goal.endDate}}</td>
+      <td>Creator: {{goal.creator}}</td>
     </tr>
 
       </table>
 </div>
 
 <div>
-  <form *ngIf="(newGoal)">
+  <form *ngIf="addGoal">
+    <!-- <label>Squad: </label> -->
+    <!-- <select name="squad" id="squad" *ngFor="let squad of loggedIn.squads">
+      <option [(ngModel)]="newGoal.squads">{{squad}}</option>
+    </select> -->
+    <label>Title: </label>
+    <input type="text" name="title" [(ngModel)]="newGoal.title"><br>
     <label>Description: </label>
     <textarea rows="2" cols="40" name="description" [(ngModel)]="newGoal.description"></textarea><br>
     <label>End Date: </label>
-    <input type="text" name="endDate" [(ngModel)]="newGoal.endDate"><br>
-    <button (click)="createGoal(newGoal)">Add New Goal</button>
+    <input type="datetime" name="endDate" [(ngModel)]="newGoal.endDate"><br>
+    <button (click)="createGoal(newGoal)">Submit</button>
+  </form>
+
+  <form *ngIf="!addGoal">
+    <button (click)="addGoal = true">Add Goal</button>
   </form>
 </div>
+
+{{newGoal | json}}
 
 
 

@@ -19,6 +19,8 @@ public class GoalServiceImpl implements GoalService {
 	private GoalRepository goalRepo;
 	@Autowired
 	private SquadRepository squadRepo;
+	@Autowired
+	private AuthService authService;
 
 	// CRUD Methods
 	//
@@ -43,6 +45,7 @@ public class GoalServiceImpl implements GoalService {
 //				System.out.println(squad.getId());
 //			}
 //			goal.setSquads(squads);
+			goal.setCreator(authService.getUser(username));
 			return goalRepo.saveAndFlush(goal);
 		} catch (Exception e) {
 			e.printStackTrace();

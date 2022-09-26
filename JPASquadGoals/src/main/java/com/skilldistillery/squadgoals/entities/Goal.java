@@ -48,29 +48,29 @@ public class Goal {
 	private String recurring;
 	private Boolean active;
 	@OneToMany(mappedBy = "goal")
-	@JsonIgnore
-	private List<Review> reviews;
-	@ManyToMany(mappedBy="goals")
-	@JsonIgnoreProperties({"goals", "goalsCreated"})
-	private List<User> users;
-	@ManyToMany(mappedBy="goals")
-	@JsonIgnoreProperties({"goals"})
-	private List<Squad> squads;
-	@ManyToMany(mappedBy="goals")
-	@JsonIgnoreProperties({"goals"})
-	private List<Image> images;
-	@ManyToOne
-	@JoinColumn(name="creator_id")
-	@JsonIgnoreProperties({"goalsCreated"})
-	private User creator;
-	@OneToMany
-	@JoinColumn(name="goal_id")
-	@JsonIgnoreProperties({"goal"})
-	private List<Task> tasks;
-	@ManyToMany
-	@JoinTable(name = "tag_has_goal", joinColumns = @JoinColumn(name = "tag_id"), inverseJoinColumns = @JoinColumn(name = "goal_id"))
-	@JsonIgnore
-	private List<Tag> tags;
+    @JsonIgnore
+    private List<Review> reviews;
+    @ManyToMany(mappedBy="goals")
+    @JsonIgnoreProperties({"goals", "goalsCreated"})
+    private List<User> users;
+    @ManyToMany(mappedBy="goals")
+    @JsonIgnoreProperties({"goals"})
+    private List<Squad> squads;
+    @ManyToMany(mappedBy="goals")
+    @JsonIgnoreProperties({"goals"})
+    private List<Image> images;
+    @ManyToOne
+    @JoinColumn(name="creator_id")
+    @JsonIgnoreProperties({"goalsCreated", "goals"})
+    private User creator;
+    @OneToMany
+    @JoinColumn(name="goal_id")
+    @JsonIgnoreProperties({"goal"})
+    private List<Task> tasks;
+    @ManyToMany
+    @JoinTable(name = "tag_has_goal", joinColumns = @JoinColumn(name = "tag_id"), inverseJoinColumns = @JoinColumn(name = "goal_id"))
+    @JsonIgnore
+    private List<Tag> tags;
 	
 
 	public Goal() {
