@@ -1,6 +1,6 @@
 export class SquadMessage {
   id: number = 0;
-  messageDate: Date; //dates not initialized
+  messageDate: Date | null = null; //dates not initialized
   content: string = '';
   sender: any = null;
   squad: any = null;
@@ -9,7 +9,7 @@ export class SquadMessage {
 
   constructor(
     id: number = 0,
-  messageDate: Date,
+  messageDate: Date | null = null,
   content: string = '',
   sender: any = null,
   squad: any = null,

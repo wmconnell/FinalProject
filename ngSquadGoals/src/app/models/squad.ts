@@ -3,7 +3,7 @@ export class Squad {
   name: string = '';
   bio: string = '';
   active: boolean = false;
-  createDate: Date = ;
+  createDate: Date | null = null;
   users: any[] = [];
   goals: any[] = [];
   tasks: any[] = [];
@@ -17,7 +17,7 @@ export class Squad {
   name: string = '',
   bio: string = '',
   active: boolean = false,
-  createDate: Date = ,
+  createDate: Date | null = null,
   users: any[] = [],
   goals: any[] = [],
   tasks: any[] = [],
