@@ -1,8 +1,10 @@
+import { GoalService } from './../../services/goal.service';
 import { User } from 'src/app/models/user';
 import { UserService } from './../../services/user.service';
 import { Component, OnInit } from '@angular/core';
 import { AuthService } from 'src/app/services/auth.service';
 import { ActivatedRoute, Router } from '@angular/router';
+import { Goal } from 'src/app/models/goal';
 
 @Component({
   selector: 'app-user',
@@ -13,36 +15,11 @@ export class UserComponent implements OnInit {
 users: User[] =[]
 loggedIn: User = new User();
 username: string | string = "admin";
-  constructor(private userService: UserService,private auth: AuthService,private router: Router, private route: ActivatedRoute) { }
+goals: Goal[] = []
+  constructor(private userService: UserService,private auth: AuthService,private router: Router, private route: ActivatedRoute, private goalService: GoalService) { }
 
   ngOnInit(): void {
-    // this.username = this.route.params.subscribe((params) => {
 
-    // }
-
-    // );
-
-    // if(this.auth.checkLogin() && this.auth.getUserName() != null){
-    //   console.log(this.auth.checkLogin());
-    //   console.log(this.auth.getUserName());
-    //   console.log(this.loggedIn);
-    //   console.log(this.username);
-
-    //   this.auth.getUser(localStorage.getItem('username')!).subscribe({
-    //     next: (user) =>{
-    //       console.log(user);
-
-    //       this.loggedIn = user
-
-    //     },
-
-    //     error: (err) =>{
-    //       console.error(err)
-    //       console.error("shits broke")
-    //     }
-    //   })
-    //   console.log(this.loggedIn);
-    // }
 
     let idStr = this.route.snapshot.paramMap.get('username');
     // let idStr = '4'
@@ -61,6 +38,7 @@ username: string | string = "admin";
             this.loggedIn =user;
             console.log(this.loggedIn);
 
+            this.load();
           },
           error: (err) =>{
             console.error('Error retriveing User:');
@@ -73,7 +51,6 @@ username: string | string = "admin";
           console.error('Invalid User Id: ' + idStr)
         }
     // }
-    // this.load();
 
   }
 
@@ -86,16 +63,17 @@ username: string | string = "admin";
   }
 load(){
   if(this.loggedIn){
+   this.goalService.index().subscribe({
+     next: (goal) =>{
+       this.goals = goal
+     },
+     error: (err) =>{
+       console.log(err);
 
-    this.auth.getUser(this.loggedIn.username).subscribe({
-      next: (user) =>{
-        this.loggedIn =user
-      },
-      error: (err) =>{
-        console.error('error getting credentials');
-        console.error(err);
-      }
-    })
+     }
+   })
+
+
   }
   // this.userService.show(this.loggedIn.id).subscribe({
   //   next: (user) =>{
