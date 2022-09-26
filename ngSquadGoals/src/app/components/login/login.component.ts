@@ -20,7 +20,7 @@ export class LoginComponent implements OnInit {
       next: (user) =>{
         console.log(user + '!');
 
-        this.router.navigateByUrl('/user/' + user.username);
+        this.router.navigateByUrl('user');
 
       },
       error: (err) => {
