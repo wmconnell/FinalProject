@@ -1,12 +1,28 @@
 <h1>Goals!</h1>
-<app-goal></app-goal>
-<div>
+
+<div name="myGoals">
   <table *ngIf="loggedIn">
     <tr><td>Username: {{loggedIn.username}}</td></tr>
-    <tr *ngFor="let goal of loggedIn.goals"><td>Goal: {{goal}}</td></tr>
-    <tr><td>{{loggedIn.firstName}}</td></tr>
-    <tr><td>{{loggedIn.lastName}}</td></tr>
-    <tr><td>{{loggedIn.bio}}</td></tr>
+    <tr *ngFor="let goal of loggedIn.goals">
+      <td>Goal: {{goal.description}}</td>
+      <td>Goal: {{goal.completed}}</td>
+      <td>Goal: {{goal.active}}</td>
+      <td>Goal: {{goal.endDate}}</td>
+      <td>Goal: {{goal.creator}}</td>
+    </tr>
+
       </table>
 </div>
+
+<div>
+  <form *ngIf="(newGoal)">
+    <label>Description: </label>
+    <textarea rows="2" cols="40" name="description" [(ngModel)]="newGoal.description"></textarea><br>
+    <label>End Date: </label>
+    <input type="text" name="endDate" [(ngModel)]="newGoal.endDate"><br>
+    <button (click)="createGoal(newGoal)">Add New Goal</button>
+  </form>
+</div>
+
+
 

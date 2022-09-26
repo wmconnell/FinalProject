@@ -20,6 +20,7 @@ export class GoalComponent implements OnInit {
   loggedIn: User = new User();
 
   goals: Goal[] = [];
+  newGoal: Goal = new Goal();
 
   ngOnInit(): void {
     this.load();
@@ -46,6 +47,20 @@ export class GoalComponent implements OnInit {
       }
     }
     );
+  }
+
+  createGoal(goal: Goal): void {
+
+    this.goalService.createGoal(goal).subscribe({
+      next: (result) => {
+        this.newGoal = new Goal();
+        this.load();
+      },
+      error: (nojoy) => {
+        console.error('error creating pokemon:');
+        console.error(nojoy);
+      },
+    });
   }
 
 }
