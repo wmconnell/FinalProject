@@ -31,6 +31,11 @@ public class AuthController {
 	  user = authService.register(user);
 	  return user;
 	}
+	
+	@GetMapping("checkusernameunique/{username}")
+	public boolean checkUsername(HttpServletResponse res, @PathVariable String username) {
+		return !authService.userExists(username);
+	}
 	 
 	@GetMapping("authenticate")
 	public User authenticate(Principal principal, HttpServletResponse res) {

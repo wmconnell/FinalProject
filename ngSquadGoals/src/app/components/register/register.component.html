@@ -1,9 +1,10 @@
 <form class="form form-control">
   <label>Username: </label>
   <input type="text" class="form form-control" name="username" placeholder="User Name" [(ngModel)]="newUser.username">
+  <label *ngIf="!usernameIsUnique" style="color: red">Username already taken</label>
   <br>
   <label>Password: </label>
-  <input type="text" class="form form-control" name="password" placeholder="Password" [(ngModel)]="newUser.password">
+  <input type="password" class="form form-control" name="password" placeholder="Password" [(ngModel)]="newUser.password">
   <br>
   <label>Email: </label>
   <input type="text" class="form form-control" name="email" placeholder="example@example.com" [(ngModel)]="newUser.email">
