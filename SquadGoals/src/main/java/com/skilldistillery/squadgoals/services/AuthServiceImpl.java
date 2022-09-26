@@ -104,6 +104,11 @@ public class AuthServiceImpl implements AuthService {
 		return userRepo.existsById(userId);
 	}
 	
+	@Override
+	public boolean userExists(String username) {
+		return userRepo.existsByUsername(username);
+	}
+	
 	public boolean goalExists(int goalId) {
 		return goalRepo.existsById(goalId);
 	}

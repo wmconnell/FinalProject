@@ -18,6 +18,7 @@ public interface AuthService {
 	boolean isLoggedInUser(String username);
 	boolean imageExists(int imageId);
 	boolean userExists(int userId);
+	boolean userExists(String username);
 	boolean goalExists(int goalId);
 	boolean reviewExists(int goalId, int userId);
 	boolean squadsExist(List<Squad> goalSquads);
