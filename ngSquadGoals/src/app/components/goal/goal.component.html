@@ -1,1 +1,12 @@
-<p>goal works!</p>
+<h1>Goals!</h1>
+<app-goal></app-goal>
+<div>
+  <table *ngIf="loggedIn">
+    <tr><td>Username: {{loggedIn.username}}</td></tr>
+    <tr *ngFor="let goal of loggedIn.goals"><td>Goal: {{goal}}</td></tr>
+    <tr><td>{{loggedIn.firstName}}</td></tr>
+    <tr><td>{{loggedIn.lastName}}</td></tr>
+    <tr><td>{{loggedIn.bio}}</td></tr>
+      </table>
+</div>
+
