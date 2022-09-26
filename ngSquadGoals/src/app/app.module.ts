@@ -15,6 +15,13 @@ import { NotFoundComponent } from './components/not-found/not-found.component';
 import { AuthService } from './services/auth.service';
 import { AboutComponent } from './components/about/about.component';
 import { UserComponent } from './components/user/user.component';
+import { BadgeComponent } from './components/badge/badge.component';
+import { GoalComponent } from './components/goal/goal.component';
+import { ImageComponent } from './components/image/image.component';
+import { ReviewComponent } from './components/review/review.component';
+import { SquadComponent } from './components/squad/squad.component';
+import { TagComponent } from './components/tag/tag.component';
+import { TaskComponent } from './components/task/task.component';
 
 @NgModule({
   declarations: [
@@ -26,7 +33,14 @@ import { UserComponent } from './components/user/user.component';
     RegisterComponent,
     NotFoundComponent,
     AboutComponent,
-    UserComponent
+    UserComponent,
+    BadgeComponent,
+    GoalComponent,
+    ImageComponent,
+    ReviewComponent,
+    SquadComponent,
+    TagComponent,
+    TaskComponent
   ],
   imports: [
     BrowserModule,

@@ -3,7 +3,6 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { catchError, throwError } from 'rxjs';
 import { environment } from 'src/environments/environment';
-import { User } from '../models/user';
 
 @Injectable({
   providedIn: 'root'
@@ -33,7 +32,7 @@ export class SquadService {
     );
 
   }
-  createUser(squad: Squad){
+  createSquad(squad: Squad){
     return this.http.post<Squad>(this.url,squad).pipe(catchError((err: any) => {
       console.log(err);
       return throwError(
@@ -43,7 +42,7 @@ export class SquadService {
       );
 
     }
-    updateUser(squad: User, id:number){
+    updateSquad(squad: Squad, id:number){
       return this.http.put<Squad>(this.url+'/'+id,squad).pipe(catchError((err: any) => {
         console.log(err);
         return throwError(
@@ -53,11 +52,11 @@ export class SquadService {
         );
 
       }
-      deleteUser(id:number){
+      deleteSquad(id:number){
         return this.http.delete<Squad>(this.url+'/'+id).pipe(catchError((err: any) => {
           console.log(err);
           return throwError(
-            () => new Error('ParkService.deletePark(): error deleting squad: ' +id + err)
+            () => new Error('SquadService.deletePark(): error deleting squad: ' +id + err)
           );
         })
         );
