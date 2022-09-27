@@ -40,7 +40,8 @@ export class SquadComponent implements OnInit {
           console.log(user.username);
           // this.squads = user.squads;
 
-          console.log(this.squads.length);
+
+          // console.log(this.squads.length);
 
 
           // console.log("Successfully retrieved user id " + user.id);
@@ -182,12 +183,12 @@ export class SquadComponent implements OnInit {
     })
   }
   updateSquad(squad: Squad) {
-    let id = this.loggedIn.id;
+    // let id = this.loggedIn.id;
     squad.active = true;
-    this.squadService.updateSquad(squad, id).subscribe({
+    console.log("In Update Squad Call! BEFORE HTTP");
+    this.squadService.updateSquad(squad, squad.id).subscribe({
       next: (squad) => {
-
-        this.updatedSquad = new Squad();
+        console.log("In Update Squad HTTP Call!");
         this.displayTable();
         this.load();
       },
@@ -195,24 +196,6 @@ export class SquadComponent implements OnInit {
         console.error(err);
 
       }
-    })
-  }
-  getAllGoals = (): void => {
-    this.goals = [];
-    let getDemGoals = this.getGoalBySquad;
-    this.squads.forEach(function (squad) {
-      console.log("Dat squad id: " + squad.id);
-      getDemGoals(squad);
-    })
-  }
-
-  getGoalBySquad = (squad: Squad): void => {
-    this.goalService.getGoalsBySquad(squad.id).subscribe({
-      next: (result) => {
-        squad.goals = result;
-        console.log("gol num:" + this.goals.length);
-      }
-    })
-
-  }
+    });
+}
 }
