@@ -2,8 +2,8 @@
 
 <div *ngIf="loggedIn">
   <p>Username: {{loggedIn.username}}</p>
-  <p>Number of Active Goals: {{loggedIn.goals.length}}</p>
-  <div *ngFor="let squad of squads">
+  <p>Number of Active Goals: {{goals.length}}</p>
+  <div *ngFor="let squad of squads | active">
     <p>Squad {{squad.id}}: {{squad.name}}</p>
     <table>
       <thead>
@@ -16,12 +16,13 @@
         </tr>
       </thead>
       <tbody>
-        <tr *ngFor="let goal of squad.goals">
-          <td>{{goal.title}}</td>
-          <td>{{goal.description}}</td>
-          <td>{{goal.completed}}</td>
-          <td>{{goal.endDate}}</td>
-          <td>{{goal.creator}}</td>
+        <tr *ngFor="let goal of squad.goals | activeGoals">
+          <td (click)="updateGoal = true; goalToUpdate = goal">{{goal.title}}</td>
+          <td (click)="updateGoal = true; goalToUpdate = goal">{{goal.description}}</td>
+          <td (click)="updateGoal = true; goalToUpdate = goal">{{goal.completed}}</td>
+          <td (click)="updateGoal = true; goalToUpdate = goal">{{goal.endDate}}</td>
+          <td (click)="updateGoal = true; goalToUpdate = goal">{{goal.creator}}</td>
+          <td><button (click)="delete(goal.id)" style="background-color:red; color: white">X</button></td>
         </tr>
       </tbody>
     </table>
@@ -31,8 +32,8 @@
 <div>
   <form *ngIf="addGoal">
    <label>Squad: </label>
-    <select name="squad" id="squad" [(ngModel)]="squadName">
-      <option  *ngFor="let squad of squads">{{squad.name}}</option>
+    <select name="squad" id="squad" [(ngModel)]="squadId">
+      <option *ngFor="let squad of squads" [value]="squad.id">{{squad.name}}</option>
     </select><br>
     <label>Title: </label>
     <input type="text" name="title" [(ngModel)]="newGoal.title"><br>
@@ -44,12 +45,30 @@
   </form>
 
 
-  <form *ngIf="!addGoal && squads.length > 0">
+  <form *ngIf="!addGoal && !updateGoal && squads.length > 0">
     <button (click)="addGoal = true">Add Goal</button>
   </form>
 </div>
 
-{{newGoal | json}}
+<div>
+  <form *ngIf="updateGoal">
+   <label>Squad: </label>
+    <select name="squad" id="squad" [(ngModel)]="goalToUpdate.squads">
+      <option *ngFor="let squad of squads">{{squad}}</option>
+    </select><br>
+    <label>Title: </label>
+    <input type="text" name="title" [(ngModel)]="goalToUpdate.title"><br>
+    <label>Description: </label>
+    <textarea rows="2" cols="40" name="description" [(ngModel)]="goalToUpdate.description"></textarea><br>
+    <label for="completed">Completed: </label>
+    <input type="checkbox" id="completed" name="completed" [(ngModel)]="goalToUpdate.completed"/>
+    <label>End Date: </label>
+    <input type="datetime" name="endDate" [(ngModel)]="goalToUpdate.endDate"><br>
+    <button (click)="doUpdateGoal(goalToUpdate); updateGoal = false;">Submit</button>
+  </form>
+</div>
+
+{{squads | json}}
 
 
 

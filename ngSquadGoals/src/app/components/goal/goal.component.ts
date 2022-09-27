@@ -23,8 +23,11 @@ export class GoalComponent implements OnInit {
   squads: Squad[] = [];
   goals: Goal[] = [];
   newGoal: Goal = new Goal();
+  goalToUpdate: Goal = new Goal();
   addGoal: boolean = false;
+  updateGoal: boolean = false;
   squadName: string = '';
+  squadId: number = 0;
 
   ngOnInit(): void {
     this.load();
@@ -59,21 +62,39 @@ export class GoalComponent implements OnInit {
   createGoal(goal: Goal): void {
     goal.creator = this.loggedIn;
     goal.active = true;
-    let currentSquadName = this.squadName;
+    // let currentSquadName = this.squadName;
     // goal.squads = getSquadByName(this.squadName);
     // goal.squads.push(this.squads[0]);
-    this.squads.forEach(function (squad) {
-      if (squad.name === currentSquadName) {
-      goal.squads = [];
-      goal.squads.push(squad);
-      }
-    })
-    console.log("SquadName: " + this.squadName);
-    console.log("Num Squads: " + goal.squads.length)
+    // this.squads.forEach(function (squad) {
+    //   if (squad.name === currentSquadName) {
+    //   goal.squads = [];
+    //   goal.squads.push(squad);
+    //   }
+    // })
+    // console.log("SquadName: " + this.squadName);
+    // console.log("Num Squads: " + goal.squads.length)
+    let squad: Squad = new Squad();
+    squad.id = this.squadId;
+    goal.squads.push(squad);
     this.goalService.createGoal(goal).subscribe({
 
       next: (result) => {
         this.newGoal = new Goal();
+        // this.newGoal.creator = this.loggedIn;
+        this.load();
+      },
+      error: (nojoy) => {
+        console.error('error creating goal:');
+        console.error(nojoy);
+      },
+    });
+  }
+
+  doUpdateGoal(goal: Goal): void {
+    this.goalService.updateGoal(goal, goal.id).subscribe({
+
+      next: (result) => {
+        this.goalToUpdate = new Goal();
         // this.newGoal.creator = this.loggedIn;
         this.load();
       },
@@ -118,6 +139,17 @@ export class GoalComponent implements OnInit {
 
   }
 
-  // getSquadByName = (name: string):
+  delete = (id: number): void => {
+    this.goalService.deleteGoal(id).subscribe({
+
+      next: (result) => {
+        this.load();
+      },
+      error: (nojoy) => {
+        console.error('error creating goal:');
+        console.error(nojoy);
+      },
+    });
+  }
 
 }

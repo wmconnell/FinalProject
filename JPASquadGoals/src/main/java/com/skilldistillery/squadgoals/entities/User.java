@@ -41,7 +41,7 @@ public class User {
 	private List<Review> reviews;
 	@ManyToMany
 	@JoinTable(name = "user_has_squad", joinColumns = @JoinColumn(name = "user_id"), inverseJoinColumns = @JoinColumn(name = "squad_id"))
-	@JsonIgnoreProperties({"users", "leader"})
+	@JsonIgnoreProperties({"users", "leader", "goals"})
 //	@JsonIgnore
 	private List<Squad> squads;
 	@ManyToMany
@@ -73,6 +73,7 @@ public class User {
 	private List<Goal> goalsCreated;
 	@OneToMany
 	@JoinColumn(name = "leader_id")
+	@JsonIgnore
 	private List<Squad> squadsCreated;
 	
 
@@ -80,6 +81,14 @@ public class User {
 
 	}
 	
+	public List<Squad> getSquadsCreated() {
+		return squadsCreated;
+	}
+
+	public void setSquadsCreated(List<Squad> squadsCreated) {
+		this.squadsCreated = squadsCreated;
+	}
+
 	public LocalDateTime getCreateDate() {
 		return createDate;
 	}
