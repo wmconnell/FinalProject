@@ -74,8 +74,11 @@ export class GoalComponent implements OnInit {
     // console.log("SquadName: " + this.squadName);
     // console.log("Num Squads: " + goal.squads.length)
     let squad: Squad = new Squad();
+    console.log("This.squadId = " + this.squadId);
     squad.id = this.squadId;
+    goal.squads = [];
     goal.squads.push(squad);
+    console.log("This squad's ID: " + squad.id);
     this.goalService.createGoal(goal).subscribe({
 
       next: (result) => {

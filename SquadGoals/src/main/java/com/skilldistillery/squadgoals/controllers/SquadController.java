@@ -68,12 +68,14 @@ public class SquadController {
 		if (authService.isLoggedInUser(principal.getName())) {
 			try {
 				System.out.println("IN SQUAD CONTROLLER CREATE");
-				for (User user : squad.getUsers()) {
-					System.out.println(user.getUsername());
-					System.out.println(user.getId());
-				}
+//				System.out.println(squad.getUsers());
+//				for (User user : squad.getUsers()) {
+//					System.out.println(user.getUsername());
+//					System.out.println(user.getId());
+//				}
 				System.out.println("IN SQUAD CONTROLLER CREATE");
 				created = squadService.create(principal.getName(), squad);
+				System.out.println(created);
 				res.setStatus(201);
 				StringBuffer url = req.getRequestURL();
 				url.append("/").append(created.getId());
