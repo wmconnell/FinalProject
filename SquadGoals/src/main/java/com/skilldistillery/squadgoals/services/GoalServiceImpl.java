@@ -28,7 +28,7 @@ public class GoalServiceImpl implements GoalService {
 	@Override
 	public Goal create(String username, Goal goal) {
 		try {
-			System.out.println("***IN SERVICEIMPL*** Num Squads: " + goal.getSquads().size());
+			System.out.println("***IN GOAL SERVICEIMPL*** Num Squads: " + goal.getSquads().size());
 			List<Squad> squads = new ArrayList<>();
 			for (Squad squad : goal.getSquads()) {
 				Optional<Squad> squadOpt = squadRepo.findById(squad.getId());
