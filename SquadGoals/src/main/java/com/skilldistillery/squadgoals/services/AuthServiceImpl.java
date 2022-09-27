@@ -113,6 +113,10 @@ public class AuthServiceImpl implements AuthService {
 		return goalRepo.existsById(goalId);
 	}
 	
+	public boolean squadExists(int squadId) {
+		return squadRepo.existsById(squadId);
+	}
+	
 	public boolean reviewExists(int goalId, int userId) {
 		ReviewId rid = new ReviewId();
 		rid.setGoalId(goalId);
@@ -174,6 +178,15 @@ public class AuthServiceImpl implements AuthService {
 	public Task getTask(int taskId) {
 		Optional<Task> taskOpt = taskRepo.findById(taskId);
 		return taskOpt.isPresent() ? taskOpt.get() : null;
+	}
+	
+	public Squad getSquad(int squadId) {
+		Optional<Squad> squadOpt = squadRepo.findById(squadId);
+		return squadOpt.isPresent() ? squadOpt.get() : null;
+	}
+	
+	public boolean squadNameUnique(String squadName) {
+		return !squadRepo.existsByName(squadName);
 	}
 	
 	public boolean assignedToTask(String username, int taskId) {

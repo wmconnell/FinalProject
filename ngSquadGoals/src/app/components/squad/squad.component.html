@@ -8,7 +8,7 @@
       <th>Members </th>
     </thead>
   <tbody *ngFor="let squad of squads |active">
-<tr><td (click)="select(squad.id)">{{squad.name}}</td>
+<tr (click)="selectedSquad = squad"><td>{{squad.name}}</td>
   <td>{{squad.leader!.username}}</td>
   <td>{{squad.users.length}}</td></tr>
 </tbody>
@@ -65,15 +65,15 @@
 <div *ngIf="selectedSquad && editSquad">
   <form >
     <br>
-    <input type="hidden" name="id" [(ngModel)]="updatedSquad.id">
+    <input type="hidden" name="id" [(ngModel)]="selectedSquad.id">
     <label>Squad Name:</label>
-    <input type="text" name="name" [(ngModel)]="updatedSquad.name">
+    <input type="text" name="name" [(ngModel)]="selectedSquad.name">
     <br>
     <label>Squad Bio:</label>
-    <input type="text" name="bio" [(ngModel)]="updatedSquad.bio">
+    <input type="text" name="bio" [(ngModel)]="selectedSquad.bio">
     <br>
 
-    <button class="btn btn-success" (click)="updateSquad(updatedSquad)">Submit</button>
+    <button class="btn btn-success" (click)="updateSquad(selectedSquad)">Submit</button>
     <button class="btn btn-primary" (click)="displayTable()">Back</button>
 
 
