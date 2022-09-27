@@ -41,8 +41,8 @@ public class User {
 	private List<Review> reviews;
 	@ManyToMany
 	@JoinTable(name = "user_has_squad", joinColumns = @JoinColumn(name = "user_id"), inverseJoinColumns = @JoinColumn(name = "squad_id"))
-//	@JsonIgnoreProperties({"users"})
-	@JsonIgnore
+	@JsonIgnoreProperties({"users", "leader"})
+//	@JsonIgnore
 	private List<Squad> squads;
 	@ManyToMany
 	@JoinTable(name = "user_has_goal", joinColumns = @JoinColumn(name = "user_id"), inverseJoinColumns = @JoinColumn(name = "goal_id"))

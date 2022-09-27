@@ -55,6 +55,7 @@ public class Goal {
     private List<User> users;
     @ManyToMany(mappedBy="goals")
     @JsonIgnoreProperties({"goals"})
+//    @JsonIgnore
     private List<Squad> squads;
     @ManyToMany(mappedBy="goals")
     @JsonIgnoreProperties({"goals"})
