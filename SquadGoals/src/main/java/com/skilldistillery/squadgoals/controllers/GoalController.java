@@ -35,7 +35,7 @@ public class GoalController {
 
 	@PostMapping("goals")
 	public Goal create(@RequestBody Goal goal, HttpServletRequest req, HttpServletResponse res, Principal principal) {
-		System.out.println(" ***IN CONTROLLER*** Num squads: " + goal.getSquads().size());
+//		System.out.println(" ***IN CONTROLLER*** Num squads: " + goal.getSquads().size());
 		Goal created = null;
 		// ACCESS RULES:
 		// Users may only create a goal for a squad to which they belong.
@@ -47,6 +47,7 @@ public class GoalController {
 							|| authService.isAdmin(principal.getName())) {
 						try {
 							goal.setCreator(authService.getUser(principal.getName()));
+							System.out.print("JUST ADDED CREATOR TO GOAL");
 							created = goalService.create(principal.getName(), goal);
 							if (created == null) {
 								res.setStatus(400);

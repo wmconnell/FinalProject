@@ -54,7 +54,7 @@ public class Goal {
     @JsonIgnoreProperties({"goals", "goalsCreated"})
     private List<User> users;
     @ManyToMany(mappedBy="goals")
-    @JsonIgnoreProperties({"goals"})
+    @JsonIgnoreProperties({"users", "goals", "tasks", "tags", "badges", "squadMessages", "profilePic", "leader"})
 //    @JsonIgnore
     private List<Squad> squads;
     @ManyToMany(mappedBy="goals")
