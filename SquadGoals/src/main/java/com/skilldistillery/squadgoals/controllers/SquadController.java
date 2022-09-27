@@ -24,7 +24,11 @@ import com.skilldistillery.squadgoals.services.SquadService;
 
 @RestController
 @RequestMapping(path = "api")
+<<<<<<< HEAD
 @CrossOrigin({"*", "http://localhost:4250"})
+=======
+@CrossOrigin({"*", "http://localhost:4200"})
+>>>>>>> e191efb350d0a0384db2ca7e817cdcc5ef03cf88
 public class SquadController {
 
 	@Autowired
@@ -93,7 +97,20 @@ public class SquadController {
 			res.setStatus(400);
 			e.printStackTrace();
 		}
+		System.out.println(updated.getUsers() + " In controller!!!!!!");
 		return updated;
+	}
+	@GetMapping("squads/{id}/{memberId}")
+	public void addMember(HttpServletRequest req, HttpServletResponse res, @PathVariable int id, @PathVariable int memberId,
+			Principal principal) {
+		
+		try {
+			squadService.addMemberToSquad(id, memberId, principal.getName());
+			res.setStatus(200);
+		} catch (Exception e) {
+			res.setStatus(400);
+			e.printStackTrace();
+		}
 	}
 
 	@DeleteMapping("squads/{id}")

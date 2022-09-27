@@ -38,6 +38,7 @@ public class SquadServiceImpl implements SquadService {
 				squad.setProfilePic(newImage);
 				List<User> users = new ArrayList<>(squad.getUsers());
 				squad.setUsers(new ArrayList<>());
+				squad.setActive(true);
 				squad = squadRepo.saveAndFlush(squad);
 					
 				for (User user : users) {
@@ -110,12 +111,77 @@ public class SquadServiceImpl implements SquadService {
 	}
 
 	//	UPDATE
+	@SuppressWarnings("unchecked")
 	//
 	//	This update method allows for a partially defined entity to
 	//	be passed as an argument. The method then simply uses this partially
 	//	defined entity to overwrite any permissible fields of the target
 	//	entity. This is achieved via reflection, as seen in the use of
 	//	the Field class and the getDeclaredFields() method, inter alia.
+//	@Override
+//	public Squad update(String username, int squadId, Squad squad) {
+//		//	A user with role "member" can only update a squad to which they belong.
+//		//	A user with role "admin" can update any squad.
+//		System.out.println("**** UPDATE SQUAD ****");
+//		System.out.println(squad.getUsers());
+//		System.out.println("**** UPDATE SQUAD ****");
+//		if (isUser(username) && (belongsToSquad(username, squadId) || isAdmin(username))) {
+//			Optional<Squad> squadOpt = squadRepo.findById(squadId);
+//			Squad toUpdate = null;
+//			//	
+//			if (squadOpt.isPresent()) {
+//				toUpdate = squadOpt.get();
+//				Field[] fields = squad.getClass().getDeclaredFields();
+////				for (Field field : fields) {
+////					field.setAccessible(true);
+////				try {
+////					System.out.println(field +":" + field.get(squad));
+////				} catch (IllegalArgumentException e) {
+////					// TODO Auto-generated catch block
+////					System.out.println(field +"does not exist");
+////				} catch (IllegalAccessException e) {
+////					// TODO Auto-generated catch block
+////					System.out.println(field +"does not exist");
+////				}
+////				}
+//					if(squad.getUsers().size() > 0) {
+//						for (User user : squad.getUsers()) {
+//							user.addSquad(squad);
+//							
+//						}
+//					}
+//					for (Field field : fields) {
+//					field.setAccessible(true);
+//					Object value = null;
+//					try {
+//						value = field.get(squad);
+//					} catch (IllegalAccessException iae) {
+//						System.out.println(
+//								"SquadServiceImpl.update() - Illegal Access Exception: Cannot get " + field.getName());
+//					} catch (Exception e) {
+//						e.printStackTrace();
+//					}
+//					if (value != null &&
+//							!field.getName().equals("id") &&
+//							!field.getName().equals("createdDate")) {
+//						try {
+//						
+//							System.out.println(field.getName() + ":" + value);
+//							field.set(toUpdate, value);
+//						} catch (IllegalAccessException iae) {
+//							System.out.println("SquadServiceImpl.update() - Illegal Access Exception: Cannot set "
+//									+ field.getName());
+//						} catch (Exception e) {
+//							e.printStackTrace();
+//						}
+//					}
+//				}
+//				System.out.println("*****");
+//				return squadRepo.saveAndFlush(toUpdate);
+//			}
+//		}
+//		return null;
+//	}
 	@Override
 	public Squad update(String username, int squadId, Squad squad) {
 		//	A user with role "member" can only update a squad to which they belong.
@@ -212,4 +278,28 @@ public class SquadServiceImpl implements SquadService {
 		}
 		return false;
 	}
+
+	@Override
+	public void addMemberToSquad(int squadId, int memberId, String username) {
+		
+		
+	
+	if (isUser(username) && (belongsToSquad(username, squadId) || isAdmin(username))) {
+		Optional<Squad> squadOpt = squadRepo.findById(squadId);
+		Squad toUpdate = null;
+		//	
+		if (squadOpt.isPresent()) {
+			toUpdate = squadOpt.get();
+			Optional<User> userOpt = userRepo.findById(memberId);
+			if(userOpt.isPresent()) {
+				User user = userOpt.get();
+						user.addSquad(toUpdate);
+												
+				}
+		}
+			squadRepo.saveAndFlush(toUpdate);
+		}
+	
+
+}
 }

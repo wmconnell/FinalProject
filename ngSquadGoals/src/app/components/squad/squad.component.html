@@ -1,1 +1,76 @@
-<p>squad works!</p>
+<h1>Your Squads</h1>
+<!-- Table displaying all Squads -->
+<div *ngIf="!selectedSquad && !addSquad && !addmember">
+  <table class="table table-striped table-hover">
+    <thead>
+      <th>Name </th>
+      <th>Created  </th>
+      <th>Members </th>
+    </thead>
+  <tbody *ngFor="let squad of squads |active">
+<tr><td (click)="select(squad.id)">{{squad.name}}</td><td>{{squad.createDate}}</td><td>{{squad.users.length}}</td></tr>
+</tbody>
+  </table>
+  <button class="btn btn-success" (click)="addSquad = true">Add Squad</button>
+</div>
+
+<!-- single squad view -->
+<div *ngIf="selectedSquad && !editSquad">
+  <table>
+    <tr><td>{{selectedSquad.name}}</td></tr>
+    <tr><td>{{selectedSquad.bio}}</td></tr>
+    <tr><td>{{selectedSquad.leader}}</td></tr>
+    <tr *ngFor="let user of selectedSquad.users"><td>{{user.firstName + " " + user.lastName}}</td></tr>
+    <tr *ngFor="let goal of selectedSquad.goals"><td>{{goal}}</td></tr>
+  </table>
+  <button class="btn btn-success" (click)="addmember = true">Add Members</button>
+  <button class="btn btn-warning" (click)="editSquad = true">Edit</button>
+  <button class="btn btn-danger" (click)="deleteSquad(selectedSquad.id)">Delete</button>
+  <button class="btn btn-primary" (click)="displayTable()">Back</button>
+{{selectedSquad.users|json}}
+</div>
+
+<!-- Create Squad Form -->
+<div>
+<form *ngIf="!selectedSquad && addSquad">
+  <br>
+  <label>Squad Name:</label>
+  <input type="text" name="name" [(ngModel)]="newSquad.name">
+  <br>
+  <label>Squad Bio:</label>
+  <input type="text" name="bio" [(ngModel)]="newSquad.bio">
+  <br>
+  <label>Squad Picture:</label>
+  <input type="text" name="profilePic" [(ngModel)]="squadImage.url">
+  <br>
+  <button class="btn btn-success" (click)="createSquad()">Submit</button>
+  <button class="btn btn-primary" (click)="displayTable()">Back</button>
+</form>
+</div>
+
+<!-- add member to squad form -->
+<div *ngIf="selectedSquad && addmember">
+  <form>
+    <label>New Members User Name</label>
+    <input type="text" name="userName" [(ngModel)]="userName">
+    <button (click)="addMember(userName)"> Add Member</button>
+
+  </form>
+</div>
+<!-- update Squad Form -->
+<div *ngIf="selectedSquad && editSquad">
+  <form >
+    <br>
+    <label>Squad Name:</label>
+    <input type="text" name="name" [(ngModel)]="updatedSquad.name">
+    <br>
+    <label>Squad Bio:</label>
+    <input type="text" name="bio" [(ngModel)]="updatedSquad.bio">
+    <br>
+
+    <button class="btn btn-success" (click)="updateSquad(updatedSquad)">Submit</button>
+    <button class="btn btn-primary" (click)="displayTable()">Back</button>
+
+
+</form>
+</div>

@@ -10,14 +10,15 @@ import { environment } from 'src/environments/environment';
 })
 export class SquadService {
 
+
     // private baseUrl = 'http://localhost:8082/'; // adjust port to match server
-    private url = environment.baseUrl + '/api/squads'; // change 'todos' to your API path
-    constructor(private http: HttpClient, private authService: AuthService) { }
+    private url = environment.baseUrl + 'api/squads'; // change 'todos' to your API path
+    constructor(private http: HttpClient, private auth: AuthService) { }
 
     getHttpOptions() {
       let options = {
         headers: {
-          Authorization: 'Basic ' + this.authService.getCredentials(),
+          Authorization: 'Basic ' + this.auth.getCredentials(),
           'X-Requested-With': 'XMLHttpRequest',
         },
       };
@@ -25,7 +26,7 @@ export class SquadService {
     }
 
   index(){
-    return this.http.get<Squad[]>(this.url).pipe(catchError((err: any) => {
+    return this.http.get<Squad[]>(this.url, this.getHttpOptions()).pipe(catchError((err: any) => {
       console.log(err);
       return throwError(
         () => new Error('ParkService.index(): error retrieving squads: ' + err)
@@ -46,7 +47,7 @@ export class SquadService {
   }
 
   show(id:number){
-    return this.http.get<Squad>(this.url+'/'+id).pipe(catchError((err: any) => {
+    return this.http.get<Squad>(this.url+'/'+id,this.getHttpOptions()).pipe(catchError((err: any) => {
       console.log(err);
       return throwError(
         () => new Error('ParkService.show(): error retrieving squad: ' +id + err)
@@ -56,7 +57,7 @@ export class SquadService {
 
   }
   createSquad(squad: Squad){
-    return this.http.post<Squad>(this.url,squad).pipe(catchError((err: any) => {
+    return this.http.post<Squad>(this.url,squad, this.getHttpOptions()).pipe(catchError((err: any) => {
       console.log(err);
       return throwError(
         () => new Error('ParkService.createPark(): error creating squad: '  + err)
@@ -66,7 +67,17 @@ export class SquadService {
 
     }
     updateSquad(squad: Squad, id:number){
-      return this.http.put<Squad>(this.url+'/'+id,squad).pipe(catchError((err: any) => {
+      return this.http.put<Squad>(this.url+'/'+id,squad, this.getHttpOptions()).pipe(catchError((err: any) => {
+        console.log(err);
+        return throwError(
+          () => new Error('ParkService.updatePark(): error updating squad: '  + err)
+          );
+        })
+        );
+
+      }
+      addMember(squadId: number, memberId:number){
+      return this.http.get<Squad>(this.url+'/'+squadId+'/'+memberId, this.getHttpOptions()).pipe(catchError((err: any) => {
         console.log(err);
         return throwError(
           () => new Error('ParkService.updatePark(): error updating squad: '  + err)
@@ -76,7 +87,7 @@ export class SquadService {
 
       }
       deleteSquad(id:number){
-        return this.http.delete<Squad>(this.url+'/'+id).pipe(catchError((err: any) => {
+        return this.http.delete<Squad>(this.url+'/'+id, this.getHttpOptions()).pipe(catchError((err: any) => {
           console.log(err);
           return throwError(
             () => new Error('SquadService.deletePark(): error deleting squad: ' +id + err)
@@ -87,6 +98,5 @@ export class SquadService {
       }
 
     }
-
 
 

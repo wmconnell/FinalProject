@@ -18,4 +18,5 @@ public interface SquadService {
 	Squad update(String username, int squadId, Squad squad);
 	//	DELETE
 	boolean disable(String username, int squadId);
+	void addMemberToSquad(int id, int memberId, String userName);
 }

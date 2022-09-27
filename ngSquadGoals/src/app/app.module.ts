@@ -22,6 +22,7 @@ import { ReviewComponent } from './components/review/review.component';
 import { SquadComponent } from './components/squad/squad.component';
 import { TagComponent } from './components/tag/tag.component';
 import { TaskComponent } from './components/task/task.component';
+import { ActivePipe } from './pipes/active.pipe';
 
 @NgModule({
   declarations: [
@@ -40,7 +41,8 @@ import { TaskComponent } from './components/task/task.component';
     ReviewComponent,
     SquadComponent,
     TagComponent,
-    TaskComponent
+    TaskComponent,
+    ActivePipe
   ],
   imports: [
     BrowserModule,
