@@ -58,8 +58,9 @@ export class SquadComponent implements OnInit {
     console.log("load called");
 
     this.squadService.index().subscribe({
-      next: (squad) => {
-        this.squads = squad;
+      next: (squads) => {
+
+        this.squads = squads;
 
         // this.getAllGoals();
         // console.log(this.squads.length);
