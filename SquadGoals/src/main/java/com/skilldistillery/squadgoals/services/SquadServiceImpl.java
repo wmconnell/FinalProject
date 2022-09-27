@@ -109,6 +109,23 @@ public class SquadServiceImpl implements SquadService {
 		}
 		return null;
 	}
+	
+	public Squad getSquadByName(String name) {
+		//	Any user may look up any squad.
+		//	TODO:	We will implement public/private visibility on the front end.
+		Squad squad = null;
+			try {
+//				Optional<Squad> squadOpt = squadRepo.findById(squadId);
+//				if (squadOpt.isPresent()) {
+//					return squadOpt.get();
+//				}
+				return squadRepo.findByName(name);
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		
+		return squad;
+	}
 
 	//	UPDATE
 	@SuppressWarnings("unchecked")

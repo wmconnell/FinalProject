@@ -46,6 +46,16 @@ export class SquadService {
   );
   }
 
+  getSquadByName(name: string) {
+    return this.http.get<Squad>(this.url + "/name/" + name, this.getHttpOptions()).pipe(catchError((err: any) => {
+      console.log(err);
+      return throwError(
+        () => new Error('SquadService.getSquadByName(): error retrieving squads: ' + err)
+      );
+    })
+  );
+  }
+
   show(id:number){
     return this.http.get<Squad>(this.url+'/'+id,this.getHttpOptions()).pipe(catchError((err: any) => {
       console.log(err);

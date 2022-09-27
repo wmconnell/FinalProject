@@ -11,6 +11,7 @@ public interface SquadService {
 	//	CREATE
 	Squad create(String username, Squad squad);
 	//	READ
+	Squad getSquadByName(String name);
 	Squad show(String username, int squadId);
 	List<Squad> index(String username);
 	List<Squad> squadsByUser(String username);
