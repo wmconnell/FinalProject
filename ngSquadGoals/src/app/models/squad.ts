@@ -1,3 +1,5 @@
+import { User } from "./user";
+
 export class Squad {
   id: number = 0;
   name: string = '';
@@ -11,20 +13,22 @@ export class Squad {
   badges: any[] = [];
   squadMessages: any[] = [];
   profilePic: any = null;
+  leader: User| null = null;
 
   constructor(
     id: number = 0,
-  name: string = '',
-  bio: string = '',
-  active: boolean = false,
-  createDate: Date | null = null,
-  users: any[] = [],
-  goals: any[] = [],
-  tasks: any[] = [],
-  tags: any[] = [],
-  badges: any[] = [],
-  squadMessages: any[] = [],
-  profilePic: any = null
+    name: string = '',
+    bio: string = '',
+    active: boolean = false,
+    createDate: Date | null = null,
+    users: any[] = [],
+    goals: any[] = [],
+    tasks: any[] = [],
+    tags: any[] = [],
+    badges: any[] = [],
+    squadMessages: any[] = [],
+    profilePic: any = null,
+    leader: User| null = null
   ) {
   this.id = id;
   this.name = name;
@@ -38,5 +42,6 @@ export class Squad {
   this.badges = badges;
   this.squadMessages = squadMessages;
   this.profilePic = profilePic;
+  this.leader = leader;
   }
 }
