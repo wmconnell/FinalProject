@@ -92,6 +92,8 @@ public class SquadServiceImpl implements SquadService {
 		}
 		return new ArrayList<>();
 	}
+	
+	
 
 	@Override
 	public Squad show(String username, int squadId) {
