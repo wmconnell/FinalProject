@@ -24,7 +24,7 @@ import com.skilldistillery.squadgoals.services.SquadService;
 
 @RestController
 @RequestMapping(path = "api")
-@CrossOrigin({"*", "http://localhost:4200"})
+@CrossOrigin({"*", "http://localhost:4250"})
 public class SquadController {
 
 	@Autowired
@@ -36,6 +36,11 @@ public class SquadController {
 	@GetMapping("squads")
 	public List<Squad> index(HttpServletRequest req, HttpServletResponse res, Principal principal) {
 		return squadService.index(principal.getName());
+	}
+	
+	@GetMapping("squads/user")
+	public List<Squad> squadsByUser(HttpServletRequest req, HttpServletResponse res, Principal principal) {
+		return squadService.squadsByUser(principal.getName());
 	}
 
 	@GetMapping("squads/{id}")

@@ -1,41 +1,55 @@
 <h1>Goals!</h1>
 
-<div name="myGoals">
-  <table *ngIf="loggedIn">
-    <tr><td>Username: {{loggedIn.username}}</td></tr>
-    <tr><td>Number of Active Goals: {{loggedIn.goals.length}}</td></tr>
-    <tr *ngFor="let goal of loggedIn.goals">
-      <td>Goal: {{goal.title}}</td>
-      <td>Description: {{goal.description}}</td>
-      <td>Completed: {{goal.completed}}</td>
-      <td>End Date: {{goal.endDate}}</td>
-      <td>Creator: {{goal.creator}}</td>
-    </tr>
-
-      </table>
+<div *ngIf="loggedIn">
+  <p>Username: {{loggedIn.username}}</p>
+  <p>Number of Active Goals: {{loggedIn.goals.length}}</p>
+  <div *ngFor="let squad of squads">
+    <p>Squad {{squad.id}}: {{squad.name}}</p>
+    <table>
+      <thead>
+        <tr>
+          <th>Goal</th>
+          <th>Description</th>
+          <th>Completed</th>
+          <th>End Date</th>
+          <th>Creator</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let goal of squad.goals">
+          <td>{{goal.title}}</td>
+          <td>{{goal.description}}</td>
+          <td>{{goal.completed}}</td>
+          <td>{{goal.endDate}}</td>
+          <td>{{goal.creator}}</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
 </div>
 
 <div>
   <form *ngIf="addGoal">
-    <!-- <label>Squad: </label> -->
-    <!-- <select name="squad" id="squad" *ngFor="let squad of loggedIn.squads">
-      <option [(ngModel)]="newGoal.squads">{{squad}}</option>
-    </select> -->
+   <label>Squad: </label>
+    <select name="squad" id="squad" [(ngModel)]="newGoal.squads">
+      <option  *ngFor="let squad of squads">{{squad}}</option>
+    </select><br>
     <label>Title: </label>
     <input type="text" name="title" [(ngModel)]="newGoal.title"><br>
     <label>Description: </label>
     <textarea rows="2" cols="40" name="description" [(ngModel)]="newGoal.description"></textarea><br>
     <label>End Date: </label>
     <input type="datetime" name="endDate" [(ngModel)]="newGoal.endDate"><br>
-    <button (click)="createGoal(newGoal)">Submit</button>
+    <button (click)="createGoal(newGoal); addGoal = false;">Submit</button>
   </form>
 
-  <form *ngIf="!addGoal">
+
+  <form *ngIf="!addGoal && squads.length > 0">
     <button (click)="addGoal = true">Add Goal</button>
   </form>
 </div>
 
-{{newGoal | json}}
+{{squads | json}}
 
 
 

@@ -74,6 +74,24 @@ public class SquadServiceImpl implements SquadService {
 		}
 		return new ArrayList<>();
 	}
+	
+	@Override
+	public List<Squad> squadsByUser(String username) {
+		//	Any user may retrieve a list of all squads.
+		//	TODO:	We will implement public/private visibility on the front end.
+		//	TODO: 	Consider whether it would be better to instead
+		//	create many more specific index methods, such as
+		//		- showAllActiveSquads()
+		//		- showAllAttendingSquads(int goalId);
+		//	This may be advantageous because it is a leaner approach.
+		//	Once the user base grows enough, the level of data transfer
+		//	could slow the site. In addition, it may be better for security
+		//	since its precision means that less data is available at any given time.
+		if (isUser(username)) {
+			return squadRepo.findSquadByUsers_Username(username);
+		}
+		return new ArrayList<>();
+	}
 
 	@Override
 	public Squad show(String username, int squadId) {

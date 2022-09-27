@@ -16,7 +16,7 @@ export class AuthService {
 
   register(user: User): Observable<User> {
     // Create POST request to register a new account
-    return this.http.post<User>(this.baseUrl + '/register', user).pipe(
+    return this.http.post<User>(this.baseUrl + 'register', user).pipe(
       catchError((err: any) => {
         console.log(err);
         return throwError(
@@ -38,7 +38,7 @@ export class AuthService {
     };
 
     // Create GET request to authenticate credentials
-    return this.http.get<User>(this.baseUrl + '/authenticate', httpOptions).pipe(
+    return this.http.get<User>(this.baseUrl + 'authenticate', httpOptions).pipe(
       tap((newUser) => {
         console.log(newUser);
 
@@ -75,7 +75,7 @@ export class AuthService {
       },
     };
     return this.http
-    .get<User>(environment.baseUrl + '/authenticate', httpOptions)
+    .get<User>(environment.baseUrl + 'authenticate', httpOptions)
     .pipe(
       catchError((err: any) => {
         console.log(err);
@@ -104,7 +104,7 @@ export class AuthService {
   }
 
   checkUsernameUnique(username: string): Observable<boolean> {
-    return this.http.get<boolean>(this.baseUrl + "/checkusernameunique/" + username).pipe(
+    return this.http.get<boolean>(this.baseUrl + "checkusernameunique/" + username).pipe(
       catchError((err: any) => {
         console.log(err);
         return throwError(

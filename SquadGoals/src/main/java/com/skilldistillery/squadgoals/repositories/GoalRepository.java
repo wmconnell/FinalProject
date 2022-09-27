@@ -9,4 +9,5 @@ import com.skilldistillery.squadgoals.entities.Goal;
 public interface GoalRepository extends JpaRepository<Goal, Integer> {
 	List<Goal> findAllByUsers_Username(String username);
 	Goal getGoalById(int id);
+	List<Goal> findGoalBySquads_Id(int squadId);
 }

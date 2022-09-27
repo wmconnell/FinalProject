@@ -123,6 +123,8 @@ public class AuthServiceImpl implements AuthService {
 	public boolean squadsExist(List<Squad> goalSquads) {
 		List<Squad> squads = new ArrayList<>();
 		System.out.println("Empty squad list: " + squads);
+		System.out.println("Num Squads: " + goalSquads.size());
+		if (goalSquads.size() > 0) {
 		for (Squad squad : goalSquads) {
 			System.out.println("GoalSquad.getId() = " + squad.getId());
 			Optional<Squad> squadOpt = squadRepo.findById(squad.getId());
@@ -133,6 +135,7 @@ public class AuthServiceImpl implements AuthService {
 			}
 		}
 		System.out.println("Squads size = " + squads.size());
+	}
 		return squads.size() == goalSquads.size();
 	}
 	

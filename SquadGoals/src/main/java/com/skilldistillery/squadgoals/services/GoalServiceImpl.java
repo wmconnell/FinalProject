@@ -28,6 +28,7 @@ public class GoalServiceImpl implements GoalService {
 	@Override
 	public Goal create(String username, Goal goal) {
 		try {
+			System.out.println("***IN SERVICEIMPL*** Num Squads: " + goal.getSquads().size());
 			List<Squad> squads = new ArrayList<>();
 			for (Squad squad : goal.getSquads()) {
 				Optional<Squad> squadOpt = squadRepo.findById(squad.getId());
@@ -66,6 +67,20 @@ public class GoalServiceImpl implements GoalService {
 		// could slow the site. In addition, it may be better for security
 		// since its precision means that less data is available at any given time.
 		return goalRepo.findAll();
+	}
+	
+	@Override
+	public List<Goal> getGoalBySquad(int squadId) {
+		// TODO: Consider whether it would be better to instead
+		// create many more specific index methods, such as
+		// - showAllActiveGoals()
+		// - showAllAttendingGoals(int goalId)
+		// - showGoalsToWhichUserBelongs()
+		// This may be advantageous because it is a leaner approach.
+		// Once the user base grows enough, the level of data transfer
+		// could slow the site. In addition, it may be better for security
+		// since its precision means that less data is available at any given time.
+		return goalRepo.findGoalBySquads_Id(squadId);
 	}
 
 	@Override

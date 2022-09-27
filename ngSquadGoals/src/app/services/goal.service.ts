@@ -43,6 +43,19 @@ show(id:number){
   );
 
 }
+
+getGoalsBySquad(id: number) {
+  return this.http.get<Goal[]>(this.url+'/squads/'+id,this.getHttpOptions()).pipe(catchError((err: any) => {
+    console.log(err);
+    return throwError(
+      () => new Error('GoalService.show(): error retrieving goal: ' +id + err)
+    );
+  })
+  );
+}
+
+
+
 createGoal(goal: Goal){
   return this.http.post<Goal>(this.url, goal, this.getHttpOptions()).pipe(catchError((err: any) => {
     console.log(err);

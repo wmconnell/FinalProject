@@ -32,6 +32,7 @@ public class Squad {
 	private LocalDateTime createdDate;
 	@ManyToMany(mappedBy="squads")
 //	@JsonIgnoreProperties({"squads"})
+	@JsonIgnore
 	private List<User> users;
 	@ManyToMany
 	@JoinTable(name = "squad_has_goal", joinColumns = @JoinColumn(name = "squad_id"), inverseJoinColumns = @JoinColumn(name = "goal_id"))
@@ -50,13 +51,17 @@ public class Squad {
 	@JsonIgnore
 	private List<Badge> badges;
 	@OneToMany(mappedBy="squad")
+	@JsonIgnore
 	private List<SquadMessage> squadMessages;
 	@OneToOne
 	@JoinColumn(name="profile_image_id")
-	@JsonIgnoreProperties({"squad"})
+//	@JsonIgnoreProperties({"squad"})
+	@JsonIgnore
 	private Image profilePic;
 	@ManyToOne
 	@JoinColumn(name="leader_id")
+//	@JsonIgnoreProperties({"squad"})
+	@JsonIgnore
 	private User leader;
 
 
