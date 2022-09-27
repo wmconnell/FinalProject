@@ -19,6 +19,7 @@ export class SquadComponent implements OnInit {
   newSquad: Squad = new Squad();
   updatedSquad: Squad = new Squad();
   selectedSquad: Squad| null = null;
+  selectedMember: User| null = null;
   squadImage: Image = new Image();
   addSquad: boolean = false;
   editSquad: boolean = false;
@@ -74,6 +75,17 @@ export class SquadComponent implements OnInit {
         }
       })
   }
+  selectMember(id:number){
+      this.userService.show(id).subscribe({
+        next: (user) =>{
+          this.selectedMember = user;
+        },
+        error:(err) =>{
+          console.error(err);
+
+        }
+      })
+  }
 
   createSquad(){
     this.newSquad.users.push(this.loggedIn)
@@ -87,6 +99,7 @@ export class SquadComponent implements OnInit {
       next: (result) => {
 
         this.newSquad = new Squad();
+        this.displayTable()
       this.load();
     },
     error: (nojoy) => {
@@ -118,7 +131,7 @@ addMember(userName: string){
           this.squadService.addMember(squadId,memberId).subscribe({
             next: (squad) =>{
               this.newMember = new User();
-              this.selectedSquad = squad;
+              // this.selectedSquad = squad;
               this.load();
 
             },
@@ -156,7 +169,8 @@ deleteSquad(id: number){
   })
 }
 updateSquad(squad: Squad){
-  let id = squad.id;
+  let id = this.loggedIn.id;
+  squad.active = true;
   this.squadService.updateSquad(squad,id).subscribe({
     next:(squad) =>{
 

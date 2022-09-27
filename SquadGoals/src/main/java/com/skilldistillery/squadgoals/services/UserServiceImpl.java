@@ -97,6 +97,7 @@ public class UserServiceImpl implements UserService {
 					}
 				}
 			}
+			toUpdate.setActive(true);
 			return userRepo.saveAndFlush(toUpdate);
 		}
 		return null;
@@ -121,7 +122,7 @@ public class UserServiceImpl implements UserService {
 					return true;
 				} catch (Exception e) {
 					e.printStackTrace();
-				}
+				} 
 			}
 		return false;
 	}

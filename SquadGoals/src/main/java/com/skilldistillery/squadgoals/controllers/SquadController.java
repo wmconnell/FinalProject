@@ -100,7 +100,7 @@ public class SquadController {
 			res.setStatus(200);
 		} catch (Exception e) {
 			res.setStatus(400);
-			e.printStackTrace();
+			e.printStackTrace(); 
 		}
 		System.out.println(updated.getUsers() + " In controller!!!!!!");
 		return updated;

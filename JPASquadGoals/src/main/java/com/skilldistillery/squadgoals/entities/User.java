@@ -33,7 +33,7 @@ public class User {
 	private String lastName;
 	private String role;
 	private String bio;
-	private Boolean active;
+	private Boolean active; 
 	@Column(name = "create_date")
 	private LocalDateTime createDate;
 	@OneToMany(mappedBy = "user")

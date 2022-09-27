@@ -4,30 +4,41 @@
   <table class="table table-striped table-hover">
     <thead>
       <th>Name </th>
-      <th>Created  </th>
+      <th>Leader </th>
       <th>Members </th>
     </thead>
   <tbody *ngFor="let squad of squads |active">
-<tr><td (click)="select(squad.id)">{{squad.name}}</td><td>{{squad.createDate}}</td><td>{{squad.users.length}}</td></tr>
+<tr><td (click)="select(squad.id)">{{squad.name}}</td><td>{{squad.leader!.username}}</td><td>{{squad.users.length}}</td></tr>
 </tbody>
   </table>
   <button class="btn btn-success" (click)="addSquad = true">Add Squad</button>
 </div>
 
 <!-- single squad view -->
-<div *ngIf="selectedSquad && !editSquad">
+<div *ngIf="selectedSquad && !editSquad ">
   <table>
     <tr><td>{{selectedSquad.name}}</td></tr>
-    <tr><td>{{selectedSquad.bio}}</td></tr>
-    <tr><td>{{selectedSquad.leader}}</td></tr>
-    <tr *ngFor="let user of selectedSquad.users"><td>{{user.firstName + " " + user.lastName}}</td></tr>
+    <tr><td>About Us: {{selectedSquad.bio}}</td></tr>
+    <tr><td>Squad Leader: {{selectedSquad.leader!.username}}</td></tr>
+    <tr><td>Members:</td></tr>
+    <tr *ngFor="let user of selectedSquad.users"><td>{{user.username}}</td></tr>
+    <tr><td>Goals:</td></tr>
     <tr *ngFor="let goal of selectedSquad.goals"><td>{{goal}}</td></tr>
   </table>
   <button class="btn btn-success" (click)="addmember = true">Add Members</button>
   <button class="btn btn-warning" (click)="editSquad = true">Edit</button>
   <button class="btn btn-danger" (click)="deleteSquad(selectedSquad.id)">Delete</button>
   <button class="btn btn-primary" (click)="displayTable()">Back</button>
-{{selectedSquad.users|json}}
+</div>
+
+<!-- add member to squad form -->
+<div *ngIf="selectedSquad && addmember">
+  <form>
+    <label>New Members User Name</label>
+    <input type="text" name="userName" [(ngModel)]="userName">
+    <button (click)="addMember(userName)"> Add Member</button>
+
+  </form>
 </div>
 
 <!-- Create Squad Form -->
@@ -48,19 +59,11 @@
 </form>
 </div>
 
-<!-- add member to squad form -->
-<div *ngIf="selectedSquad && addmember">
-  <form>
-    <label>New Members User Name</label>
-    <input type="text" name="userName" [(ngModel)]="userName">
-    <button (click)="addMember(userName)"> Add Member</button>
-
-  </form>
-</div>
 <!-- update Squad Form -->
 <div *ngIf="selectedSquad && editSquad">
   <form >
     <br>
+    <input type="hidden" name="id" [(ngModel)]="updatedSquad.id">
     <label>Squad Name:</label>
     <input type="text" name="name" [(ngModel)]="updatedSquad.name">
     <br>
