@@ -25,7 +25,7 @@ export class GoalService {
   }
 
 index(){
-  return this.http.get<Goal[]>(this.url).pipe(catchError((err: any) => {
+  return this.http.get<Goal[]>(this.url, this.getHttpOptions()).pipe(catchError((err: any) => {
     console.log(err);
     return throwError(
       () => new Error('GoalService.index(): error retrieving goals: ' + err)
@@ -44,7 +44,7 @@ show(id:number){
 
 }
 createGoal(goal: Goal){
-  return this.http.post<Goal>(this.url,goal, this.getHttpOptions()).pipe(catchError((err: any) => {
+  return this.http.post<Goal>(this.url, goal, this.getHttpOptions()).pipe(catchError((err: any) => {
     console.log(err);
     return throwError(
       () => new Error('GoalService.createGoal(): error creating goal: '  + err)
@@ -54,7 +54,7 @@ createGoal(goal: Goal){
 
   }
   updateGoal(goal: Goal, id:number){
-    return this.http.put<Goal>(this.url+'/'+id,goal, this.getHttpOptions()).pipe(catchError((err: any) => {
+    return this.http.put<Goal>(this.url+'/'+id, goal, this.getHttpOptions()).pipe(catchError((err: any) => {
       console.log(err);
       return throwError(
         () => new Error('GoalService.updateGoal(): error updating goal: '  + err)
