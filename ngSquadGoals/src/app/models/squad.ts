@@ -13,7 +13,7 @@ export class Squad {
   badges: any[] = [];
   squadMessages: any[] = [];
   profilePic: any = null;
-  leader: User| null = null;
+  leader: User;
 
   constructor(
     id: number = 0,
@@ -28,7 +28,7 @@ export class Squad {
     badges: any[] = [],
     squadMessages: any[] = [],
     profilePic: any = null,
-    leader: User| null = null
+    leader: User = new User()
   ) {
   this.id = id;
   this.name = name;

@@ -7,6 +7,7 @@ import { AuthService } from 'src/app/services/auth.service';
 import { GoalService } from 'src/app/services/goal.service';
 import { SquadService } from 'src/app/services/squad.service';
 import { UserService } from 'src/app/services/user.service';
+import { Goal } from 'src/app/models/goal';
 
 @Component({
   selector: 'app-squad',
@@ -18,34 +19,36 @@ export class SquadComponent implements OnInit {
   loggedIn = new User()
   newSquad: Squad = new Squad();
   updatedSquad: Squad = new Squad();
-  selectedSquad: Squad| null = null;
-  selectedMember: User| null = null;
+  selectedSquad: Squad | null = null;
+  selectedMember: User | null = null;
   squadImage: Image = new Image();
   addSquad: boolean = false;
   editSquad: boolean = false;
   addmember: boolean = false;
   newMember: User = new User;
   userName: string = "";
+  goals: Goal[] = [];
+
 
   constructor(private userService: UserService, private auth: AuthService, private router: Router, private route: ActivatedRoute, private goalService: GoalService, private squadService: SquadService) { }
 
   ngOnInit(): void {
     this.auth.getLoggedInUser().subscribe(
       {
-      next: (user) => {
-        this.loggedIn = user;
-        console.log(user.username);
-        // this.squads = user.squads;
+        next: (user) => {
+          this.loggedIn = user;
+          console.log(user.username);
+          // this.squads = user.squads;
 
-        console.log(this.squads.length);
+          console.log(this.squads.length);
 
 
-        // console.log("Successfully retrieved user id " + user.id);
-      },
-      error: (err) => {
-        console.error("Unable to retrieve user: " + err);
+          // console.log("Successfully retrieved user id " + user.id);
+        },
+        error: (err) => {
+          console.error("Unable to retrieve user: " + err);
+        }
       }
-    }
     );
     this.load()
   }
@@ -57,6 +60,8 @@ export class SquadComponent implements OnInit {
     this.squadService.index().subscribe({
       next: (squad) => {
         this.squads = squad;
+
+        // this.getAllGoals();
         // console.log(this.squads.length);
       },
       error: (err) => {
@@ -65,30 +70,36 @@ export class SquadComponent implements OnInit {
       }
     });
   }
-  select(id:number){
-      this.squadService.show(id).subscribe({
-        next: (squad) =>{
-          this.selectedSquad = squad;
-        },
-        error:(err) =>{
-          console.error(err);
+  select(id: number) {
+    console.log("select is called");
 
-        }
-      })
+    this.squadService.show(id).subscribe({
+      next: (squad) => {
+        this.selectedSquad = squad;
+        // console.log(this.selectedSquad.leader)
+        console.log(squad.users)
+        console.log("test");
+
+      },
+      error: (err) => {
+        console.error(err);
+
+      }
+    })
   }
-  selectMember(id:number){
-      this.userService.show(id).subscribe({
-        next: (user) =>{
-          this.selectedMember = user;
-        },
-        error:(err) =>{
-          console.error(err);
+  selectMember(id: number) {
+    this.userService.show(id).subscribe({
+      next: (user) => {
+        this.selectedMember = user;
+      },
+      error: (err) => {
+        console.error(err);
 
-        }
-      })
+      }
+    })
   }
 
-  createSquad(){
+  createSquad() {
     // this.newSquad.users.push(this.loggedIn)
     console.log(this.loggedIn);
     console.log(this.loggedIn.id);
@@ -101,42 +112,42 @@ export class SquadComponent implements OnInit {
 
         this.newSquad = new Squad();
         this.displayTable()
-      this.load();
-    },
-    error: (nojoy) => {
-      console.error('Error creating squad');
-      console.error(nojoy);
-    },
-  });
-}
-displayTable(){
-  this.addSquad = false
-  this.selectedSquad = null;
-  this.addmember =false;
-  this.editSquad =false;
-}
-addMember(userName: string){
-  this.userService.showUser(userName).subscribe({
-      next: (user) =>{
+        this.load();
+      },
+      error: (nojoy) => {
+        console.error('Error creating squad');
+        console.error(nojoy);
+      },
+    });
+  }
+  displayTable() {
+    this.addSquad = false
+    this.selectedSquad = null;
+    this.addmember = false;
+    this.editSquad = false;
+  }
+  addMember(userName: string) {
+    this.userService.showUser(userName).subscribe({
+      next: (user) => {
         this.newMember = user;
         console.log(user);
 
-        if(this.selectedSquad){
+        if (this.selectedSquad) {
           console.log(this.newMember);
 
           this.selectedSquad!.users.push(this.newMember);
-          let squadId:number = this.selectedSquad!.id;
-          let memberId:number = this.newMember!.id;
+          let squadId: number = this.selectedSquad!.id;
+          let memberId: number = this.newMember!.id;
           console.log(this.selectedSquad);
 
-          this.squadService.addMember(squadId,memberId).subscribe({
-            next: (squad) =>{
+          this.squadService.addMember(squadId, memberId).subscribe({
+            next: (squad) => {
               this.newMember = new User();
               // this.selectedSquad = squad;
               this.load();
 
             },
-            error: (err) =>{
+            error: (err) => {
               console.error(err);
 
             }
@@ -147,42 +158,60 @@ addMember(userName: string){
         }
         // this.displayTable();
       },
-      error: (err) =>{
+      error: (err) => {
         console.log(err);
 
       }
     });
 
-}
-deleteSquad(id: number){
-  console.log(id);
+  }
+  deleteSquad(id: number) {
+    console.log(id);
 
-  this.squadService.deleteSquad(id).subscribe({
-    next: (squad)=>{
-      this.displayTable();
-      this.load();
+    this.squadService.deleteSquad(id).subscribe({
+      next: (squad) => {
+        this.displayTable();
+        this.load();
 
-    },
-    error:(err)=>{
-      console.error(err);
+      },
+      error: (err) => {
+        console.error(err);
 
-    }
-  })
-}
-updateSquad(squad: Squad){
-  let id = this.loggedIn.id;
-  squad.active = true;
-  this.squadService.updateSquad(squad,id).subscribe({
-    next:(squad) =>{
+      }
+    })
+  }
+  updateSquad(squad: Squad) {
+    let id = this.loggedIn.id;
+    squad.active = true;
+    this.squadService.updateSquad(squad, id).subscribe({
+      next: (squad) => {
 
-      this.updatedSquad = new Squad();
-      this.displayTable();
-      this.load();
-  },
-  error:(err) =>{
-    console.error(err);
+        this.updatedSquad = new Squad();
+        this.displayTable();
+        this.load();
+      },
+      error: (err) => {
+        console.error(err);
+
+      }
+    })
+  }
+  getAllGoals = (): void => {
+    this.goals = [];
+    let getDemGoals = this.getGoalBySquad;
+    this.squads.forEach(function (squad) {
+      console.log("Dat squad id: " + squad.id);
+      getDemGoals(squad);
+    })
+  }
+
+  getGoalBySquad = (squad: Squad): void => {
+    this.goalService.getGoalsBySquad(squad.id).subscribe({
+      next: (result) => {
+        squad.goals = result;
+        console.log("gol num:" + this.goals.length);
+      }
+    })
 
   }
-  })
-}
 }

@@ -28,6 +28,7 @@ export class GoalComponent implements OnInit {
   updateGoal: boolean = false;
   squadName: string = '';
   squadId: number = 0;
+  tasks: Task[] =[];
 
   ngOnInit(): void {
     this.load();

@@ -68,7 +68,7 @@ public class User {
 	@JsonIgnoreProperties({"user"})
 	private Image profilePic;
 	@OneToMany
-	@JoinColumn(name = "creator_id")
+	@JoinColumn(name = "creator_id") 
 	@JsonIgnore
 	private List<Goal> goalsCreated;
 	@OneToMany
