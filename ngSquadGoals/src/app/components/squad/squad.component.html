@@ -8,7 +8,10 @@
       <th>Members </th>
     </thead>
   <tbody *ngFor="let squad of squads |active">
-<tr (click)="select(squad.id)"><td>{{squad.name}}</td><td>{{squad.leader!.username}}</td><td>{{squad.users.length}}</td></tr>
+
+<tr><td (click)="select(squad.id)">{{squad.name}}</td>
+  <td>{{squad.leader!.username}}</td>
+  <td>{{squad.users.length}}</td></tr>
 </tbody>
   </table>
   <button class="btn btn-success" (click)="addSquad = true">Add Squad</button>
