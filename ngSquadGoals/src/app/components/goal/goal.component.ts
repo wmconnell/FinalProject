@@ -60,7 +60,8 @@ export class GoalComponent implements OnInit {
   }
 
   createGoal(goal: Goal): void {
-    goal.creator = this.loggedIn;
+    goal.creator = new User();
+    goal.creator.id = this.loggedIn.id;
     goal.active = true;
     // let currentSquadName = this.squadName;
     // goal.squads = getSquadByName(this.squadName);
