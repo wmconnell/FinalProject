@@ -62,7 +62,7 @@ public class Goal {
     private List<Image> images;
     @ManyToOne
     @JoinColumn(name="creator_id")
-    @JsonIgnoreProperties({"goalsCreated", "goals"})
+    @JsonIgnoreProperties({"goalsCreated", "goals", "squads"})
     private User creator;
     @OneToMany
     @JoinColumn(name="goal_id")
