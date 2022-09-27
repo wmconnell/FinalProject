@@ -51,6 +51,15 @@ public class SquadController {
 		}
 		return squad;
 	}
+	
+	@GetMapping("squads/name/{name}")
+	public Squad getSquadByName(HttpServletRequest req, HttpServletResponse res, @PathVariable String name, Principal principal) {
+		Squad squad = squadService.getSquadByName(name);
+		if (squad == null) {
+			res.setStatus(404);
+		}
+		return squad;
+	}
 
 	@PostMapping("squads")
 	public Squad create(@RequestBody Squad squad, HttpServletRequest req, HttpServletResponse res,

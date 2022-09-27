@@ -24,6 +24,7 @@ export class GoalComponent implements OnInit {
   goals: Goal[] = [];
   newGoal: Goal = new Goal();
   addGoal: boolean = false;
+  squadName: string = '';
 
   ngOnInit(): void {
     this.load();
@@ -58,7 +59,16 @@ export class GoalComponent implements OnInit {
   createGoal(goal: Goal): void {
     goal.creator = this.loggedIn;
     goal.active = true;
-    goal.squads.push(this.squads[0]);
+    let currentSquadName = this.squadName;
+    // goal.squads = getSquadByName(this.squadName);
+    // goal.squads.push(this.squads[0]);
+    this.squads.forEach(function (squad) {
+      if (squad.name === currentSquadName) {
+      goal.squads = [];
+      goal.squads.push(squad);
+      }
+    })
+    console.log("SquadName: " + this.squadName);
     console.log("Num Squads: " + goal.squads.length)
     this.goalService.createGoal(goal).subscribe({
 
@@ -108,5 +118,6 @@ export class GoalComponent implements OnInit {
 
   }
 
+  // getSquadByName = (name: string):
 
 }
