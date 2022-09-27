@@ -23,6 +23,7 @@ import { SquadComponent } from './components/squad/squad.component';
 import { TagComponent } from './components/tag/tag.component';
 import { TaskComponent } from './components/task/task.component';
 import { ActivePipe } from './pipes/active.pipe';
+import { ActiveGoalsPipe } from './pipes/active-goals.pipe';
 
 @NgModule({
   declarations: [
@@ -42,7 +43,8 @@ import { ActivePipe } from './pipes/active.pipe';
     SquadComponent,
     TagComponent,
     TaskComponent,
-    ActivePipe
+    ActivePipe,
+    ActiveGoalsPipe
   ],
   imports: [
     BrowserModule,
