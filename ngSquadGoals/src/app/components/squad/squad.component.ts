@@ -34,8 +34,9 @@ export class SquadComponent implements OnInit {
       next: (user) => {
         this.loggedIn = user;
         console.log(user.username);
-        this.squads = user.squads;
-        // console.log(this.squads.length);
+        // this.squads = user.squads;
+
+        console.log(this.squads.length);
 
 
         // console.log("Successfully retrieved user id " + user.id);
@@ -76,11 +77,11 @@ export class SquadComponent implements OnInit {
   }
 
   createSquad(){
-    this.newSquad.users.push(this.loggedIn)
+    // this.newSquad.users.push(this.loggedIn)
     console.log(this.loggedIn);
     console.log(this.loggedIn.id);
 
-    this.newSquad.leader = this.loggedIn
+    // this.newSquad.leader = this.loggedIn
     // this.newSquad.profilePic = this.squadImage;
 
     this.squadService.createSquad(this.newSquad).subscribe({

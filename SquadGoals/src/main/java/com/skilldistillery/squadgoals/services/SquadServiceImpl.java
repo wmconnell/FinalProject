@@ -36,19 +36,19 @@ public class SquadServiceImpl implements SquadService {
 				Image newImage = new Image("https://thepowerofthedream.org/wp-content/uploads/2015/09/generic-profile-picture.jpg", true);
 				newImage = imageRepo.saveAndFlush(newImage);
 				squad.setProfilePic(newImage);
-				List<User> users = new ArrayList<>(squad.getUsers());
-				squad.setUsers(new ArrayList<>());
+//				List<User> users = new ArrayList<>(squad.getUsers());
+//				squad.setUsers(new ArrayList<>());
 				squad.setActive(true);
-				squad = squadRepo.saveAndFlush(squad);
 					
-				for (User user : users) {
-					Optional<User> userOp = userRepo.findById(user.getId());
-					if (userOp.isPresent()) {
-						User managedUser = userOp.get();
+//				for (User user : users) {
+					User managedUser = userRepo.findByUsername(username);
+					if (managedUser != null) {
 						managedUser.addSquad(squad);
+						squad.setLeader(managedUser);
+						squad = squadRepo.saveAndFlush(squad);
 						userRepo.saveAndFlush(managedUser);
 					}
-				}
+//				}
 				return show(username, squad.getId());
 			}	catch (Exception e) {
 				e.printStackTrace();
