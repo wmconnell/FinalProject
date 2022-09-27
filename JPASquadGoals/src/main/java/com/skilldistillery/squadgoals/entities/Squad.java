@@ -60,8 +60,8 @@ public class Squad {
 	private Image profilePic;
 	@ManyToOne
 	@JoinColumn(name="leader_id")
-//	@JsonIgnoreProperties({"squads"})
-	@JsonIgnore
+	@JsonIgnoreProperties({"squads"})
+//	@JsonIgnore
 	private User leader;
 
 

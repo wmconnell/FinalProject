@@ -37,6 +37,7 @@ public class GoalController {
 	public Goal create(@RequestBody Goal goal, HttpServletRequest req, HttpServletResponse res, Principal principal) {
 //		System.out.println(" ***IN CONTROLLER*** Num squads: " + goal.getSquads().size());
 		Goal created = null;
+//		System.out.println(goal);
 		// ACCESS RULES:
 		// Users may only create a goal for a squad to which they belong.
 		// TODO: Make it so only a leader can create a goal
