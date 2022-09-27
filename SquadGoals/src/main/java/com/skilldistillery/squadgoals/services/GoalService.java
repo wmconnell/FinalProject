@@ -13,6 +13,7 @@ public interface GoalService {
 	//	READ
 	Goal show(String username, int goalId);
 	List<Goal> index(String username);
+	List<Goal> getGoalBySquad(int squadId);
 	//	UPDATE
 	Goal update(String username, int goalId, Goal goal);
 	//	DELETE

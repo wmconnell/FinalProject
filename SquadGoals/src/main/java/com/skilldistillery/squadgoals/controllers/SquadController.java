@@ -24,11 +24,7 @@ import com.skilldistillery.squadgoals.services.SquadService;
 
 @RestController
 @RequestMapping(path = "api")
-<<<<<<< HEAD
 @CrossOrigin({"*", "http://localhost:4250"})
-=======
-@CrossOrigin({"*", "http://localhost:4200"})
->>>>>>> e191efb350d0a0384db2ca7e817cdcc5ef03cf88
 public class SquadController {
 
 	@Autowired

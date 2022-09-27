@@ -44,7 +44,7 @@ export class GoalComponent implements OnInit {
       next: (user) => {
         this.loggedIn = user;
         console.log(user.goals.length)
-        this.getAllGoals();
+
         this.getSquads();
         // console.log("Successfully retrieved user id " + user.id);
       },
@@ -58,7 +58,8 @@ export class GoalComponent implements OnInit {
   createGoal(goal: Goal): void {
     goal.creator = this.loggedIn;
     goal.active = true;
-    goal.squads.push(this.loggedIn.squads)
+    goal.squads.push(this.squads[0]);
+    console.log("Num Squads: " + goal.squads.length)
     this.goalService.createGoal(goal).subscribe({
 
       next: (result) => {
@@ -77,8 +78,9 @@ export class GoalComponent implements OnInit {
   this.squadService.squadsByUser().subscribe({
     next: (result) => {
       this.squads = result;
+      this.getAllGoals();
       console.log(result);
-      console.log(this.squads);
+      // console.log("this.squads: " + this.squads);
     },
     error: (nojoy) => {
       console.error('error retrieving squads:');
@@ -88,24 +90,23 @@ export class GoalComponent implements OnInit {
   }
 
   getAllGoals = (): void => {
-    let user = this.loggedIn;
-    user.goals = [];
-    this.goalService.index().subscribe({
-      next: (result) => {
-        result.forEach(function (goal: Goal) {
-          console.log(goal.users.length)
-          if (goal.users) {
-          goal.users.forEach(function (goalUser: User) {
-            if (goalUser.id === user.id) {
-              user.goals.push(goal);
+    this.goals = [];
+    let getDemGoals = this.getGoalBySquad;
+    this.squads.forEach(function(squad) {
+      console.log("Dat squad id: " + squad.id);
+      getDemGoals(squad);
+  })
+}
 
-          }});
-        }
-        });
+  getGoalBySquad = (squad: Squad): void => {
+    this.goalService.getGoalsBySquad(squad.id).subscribe({
+      next: (result) => {
+        squad.goals = result;
+        console.log("gol num:" + this.goals.length);
       }
     })
-  }
 
+  }
 
 
 }

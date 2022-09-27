@@ -35,6 +35,7 @@ public class GoalController {
 
 	@PostMapping("goals")
 	public Goal create(@RequestBody Goal goal, HttpServletRequest req, HttpServletResponse res, Principal principal) {
+		System.out.println(" ***IN CONTROLLER*** Num squads: " + goal.getSquads().size());
 		Goal created = null;
 		// ACCESS RULES:
 		// Users may only create a goal for a squad to which they belong.
@@ -101,6 +102,18 @@ public class GoalController {
 			res.setHeader("Error", "Client must be logged in to perform this action");
 		}
 		return goal;
+	}
+	
+	@GetMapping("goals/squads/{id}")
+	public List<Goal> getGoalBySquad(@PathVariable int id, HttpServletRequest req, HttpServletResponse res, Principal principal) {
+		List<Goal> goals = new ArrayList<>();
+		if (authService.isLoggedInUser(principal.getName())) {
+			goals = goalService.getGoalBySquad(id);
+		} else {
+			res.setStatus(401);
+			res.setHeader("Error", "Client must be logged in to perform this action");
+		}
+		return goals;
 	}
 
 	@GetMapping("goals")
