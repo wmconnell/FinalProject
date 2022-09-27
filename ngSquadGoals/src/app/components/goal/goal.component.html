@@ -33,7 +33,7 @@
   <form *ngIf="addGoal">
    <label>Squad: </label>
     <select name="squad" id="squad" [(ngModel)]="squadId">
-      <option *ngFor="let squad of squads" [value]="squad.id">{{squad.name}}</option>
+      <option *ngFor="let squad of squads | active" [value]="squad.id">{{squad.name}}</option>
     </select><br>
     <label>Title: </label>
     <input type="text" name="title" [(ngModel)]="newGoal.title"><br>
@@ -54,7 +54,7 @@
   <form *ngIf="updateGoal">
    <label>Squad: </label>
     <select name="squad" id="squad" [(ngModel)]="goalToUpdate.squads">
-      <option *ngFor="let squad of squads">{{squad}}</option>
+      <option *ngFor="let squad of squads | active">{{squad}}</option>
     </select><br>
     <label>Title: </label>
     <input type="text" name="title" [(ngModel)]="goalToUpdate.title"><br>
