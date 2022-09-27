@@ -1,3 +1,4 @@
+import { AuthService } from 'src/app/services/auth.service';
 import { Squad } from './../models/squad';
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
@@ -10,8 +11,18 @@ import { environment } from 'src/environments/environment';
 export class SquadService {
 
     // private baseUrl = 'http://localhost:8082/'; // adjust port to match server
-    private url = environment.baseUrl + 'api/squads'; // change 'todos' to your API path
-    constructor(private http: HttpClient) { }
+    private url = environment.baseUrl + '/api/squads'; // change 'todos' to your API path
+    constructor(private http: HttpClient, private authService: AuthService) { }
+
+    getHttpOptions() {
+      let options = {
+        headers: {
+          Authorization: 'Basic ' + this.authService.getCredentials(),
+          'X-Requested-With': 'XMLHttpRequest',
+        },
+      };
+      return options;
+    }
 
   index(){
     return this.http.get<Squad[]>(this.url).pipe(catchError((err: any) => {
@@ -22,6 +33,18 @@ export class SquadService {
     })
   );
   }
+
+  squadsByUser(){
+    console.log(this.url + "/user");
+    return this.http.get<Squad[]>(this.url + "/user", this.getHttpOptions()).pipe(catchError((err: any) => {
+      console.log(err);
+      return throwError(
+        () => new Error('ParkService.index(): error retrieving squads: ' + err)
+      );
+    })
+  );
+  }
+
   show(id:number){
     return this.http.get<Squad>(this.url+'/'+id).pipe(catchError((err: any) => {
       console.log(err);

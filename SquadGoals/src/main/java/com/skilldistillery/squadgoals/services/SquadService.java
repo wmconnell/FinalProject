@@ -13,6 +13,7 @@ public interface SquadService {
 	//	READ
 	Squad show(String username, int squadId);
 	List<Squad> index(String username);
+	List<Squad> squadsByUser(String username);
 	//	UPDATE
 	Squad update(String username, int squadId, Squad squad);
 	//	DELETE

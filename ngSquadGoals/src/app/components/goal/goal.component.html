@@ -30,7 +30,8 @@
     <button (click)="createGoal(newGoal)">Submit</button>
   </form>
 
-  <form *ngIf="!addGoal">
+
+  <form *ngIf="!addGoal && squads.length > 0">
     <button (click)="addGoal = true">Add Goal</button>
   </form>
 </div>
