@@ -31,8 +31,8 @@ public class Squad {
 	@Column(name="created_date")
 	private LocalDateTime createdDate;
 	@ManyToMany(mappedBy="squads")
-//	@JsonIgnoreProperties({"squads", "password"})
-	@JsonIgnore
+	@JsonIgnoreProperties({"squads", "password"})
+//	@JsonIgnore
 	private List<User> users;
 	@ManyToMany
 	@JoinTable(name = "squad_has_goal", joinColumns = @JoinColumn(name = "squad_id"), inverseJoinColumns = @JoinColumn(name = "goal_id"))

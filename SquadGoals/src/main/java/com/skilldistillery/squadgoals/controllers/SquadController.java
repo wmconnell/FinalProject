@@ -104,7 +104,7 @@ public class SquadController {
 			res.setStatus(400);
 			e.printStackTrace();
 		}
-		System.out.println(updated.getUsers() + " In controller!!!!!!");
+//		System.out.println(updated.getUsers() + " In controller!!!!!!");
 		return updated;
 	}
 	@GetMapping("squads/{id}/{memberId}")
