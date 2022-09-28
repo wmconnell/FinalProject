@@ -2,6 +2,7 @@ import { UserService } from './services/user.service';
 import {HttpClientModule } from '@angular/common/http';
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
+import { MatIconModule } from '@angular/material/icon';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -24,6 +25,7 @@ import { TagComponent } from './components/tag/tag.component';
 import { TaskComponent } from './components/task/task.component';
 import { ActivePipe } from './pipes/active.pipe';
 import { ActiveGoalsPipe } from './pipes/active-goals.pipe';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 @NgModule({
   declarations: [
@@ -50,7 +52,9 @@ import { ActiveGoalsPipe } from './pipes/active-goals.pipe';
     BrowserModule,
     AppRoutingModule,
     FormsModule,
-    HttpClientModule
+    HttpClientModule,
+    MatIconModule,
+    BrowserAnimationsModule
   ],
 
     providers:  [
