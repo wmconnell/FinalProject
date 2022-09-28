@@ -15,7 +15,7 @@ export class GoalUserPipe implements PipeTransform {
     for(let goal of goals){
       console.log(goal.users.length);
 
-      for (let member of goal.users) {
+      for (let member of goal.squads) {
         console.log(member.id);
 
         if(member.id === user.id){

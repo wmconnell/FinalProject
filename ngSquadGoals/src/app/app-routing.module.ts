@@ -4,6 +4,7 @@ import { AboutComponent } from './components/about/about.component';
 import { GoalComponent } from './components/goal/goal.component';
 import { HomeComponent } from './components/home/home.component';
 import { LoginComponent } from './components/login/login.component';
+import { MygoalsComponent } from './components/mygoals/mygoals.component';
 import { NotFoundComponent } from './components/not-found/not-found.component';
 import { RegisterComponent } from './components/register/register.component';
 import { SquadComponent } from './components/squad/squad.component';
@@ -17,6 +18,7 @@ const routes: Routes = [
 { path: 'about', component: AboutComponent },
 { path: 'user', component: UserComponent },
 { path: 'goals', component: GoalComponent },
+{ path: 'mygoals', component: MygoalsComponent },
 { path: 'squad', component: SquadComponent },
 { path: 'user/:username', component: UserComponent },
 { path: '**', component: NotFoundComponent}

@@ -26,6 +26,7 @@ import { ActivePipe } from './pipes/active.pipe';
 import { ActiveGoalsPipe } from './pipes/active-goals.pipe';
 import { SquadUserPipe } from './pipes/squad-user.pipe';
 import { GoalUserPipe } from './pipes/goal-user.pipe';
+import { MygoalsComponent } from './components/mygoals/mygoals.component';
 
 @NgModule({
   declarations: [
@@ -48,7 +49,8 @@ import { GoalUserPipe } from './pipes/goal-user.pipe';
     ActivePipe,
     ActiveGoalsPipe,
     SquadUserPipe,
-    GoalUserPipe
+    GoalUserPipe,
+    MygoalsComponent
   ],
   imports: [
     BrowserModule,
