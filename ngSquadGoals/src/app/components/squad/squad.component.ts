@@ -9,7 +9,6 @@ import { SquadService } from 'src/app/services/squad.service';
 import { UserService } from 'src/app/services/user.service';
 import { Goal } from 'src/app/models/goal';
 import { NgForm } from '@angular/forms';
-import { MatTableModule } from '@angular/material/table';
 import { animate, state, style, transition, trigger } from '@angular/animations';
 
 @Component({
@@ -42,6 +41,9 @@ export class SquadComponent implements OnInit {
   columnsToDisplay = ["name", "leader", "numActiveGoals"];
   columnsToDisplayWithExpand = [...this.columnsToDisplay, 'expand'];
   expandedElement: Squad | null = null;
+  updateGoal = false;
+  goalToUpdate = {} as Goal;
+  squadToEditId: number = 0;
 
 
   constructor(private userService: UserService, private auth: AuthService, private router: Router, private route: ActivatedRoute, private goalService: GoalService, private squadService: SquadService) { }
@@ -76,6 +78,21 @@ export class SquadComponent implements OnInit {
       error: (err) => {
         console.error(err);
       }
+    });
+  }
+
+  doUpdateGoal(goal: Goal): void {
+    this.goalService.updateGoal(goal, goal.id).subscribe({
+
+      next: (result) => {
+        this.goalToUpdate = new Goal();
+        // this.newGoal.creator = this.loggedIn;
+        this.load();
+      },
+      error: (nojoy) => {
+        console.error('error creating goal:');
+        console.error(nojoy);
+      },
     });
   }
 
