@@ -2,6 +2,7 @@ package com.skilldistillery.squadgoals.controllers;
 
 import java.security.Principal;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
@@ -33,8 +34,59 @@ public class GoalController {
 	@Autowired
 	private AuthService authService;
 
-	@PostMapping("goals")
-	public Goal create(@RequestBody Goal goal, HttpServletRequest req, HttpServletResponse res, Principal principal) {
+//	@PostMapping("goals")
+//	public Goal create(@RequestBody Goal goal, HttpServletRequest req, HttpServletResponse res, Principal principal) {
+////		System.out.println(" ***IN CONTROLLER*** Num squads: " + goal.getSquads().size());
+//		Goal created = null;
+////		System.out.println(goal);
+//		// ACCESS RULES:
+//		// Users may only create a goal for a squad to which they belong.
+//		// TODO: Make it so only a leader can create a goal
+//		if (authService.isLoggedInUser(principal.getName())) {
+//			if (goal.getSquads() != null) {
+//				if (authService.squadsExist(goal.getSquads())) {
+//					if (authService.belongsToSquad(principal.getName(), goal.getSquads())
+//							|| authService.isAdmin(principal.getName())) {
+//						try {
+//							goal.setCreator(authService.getUser(principal.getName()));
+//							System.out.print("JUST ADDED CREATOR TO GOAL");
+//							created = goalService.create(principal.getName(), goal);
+//							if (created == null) {
+//								res.setStatus(400);
+//								res.setHeader("Error", "Unable to create new goal");
+//							} else {
+//								res.setStatus(201);
+//								StringBuffer url = req.getRequestURL();
+//								url.append("/").append(created.getId());
+//								res.setHeader("Location", url.toString());
+//								res.setHeader("Result", "Created goal with id " + created.getId());
+//							}
+//						} catch (Exception e) {
+//							res.setStatus(400);
+//							res.setHeader("Error", "Unable to create new goal");
+//							e.printStackTrace();
+//						}
+//					} else {
+//						res.setStatus(401);
+//						res.setHeader("Error", "User does not have permission to perform this action");
+//					}
+//				} else {
+//					res.setStatus(400);
+//					res.setHeader("Error", "Entity is associated with one or more non-existent squads.");
+//				}
+//			} else {
+//				res.setStatus(400);
+//				res.setHeader("Error", "This entity must be associated with one or more squads.");
+//			}
+//		} else {
+//			res.setStatus(401);
+//			res.setHeader("Error", "Client must be logged in to perform this action");
+//		}
+//		return created;
+//	}
+	
+	@PostMapping("goals/{squadId}")
+	public Goal create(@RequestBody Goal goal, @PathVariable int squadId, HttpServletRequest req, HttpServletResponse res, Principal principal) {
 //		System.out.println(" ***IN CONTROLLER*** Num squads: " + goal.getSquads().size());
 		Goal created = null;
 //		System.out.println(goal);
@@ -42,14 +94,14 @@ public class GoalController {
 		// Users may only create a goal for a squad to which they belong.
 		// TODO: Make it so only a leader can create a goal
 		if (authService.isLoggedInUser(principal.getName())) {
-			if (goal.getSquads() != null) {
-				if (authService.squadsExist(goal.getSquads())) {
-					if (authService.belongsToSquad(principal.getName(), goal.getSquads())
+			if (authService.squadExists(squadId)) {
+//				if (authService.squadsExist(goal.getSquads())) {
+					if (authService.belongsToSquad(principal.getName(), Arrays.asList(authService.getSquad(squadId)))
 							|| authService.isAdmin(principal.getName())) {
 						try {
-							goal.setCreator(authService.getUser(principal.getName()));
-							System.out.print("JUST ADDED CREATOR TO GOAL");
-							created = goalService.create(principal.getName(), goal);
+//							goal.setCreator(authService.getUser(principal.getName()));
+//							System.out.print("JUST ADDED CREATOR TO GOAL");
+							created = goalService.create(principal.getName(), goal, squadId);
 							if (created == null) {
 								res.setStatus(400);
 								res.setHeader("Error", "Unable to create new goal");
@@ -69,13 +121,9 @@ public class GoalController {
 						res.setStatus(401);
 						res.setHeader("Error", "User does not have permission to perform this action");
 					}
-				} else {
-					res.setStatus(400);
-					res.setHeader("Error", "Entity is associated with one or more non-existent squads.");
-				}
 			} else {
 				res.setStatus(400);
-				res.setHeader("Error", "This entity must be associated with one or more squads.");
+				res.setHeader("Error", "This entity is associated with a squad that does not exist.");
 			}
 		} else {
 			res.setStatus(401);

@@ -9,7 +9,7 @@ public interface GoalService {
 	//	the appropriate permissions to perform the requested action.
 	
 	//	CREATE
-	Goal create(String username, Goal goal);
+	Goal create(String username, Goal goal, int squadId);
 	//	READ
 	Goal show(String username, int goalId);
 	List<Goal> index(String username);
