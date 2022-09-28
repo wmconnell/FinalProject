@@ -10,12 +10,14 @@ export class ActiveGoalsPipe implements PipeTransform {
     if(status === false){
       return goals;
     }
-    const result:Goal[] = [];
+    let result:Goal[] = [];
+    if (goals !== null && goals !== undefined && goals.length > 0) {
     for(let goal of goals){
       if(goal.active === status){
         result.push(goal);
       }
     }
+  }
     return result;
   }
 

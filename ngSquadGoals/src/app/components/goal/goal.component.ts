@@ -8,6 +8,7 @@ import { GoalService } from 'src/app/services/goal.service';
 import { TaskService } from 'src/app/services/task.service';
 import { UserService } from 'src/app/services/user.service';
 import { Squad } from 'src/app/models/squad';
+import { NgForm } from '@angular/forms';
 
 @Component({
   selector: 'app-goal',
@@ -60,7 +61,8 @@ export class GoalComponent implements OnInit {
     );
   }
 
-  createGoal(goal: Goal): void {
+  createGoal(form: NgForm, squadId:number): void {
+    let goal = form.value;
     goal.creator = new User();
     goal.creator.id = this.loggedIn.id;
     goal.active = true;
@@ -75,23 +77,32 @@ export class GoalComponent implements OnInit {
     // })
     // console.log("SquadName: " + this.squadName);
     // console.log("Num Squads: " + goal.squads.length)
-    let squad: Squad = new Squad();
-    console.log("This.squadId = " + this.squadId);
-    squad.id = this.squadId;
-    goal.squads = [];
-    goal.squads.push(squad);
-    console.log("This squad's ID: " + squad.id);
+    // let squad: Squad = new Squad();
+    // console.log("This.squadId = " + this.squadId);
+    // squad.id = this.squadId;
+    // goal.squads = [];
+    // goal.squads.push(squad);
+    // console.log("This squad's ID: " + squad.id);
+
     this.goalService.createGoal(goal).subscribe({
 
       next: (result) => {
         this.newGoal = new Goal();
+        this.goalService.addSquadToGoal(result.id, squadId).subscribe({
+          next: () => {
+            this.load();
+          },
+          error: (nojoy) => {
+             console.error('error creating goal:');
+            console.error(nojoy);
+          }
+        });
         // this.newGoal.creator = this.loggedIn;
-        this.load();
       },
       error: (nojoy) => {
         console.error('error creating goal:');
         console.error(nojoy);
-      },
+      }
     });
   }
 

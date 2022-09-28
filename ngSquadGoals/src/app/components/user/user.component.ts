@@ -62,6 +62,7 @@ updateUser(form: NgForm){
   this.userService.updateUser(form.value, form.value.id).subscribe({
     next:(user) =>{
       this.load();
+      this.editUser = false;
     },
     error: (err) =>{
       console.error(err);

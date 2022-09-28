@@ -1,3 +1,4 @@
+import { User } from './../models/user';
 import { Goal } from './../models/goal';
 import { Injectable } from '@angular/core';
 import { AuthService } from './auth.service';
@@ -54,7 +55,16 @@ getGoalsBySquad(id: number) {
   );
 }
 
-
+addSquadToGoal(goalId:number, squadId:number) {
+  return this.http.get<void>(this.url + "/" + goalId + "/squad/" + squadId, this.getHttpOptions()).pipe(
+    catchError((err: any) => {
+      console.log(err);
+      return throwError(
+        () => new Error('GoalService.createGoal(): error creating goal: '  + err)
+        );
+      })
+  );
+}
 
 createGoal(goal: Goal){
   return this.http.post<Goal>(this.url, goal, this.getHttpOptions()).pipe(catchError((err: any) => {

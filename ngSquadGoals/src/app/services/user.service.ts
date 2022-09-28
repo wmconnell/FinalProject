@@ -85,6 +85,16 @@ createUser(user: User){
       })
     );
     }
+
+    getUsersBySquad(squadId: number) {
+      return this.http.get<User[]>(this.url+'/squads/'+squadId, this.getHttpOptions()).pipe(catchError((err: any) => {
+        console.log(err);
+        return throwError(
+          () => new Error('GoalService.show(): error retrieving goal: ' +squadId + err)
+        );
+      })
+      );
+    }
   }
 
 

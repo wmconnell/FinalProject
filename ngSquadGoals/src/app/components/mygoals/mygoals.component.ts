@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { NgForm } from '@angular/forms';
 import { Router, ActivatedRoute } from '@angular/router';
 import { Goal } from 'src/app/models/goal';
 import { Squad } from 'src/app/models/squad';
@@ -30,6 +31,7 @@ export class MygoalsComponent implements OnInit {
   squadName: string = '';
   squadId: number = 0;
   tasks: Task[] =[];
+  squadToEditId: number = 0;
 
   ngOnInit(): void {
     this.load();
@@ -52,7 +54,6 @@ export class MygoalsComponent implements OnInit {
         console.log(user.goals.length)
 
         this.getSquads();
-        // console.log("Successfully retrieved user id " + user.id);
       },
       error: (err) => {
         console.error("Unable to retrieve user: " + err);
@@ -61,38 +62,33 @@ export class MygoalsComponent implements OnInit {
     );
   }
 
-  createGoal(goal: Goal): void {
-    goal.creator = new User();
-    goal.creator.id = this.loggedIn.id;
+  createGoal(form: NgForm, squadId:number): void {
+    let goal = {} as Goal;
+    goal.title = form.value.title;
+    goal.description = form.value.description;
+    goal.endDate = form.value.endDate;
+    console.log("CREATE GOAL");
     goal.active = true;
-    // let currentSquadName = this.squadName;
-    // goal.squads = getSquadByName(this.squadName);
-    // goal.squads.push(this.squads[0]);
-    // this.squads.forEach(function (squad) {
-    //   if (squad.name === currentSquadName) {
-    //   goal.squads = [];
-    //   goal.squads.push(squad);
-    //   }
-    // })
-    // console.log("SquadName: " + this.squadName);
-    // console.log("Num Squads: " + goal.squads.length)
-    let squad: Squad = new Squad();
-    console.log("This.squadId = " + this.squadId);
-    squad.id = this.squadId;
-    goal.squads = [];
-    goal.squads.push(squad);
-    console.log("This squad's ID: " + squad.id);
+    console.log(goal);
+
     this.goalService.createGoal(goal).subscribe({
 
       next: (result) => {
         this.newGoal = new Goal();
-        // this.newGoal.creator = this.loggedIn;
-        this.load();
+        this.goalService.addSquadToGoal(result.id, squadId).subscribe({
+          next: () => {
+            this.load();
+          },
+          error: (nojoy) => {
+             console.error('error creating goal:');
+            console.error(nojoy);
+          }
+        });
       },
       error: (nojoy) => {
         console.error('error creating goal:');
         console.error(nojoy);
-      },
+      }
     });
   }
 
