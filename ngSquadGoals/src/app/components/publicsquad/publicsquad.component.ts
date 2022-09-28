@@ -13,8 +13,8 @@ import { animate, state, style, transition, trigger } from '@angular/animations'
 
 @Component({
   selector: 'app-squad',
-  templateUrl: './squad.component.html',
-  styleUrls: ['./squad.component.css'],
+  templateUrl: './publicsquad.component.html',
+  styleUrls: ['./publicsquad.component.css'],
   animations: [
     trigger('detailExpand', [
       state('collapsed', style({height: '0px', minHeight: '0'})),
@@ -23,7 +23,7 @@ import { animate, state, style, transition, trigger } from '@angular/animations'
     ]),
   ]
 })
-export class SquadComponent implements OnInit {
+export class PublicsquadComponent implements OnInit {
   squads: Squad[] = []
   loggedIn = new User()
   // newSquad: Squad = new Squad();
@@ -44,8 +44,6 @@ export class SquadComponent implements OnInit {
   updateGoal = false;
   goalToUpdate = {} as Goal;
   squadToEditId: number = 0;
-
-
   constructor(private userService: UserService, private auth: AuthService, private router: Router, private route: ActivatedRoute, private goalService: GoalService, private squadService: SquadService) { }
 
   ngOnInit(): void {
@@ -234,3 +232,6 @@ updateSquad(form: NgForm, id:number){
     });
   }
 }
+
+
+

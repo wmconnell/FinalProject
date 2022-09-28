@@ -30,6 +30,7 @@ import { GoalUserPipe } from './pipes/goal-user.pipe';
 import { MygoalsComponent } from './components/mygoals/mygoals.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MatTableModule } from '@angular/material/table';
+import { PublicsquadComponent } from './components/publicsquad/publicsquad.component';
 
 @NgModule({
   declarations: [
@@ -53,7 +54,8 @@ import { MatTableModule } from '@angular/material/table';
     ActiveGoalsPipe,
     SquadUserPipe,
     GoalUserPipe,
-    MygoalsComponent
+    MygoalsComponent,
+    PublicsquadComponent
   ],
   imports: [
     BrowserModule,

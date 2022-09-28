@@ -84,15 +84,13 @@ class="example-element-row"
 </div>
 
 <!-- single squad view -->
-<div *ngIf="selectedSquad && !editSquad ">
+<div *ngIf="selectedSquad && !editSquad && !selectedMember">
   <table>
     <tr><td>{{selectedSquad.name}}</td></tr>
     <tr><td>About Us: {{selectedSquad.bio}}</td></tr>
     <tr><td>Squad Leader: {{selectedSquad.leader!.username}}</td></tr>
     <tr><td>Members:</td></tr>
-    <tr *ngFor="let user of selectedSquad.users"><td>{{user.firstName}}</td></tr>
-    <tr><td>Goals:</td></tr>
-    <tr *ngFor="let goal of selectedSquad.goals"><td>{{goal.description}}</td></tr>
+    <tr *ngFor="let user of selectedSquad.users"><td (click)="selectMember(user.username)" >{{user.username}}</td></tr>
   </table>
   <button class="btn btn-success" (click)="addmember = true">Add Members</button>
   <button class="btn btn-warning" (click)="editSquad = true">Edit</button>
@@ -125,7 +123,7 @@ class="example-element-row"
   </td>
 </ng-container> -->
 <!-- add member to squad form -->
-<div *ngIf="selectedSquad && addmember">
+<div *ngIf="selectedSquad && addmember && !selectedMember">
   <form>
     <label>New Members User Name</label>
     <input type="text" name="userName" [(ngModel)]="userName">
@@ -136,21 +134,21 @@ class="example-element-row"
 
 <!-- Create Squad Form -->
 <div>
-<form #createNewSquadForm="ngForm" *ngIf="!selectedSquad && addSquad">
-  <br>
-  <label>Squad Name:</label>
-  <input type="text" name="name" ngModel>
-  <label *ngIf="!squadNameUnique" style="color:red">Squad name already taken</label>
-  <br>
-  <label>Squad Bio:</label>
-  <input type="text" name="bio" ngModel>
-  <br>
-  <label>Squad Picture:</label>
-  <input type="text" name="profilePic" [(ngModel)]="squadImage.url">
-  <br>
-  <button class="btn btn-success" (click)="checkSquadName(createNewSquadForm)">Submit</button>
-  <button class="btn btn-primary" (click)="displayTable()">Back</button>
-</form>
+  <form #createNewSquadForm="ngForm" *ngIf="!selectedSquad && addSquad">
+    <br>
+    <label>Squad Name:</label>
+    <input type="text" name="name" ngModel>
+    <label *ngIf="!squadNameUnique" style="color:red">Squad name already taken</label>
+    <br>
+    <label>Squad Bio:</label>
+    <input type="text" name="bio" ngModel>
+    <br>
+    <label>Squad Picture:</label>
+    <input type="text" name="profilePic" [(ngModel)]="squadImage.url">
+    <br>
+    <button class="btn btn-success" (click)="checkSquadName(createNewSquadForm)">Submit</button>
+    <button class="btn btn-primary" (click)="displayTable()">Back</button>
+  </form>
 </div>
 
 <!-- update Squad Form -->
@@ -169,13 +167,13 @@ class="example-element-row"
     <button class="btn btn-primary" (click)="displayTable()">Back</button>
 
 
-</form>
+  </form>
 </div>
 
 <!-- Update Goal Form -->
 <div>
   <form *ngIf="updateGoal">
-   <label>Squad: </label>
+    <label>Squad: </label>
     <select name="squad" id="squad" [(ngModel)]="squadToEditId">
       <option *ngFor="let squad of goalToUpdate.squads | active" [attr.selected]="squad.id == squadToEditId ? true : null">{{squad.name}}</option>
     </select><br>
@@ -192,3 +190,18 @@ class="example-element-row"
 </div>
 
 <!-- {{squads | json}} -->
+<!-- Member Profile -->
+<div>
+
+  <div class="container" *ngIf="selectedMember">
+    <div class="row">
+      <div class="col-sm-4 justify-content-center">
+        <div class="row align-content-center">
+          <img class="rounded-circle m-4 p-4" [src]="selectedMember.profilePic.url"/>
+          <span>{{selectedMember.firstName}} {{selectedMember.lastName}}</span>
+          <span>{{selectedMember.bio}}</span>
+          <button (click)="selectedMember = null">Back</button>
+        </div>
+      </div>
+    </div>
+
