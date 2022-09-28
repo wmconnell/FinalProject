@@ -8,5 +8,6 @@ import com.skilldistillery.squadgoals.entities.Squad;
 
 public interface SquadRepository extends JpaRepository<Squad, Integer> {
 	Squad findByName(String name);
+	boolean existsByName(String name);
 	List<Squad> findSquadByUsers_Username(String username);
 }

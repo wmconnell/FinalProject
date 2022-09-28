@@ -1,6 +1,7 @@
 package com.skilldistillery.squadgoals.controllers;
 
 import java.security.Principal;
+import java.util.Arrays;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
@@ -18,13 +19,12 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.skilldistillery.squadgoals.entities.Squad;
-import com.skilldistillery.squadgoals.entities.User;
 import com.skilldistillery.squadgoals.services.AuthService;
 import com.skilldistillery.squadgoals.services.SquadService;
 
 @RestController
 @RequestMapping(path = "api")
-@CrossOrigin({"*", "http://localhost:4250"})
+@CrossOrigin({ "*", "http://localhost:4250" })
 public class SquadController {
 
 	@Autowired
@@ -37,7 +37,7 @@ public class SquadController {
 	public List<Squad> index(HttpServletRequest req, HttpServletResponse res, Principal principal) {
 		return squadService.index(principal.getName());
 	}
-	
+
 	@GetMapping("squads/user")
 	public List<Squad> squadsByUser(HttpServletRequest req, HttpServletResponse res, Principal principal) {
 		return squadService.squadsByUser(principal.getName());
@@ -51,9 +51,10 @@ public class SquadController {
 		}
 		return squad;
 	}
-	
+
 	@GetMapping("squads/name/{name}")
-	public Squad getSquadByName(HttpServletRequest req, HttpServletResponse res, @PathVariable String name, Principal principal) {
+	public Squad getSquadByName(HttpServletRequest req, HttpServletResponse res, @PathVariable String name,
+			Principal principal) {
 		Squad squad = squadService.getSquadByName(name);
 		if (squad == null) {
 			res.setStatus(404);
@@ -95,22 +96,44 @@ public class SquadController {
 	public Squad update(HttpServletRequest req, HttpServletResponse res, @PathVariable int id, @RequestBody Squad squad,
 			Principal principal) {
 		Squad updated = null;
+		if (authService.isLoggedInUser(principal.getName())) {
+			if (authService.squadExists(id)) {
+				if (authService.squadNameUnique(squad.getName())) {
+					if (authService.belongsToSquad(principal.getName(), Arrays.asList(authService.getSquad(id)))
+							|| authService.isAdmin(principal.getName())) {
 
-		try {
+						try {
 
-			updated = squadService.update(principal.getName(), id, squad);
-			res.setStatus(200);
-		} catch (Exception e) {
-			res.setStatus(400);
-			e.printStackTrace(); 
-		}
+							updated = squadService.update(principal.getName(), id, squad);
+							res.setStatus(200);
+						} catch (Exception e) {
+							res.setStatus(400);
+							e.printStackTrace();
+						}
 //		System.out.println(updated.getUsers() + " In controller!!!!!!");
+					} else {
+						res.setStatus(401);
+						res.setHeader("Error", "User does not have permission to perform this action");
+					}
+				} else {
+					res.setStatus(400);
+					res.setHeader("Error", "Squad name '" + squad.getName() + "' already taken");
+				}
+			} else {
+				res.setStatus(404);
+				res.setHeader("Error", "Squad with id " + id + " does not exist");
+			}
+		} else {
+			res.setStatus(401);
+			res.setHeader("Error", "Client must be logged in to perform this action");
+		}
 		return updated;
 	}
+
 	@GetMapping("squads/{id}/{memberId}")
-	public void addMember(HttpServletRequest req, HttpServletResponse res, @PathVariable int id, @PathVariable int memberId,
-			Principal principal) {
-		
+	public void addMember(HttpServletRequest req, HttpServletResponse res, @PathVariable int id,
+			@PathVariable int memberId, Principal principal) {
+
 		try {
 			squadService.addMemberToSquad(id, memberId, principal.getName());
 			res.setStatus(200);

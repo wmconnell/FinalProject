@@ -37,7 +37,7 @@ export class SquadComponent implements OnInit {
         console.log(user.username);
         // this.squads = user.squads;
 
-        console.log(this.squads.length);
+        // console.log(this.squads.length);
 
 
         // console.log("Successfully retrieved user id " + user.id);
@@ -170,12 +170,12 @@ deleteSquad(id: number){
   })
 }
 updateSquad(squad: Squad){
-  let id = this.loggedIn.id;
+  // let id = this.loggedIn.id;
   squad.active = true;
-  this.squadService.updateSquad(squad,id).subscribe({
+  console.log("In Update Squad Call! BEFORE HTTP");
+  this.squadService.updateSquad(squad,squad.id).subscribe({
     next:(squad) =>{
-
-      this.updatedSquad = new Squad();
+      console.log("In Update Squad HTTP Call!");
       this.displayTable();
       this.load();
   },

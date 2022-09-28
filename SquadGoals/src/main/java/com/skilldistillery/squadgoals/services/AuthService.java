@@ -20,6 +20,7 @@ public interface AuthService {
 	boolean userExists(int userId);
 	boolean userExists(String username);
 	boolean goalExists(int goalId);
+	boolean squadExists(int squadId);
 	boolean reviewExists(int goalId, int userId);
 	boolean squadsExist(List<Squad> goalSquads);
 	boolean taskExists(int taskId);
@@ -28,6 +29,8 @@ public interface AuthService {
 	User getUser(String username);
 	Goal getGoal(int goalId);
 	Image getImage(int imageId);
+	Squad getSquad(int squadId);
+	boolean squadNameUnique(String squadName);
 	boolean isUserProfilePic(String username, int imageId);
 	boolean assignedToTask(String username, int taskId);
 	boolean belongsToSquad(String username, List<Squad> squads);

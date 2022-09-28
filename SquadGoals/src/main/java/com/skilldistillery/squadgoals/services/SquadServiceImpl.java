@@ -208,7 +208,6 @@ public class SquadServiceImpl implements SquadService {
 		System.out.println("**** UPDATE SQUAD ****");
 		System.out.println(squad.getUsers());
 		System.out.println("**** UPDATE SQUAD ****");
-		if (isUser(username) && (belongsToSquad(username, squadId) || isAdmin(username))) {
 			Optional<Squad> squadOpt = squadRepo.findById(squadId);
 			Squad toUpdate = null;
 			//	
@@ -241,7 +240,6 @@ public class SquadServiceImpl implements SquadService {
 				}
 				return squadRepo.saveAndFlush(toUpdate);
 			}
-		}
 		return null;
 	}
 
