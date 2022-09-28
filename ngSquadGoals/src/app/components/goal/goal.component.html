@@ -1,8 +1,35 @@
-<h1>Goals!</h1>
+<h1>All Goals</h1>
 
-<div *ngIf="loggedIn">
+<div *ngIf="loggedIn.role === 'admin'">
+  <p>Admin: {{loggedIn.username}}</p>
+  <table>
+    <thead>
+      <tr>
+        <th>Goal</th>
+        <th>Squad</th>
+        <th>Description</th>
+        <th>Completed</th>
+        <th>End Date</th>
+        <!-- <th>Creator</th> -->
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let goal of goals| activeGoals">
+        <td>{{goal.title}}</td>
+        <td *ngFor="let squad of goal.squads">{{squad.name}}</td>
+        <td>{{goal.description}}</td>
+        <td>{{goal.completed}}</td>
+        <td>{{goal.endDate}}</td>
+        <!-- <td>{{goal.creator.name}}</td> -->
+        <td><mat-icon (click)="delete(goal.id)">delete</mat-icon></td>
+    </tbody>
+
+  </table>
+</div>
+
+<!-- <div *ngIf="loggedIn.role === 'admin'">
   <p>Username: {{loggedIn.username}}</p>
-  <p>Number of Active Goals: {{goals.length}}</p>
+  <p>Total number of goals: {{goals.length}}</p>
   <div *ngFor="let squad of squads | active">
     <p>Squad {{squad.id}}: {{squad.name}}</p>
     <table>
@@ -48,7 +75,7 @@
   <form *ngIf="!addGoal && !updateGoal && squads.length > 0">
     <button (click)="addGoal = true">Add Goal</button>
   </form>
-</div>
+</div> -->
 
 <div>
   <form *ngIf="updateGoal">
@@ -68,7 +95,7 @@
   </form>
 </div>
 
-{{squads | json}}
+<!-- {{squads | json}} -->
 
 
 
