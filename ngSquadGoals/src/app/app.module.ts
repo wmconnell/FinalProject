@@ -29,6 +29,7 @@ import { SquadUserPipe } from './pipes/squad-user.pipe';
 import { GoalUserPipe } from './pipes/goal-user.pipe';
 import { MygoalsComponent } from './components/mygoals/mygoals.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { MatTableModule } from '@angular/material/table';
 
 @NgModule({
   declarations: [
@@ -60,7 +61,8 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
     FormsModule,
     HttpClientModule,
     MatIconModule,
-    BrowserAnimationsModule
+    BrowserAnimationsModule,
+    MatTableModule
   ],
 
     providers:  [
