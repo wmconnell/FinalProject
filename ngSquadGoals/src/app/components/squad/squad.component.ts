@@ -27,12 +27,13 @@ import { animate, state, style, transition, trigger } from '@angular/animations'
 export class SquadComponent implements OnInit {
   squads: Squad[] = []
   loggedIn = new User()
-  newSquad: Squad = new Squad();
+  // newSquad: Squad = new Squad();
   updatedSquad: Squad = new Squad();
   selectedSquad: Squad | null = null;
   selectedMember: User | null = null;
   squadImage: Image = new Image();
   addSquad: boolean = false;
+  squadNameUnique: boolean = true;
   editSquad: boolean = false;
   addmember: boolean = false;
   newMember: User = new User;
@@ -51,13 +52,6 @@ export class SquadComponent implements OnInit {
         next: (user) => {
           this.loggedIn = user;
           console.log(user.username);
-          // this.squads = user.squads;
-
-
-          // console.log(this.squads.length);
-
-
-          // console.log("Successfully retrieved user id " + user.id);
         },
         error: (err) => {
           console.error("Unable to retrieve user: " + err);
@@ -71,38 +65,31 @@ export class SquadComponent implements OnInit {
   load = () => {
     console.log("load called");
     let getTheGoals = this.getGoalsBySquad;
-    this.squadService.index().subscribe({
+    this.squadService.squadsByUser().subscribe({
       next: (squads) => {
+        console.log("INDEX SUCCESSFUL");
         squads.forEach(function(squad) {
           getTheGoals(squad);
         })
         this.squads = squads;
-
-        // this.getAllGoals();
-        // console.log(this.squads.length);
       },
       error: (err) => {
         console.error(err);
       }
     });
   }
-  select(id: number) {
-    console.log("select is called");
 
+  select(id: number) {
     this.squadService.show(id).subscribe({
       next: (squad) => {
         this.selectedSquad = squad;
-        // console.log(this.selectedSquad.leader)
-        console.log(squad.users)
-        console.log("test");
-
       },
       error: (err) => {
         console.error(err);
-
       }
     })
   }
+
   selectMember(id: number) {
     this.userService.show(id).subscribe({
       next: (user) => {
@@ -115,18 +102,32 @@ export class SquadComponent implements OnInit {
     })
   }
 
-  createSquad() {
+  checkSquadName(form: NgForm) {
     // this.newSquad.users.push(this.loggedIn)
-    console.log(this.loggedIn);
-    console.log(this.loggedIn.id);
-
+    // console.log(this.loggedIn);
+    // console.log(this.loggedIn.id);
     // this.newSquad.leader = this.loggedIn
     // this.newSquad.profilePic = this.squadImage;
+    this.squadService.existsByName(form.value.name).subscribe({
+      next: (exists) => {
+        if (exists) {
+          this.squadNameUnique = true;
+          let newSquad = {} as Squad;
+          newSquad.name = form.value.name;
+          newSquad.bio = form.value.bio;
+          newSquad.profilePic = this.squadImage;
+          this.createSquad(newSquad);
+        } else {
+          this.squadNameUnique = false;
+        }
+    }
+    });
+  }
 
-    this.squadService.createSquad(this.newSquad).subscribe({
+  createSquad = (squad: Squad) => {
+    this.squadService.createSquad(squad).subscribe({
       next: (result) => {
 
-        this.newSquad = new Squad();
         this.displayTable()
         this.load();
       },
@@ -136,51 +137,40 @@ export class SquadComponent implements OnInit {
       },
     });
   }
+
   displayTable() {
     this.addSquad = false
     this.selectedSquad = null;
     this.addmember = false;
     this.editSquad = false;
   }
+
   addMember(userName: string) {
     this.userService.showUser(userName).subscribe({
       next: (user) => {
         this.newMember = user;
-        console.log(user);
-
         if (this.selectedSquad) {
-          console.log(this.newMember);
-
           this.selectedSquad!.users.push(this.newMember);
           let squadId: number = this.selectedSquad!.id;
           let memberId: number = this.newMember!.id;
-          console.log(this.selectedSquad);
-
           this.squadService.addMember(squadId, memberId).subscribe({
             next: (squad) => {
               this.newMember = new User();
-              // this.selectedSquad = squad;
               this.load();
-
             },
             error: (err) => {
               console.error(err);
-
             }
-
-
           })
-
         }
-        // this.displayTable();
       },
       error: (err) => {
         console.log(err);
 
       }
     });
-
   }
+
   deleteSquad(id: number) {
     console.log(id);
 
