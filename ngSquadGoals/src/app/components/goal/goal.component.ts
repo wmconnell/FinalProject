@@ -25,9 +25,9 @@ export class GoalComponent implements OnInit {
   goals: Goal[] = [];
   newGoal: Goal = new Goal();
   goalToUpdate: Goal = new Goal();
-  addGoal: boolean = false;
   updateGoal: boolean = false;
   squadName: string = '';
+  addGoal: boolean = false;
   squadId: number = 0;
   tasks: Task[] =[];
 
