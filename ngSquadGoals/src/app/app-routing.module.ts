@@ -6,6 +6,7 @@ import { HomeComponent } from './components/home/home.component';
 import { LoginComponent } from './components/login/login.component';
 import { MygoalsComponent } from './components/mygoals/mygoals.component';
 import { NotFoundComponent } from './components/not-found/not-found.component';
+import { PublicsquadComponent } from './components/publicsquad/publicsquad.component';
 import { RegisterComponent } from './components/register/register.component';
 import { SquadComponent } from './components/squad/squad.component';
 import { UserComponent } from './components/user/user.component';
@@ -19,7 +20,8 @@ const routes: Routes = [
 { path: 'user', component: UserComponent },
 { path: 'goals', component: GoalComponent },
 { path: 'mygoals', component: MygoalsComponent },
-{ path: 'squad', component: SquadComponent },
+{ path: 'mysquads', component: SquadComponent },
+{ path: 'squads', component: PublicsquadComponent },
 { path: 'user/:username', component: UserComponent },
 { path: '**', component: NotFoundComponent}
 ]
