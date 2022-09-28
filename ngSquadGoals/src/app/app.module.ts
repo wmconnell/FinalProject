@@ -1,3 +1,4 @@
+import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 import { UserService } from './services/user.service';
 import {HttpClientModule } from '@angular/common/http';
 import { NgModule } from '@angular/core';
@@ -31,6 +32,10 @@ import { MygoalsComponent } from './components/mygoals/mygoals.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MatTableModule } from '@angular/material/table';
 import { PublicsquadComponent } from './components/publicsquad/publicsquad.component';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatInputModule } from '@angular/material/input';
+import { MatMenuModule } from '@angular/material/menu';
+import { DeleteConfirmationDialogComponent } from './components/delete-confirmation-dialog/delete-confirmation-dialog.component';
 
 @NgModule({
   declarations: [
@@ -55,7 +60,8 @@ import { PublicsquadComponent } from './components/publicsquad/publicsquad.compo
     SquadUserPipe,
     GoalUserPipe,
     MygoalsComponent,
-    PublicsquadComponent
+    PublicsquadComponent,
+    DeleteConfirmationDialogComponent
   ],
   imports: [
     BrowserModule,
@@ -64,12 +70,18 @@ import { PublicsquadComponent } from './components/publicsquad/publicsquad.compo
     HttpClientModule,
     MatIconModule,
     BrowserAnimationsModule,
-    MatTableModule
+    MatTableModule,
+    MatFormFieldModule,
+    MatInputModule,
+    MatMenuModule,
+    MatDialogModule
   ],
 
     providers:  [
     AuthService,
-    UserService
+    UserService,
+    ActiveGoalsPipe,
+    MatDialog
 
     ],
   bootstrap: [AppComponent]
