@@ -1,7 +1,7 @@
 <h1>Your Squads</h1>
 <!-- Table displaying all Squads -->
 <div *ngIf="!selectedSquad && !addSquad && !addmember">
-  <!-- <table class="table table-striped table-hover">
+   <table class="table table-striped table-hover">
     <thead>
       <th>Name </th>
       <th>Leader </th>
@@ -12,11 +12,11 @@
   <td>{{squad.leader!.username}}</td>
   <td>{{squad.users.length}}</td></tr>
 </tbody>
-  </table> -->
+  </table>
 
-  <table mat-table
+  <!-- <table mat-table
        [dataSource]="squads | active" multiTemplateDataRows
-       class="mat-elevation-z8">
+       class="mat-elevation-z8"  >
   <ng-container matColumnDef="name">
     <th mat-header-cell *matHeaderCellDef> Squad </th>
     <td mat-cell *matCellDef="let element"> {{element.name}} </td>
@@ -39,48 +39,48 @@
     </td>
   </ng-container>
 
-  <!-- Expanded Content Column - The detail row is made up of this one column that spans across all columns -->
+   Expanded Content Column - The detail row is made up of this one column that spans across all columns
   <ng-container matColumnDef="expandedDetail">
     <td mat-cell *matCellDef="let element" [attr.colspan]="columnsToDisplayWithExpand.length">
       <div class="example-element-detail"
-           [@detailExpand]="element == expandedElement ? 'expanded' : 'collapsed'">
-        <div>
-          <table class="border-top" style="text-align: center">
-            <thead>
-              <tr>
-                <th>Goal</th>
-                <th>Description</th>
-                <th>Completed</th>
-                <th>Due Date</th>
-                <th>Creator</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr *ngFor="let goal of element.goals | activeGoals | goalUser:loggedIn">
-                <td class="px-3">{{goal.title}}</td>
-                <td class="px-3">{{goal.description}}</td>
-                <td class="px-3">{{goal.completed}}</td>
-                <td class="px-3">{{goal.endDate}}</td>
-                <td class="px-3">{{goal.creator.username}}</td>
-                <td><mat-icon (click)="updateGoal = true; goalToUpdate = goal; squadToEditId = element.id">edit</mat-icon></td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
+      [@detailExpand]="element == expandedElement ? 'expanded' : 'collapsed'">
+      <div>
+        <table class="border-top" style="text-align: center">
+          <thead>
+            <tr>
+              <th>Goal</th>
+              <th>Description</th>
+              <th>Completed</th>
+              <th>Due Date</th>
+              <th>Creator</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let goal of element.goals | activeGoals | goalUser:loggedIn">
+              <td class="px-3">{{goal.title}}</td>
+              <td class="px-3">{{goal.description}}</td>
+              <td class="px-3">{{goal.completed}}</td>
+              <td class="px-3">{{goal.endDate}}</td>
+              <td class="px-3">{{goal.creator.username}}</td>
+              <td><mat-icon (click)="updateGoal = true; goalToUpdate = goal; squadToEditId = element.id">edit</mat-icon></td>
+            </tr>
+          </tbody>
+        </table>
       </div>
-    </td>
-  </ng-container>
+    </div>
+  </td>
+</ng-container>
 
-  <tr mat-header-row *matHeaderRowDef="columnsToDisplayWithExpand"></tr>
-  <tr mat-row *matRowDef="let element; columns: columnsToDisplayWithExpand;"
-      class="example-element-row"
-      [class.example-expanded-row]="expandedElement === element"
-      (click)="expandedElement = expandedElement === element ? null : element">
-  </tr>
-  <tr mat-row *matRowDef="let row; columns: ['expandedDetail']" class="example-detail-row"></tr>
-</table>
+<tr mat-header-row *matHeaderRowDef="columnsToDisplayWithExpand"></tr>
+<tr mat-row *matRowDef="let element; columns: columnsToDisplayWithExpand;"
+class="example-element-row"
+[class.example-expanded-row]="expandedElement === element"
+(click)="expandedElement = expandedElement === element ? null : element">
+</tr>
+<tr mat-row *matRowDef="let row; columns: ['expandedDetail']" class="example-detail-row"></tr>
+</table> -->
 
-  <button class="btn btn-success" (click)="addSquad = true">Add Squad</button>
+<button class="btn btn-success" (click)="addSquad = true">Add Squad</button>
 </div>
 
 <!-- single squad view -->
@@ -100,6 +100,30 @@
   <button class="btn btn-primary" (click)="displayTable()">Back</button>
 </div>
 
+<table mat-table
+     [dataSource]="squads | active" multiTemplateDataRows
+     class="mat-elevation-z8"  >
+<ng-container matColumnDef="name">
+  <th mat-header-cell *matHeaderCellDef> Squad </th>
+  <td mat-cell *matCellDef="let element"> {{element.name}} </td>
+</ng-container>
+<ng-container matColumnDef="leader">
+  <th mat-header-cell *matHeaderCellDef> Leader </th>
+  <td mat-cell *matCellDef="let element"> {{element.leader!.username}} </td>
+</ng-container>
+<ng-container matColumnDef="numActiveGoals">
+  <th mat-header-cell *matHeaderCellDef> Active Goals </th>
+  <td mat-cell *matCellDef="let element"> {{(element.goals | activeGoals).length}} </td>
+</ng-container>
+<ng-container matColumnDef="expand">
+  <th mat-header-cell *matHeaderCellDef aria-label="row actions">&nbsp;</th>
+  <td mat-cell *matCellDef="let element">
+    <button mat-icon-button aria-label="expand row" (click)="(expandedElement = expandedElement === element ? null : element); $event.stopPropagation()">
+      <mat-icon *ngIf="expandedElement !== element">keyboard_arrow_down</mat-icon>
+      <mat-icon *ngIf="expandedElement === element">keyboard_arrow_up</mat-icon>
+    </button>
+  </td>
+</ng-container>
 <!-- add member to squad form -->
 <div *ngIf="selectedSquad && addmember">
   <form>

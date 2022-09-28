@@ -9,11 +9,21 @@ import { GoalService } from 'src/app/services/goal.service';
 import { SquadService } from 'src/app/services/squad.service';
 import { TaskService } from 'src/app/services/task.service';
 import { UserService } from 'src/app/services/user.service';
+import { animate, state, style, transition, trigger } from '@angular/animations';
+import { Image } from './../../models/image';
+
 
 @Component({
-  selector: 'app-mygoals',
+  selector: 'app-squad',
   templateUrl: './mygoals.component.html',
-  styleUrls: ['./mygoals.component.css']
+  styleUrls: ['./mygoals.component.css'],
+  animations: [
+    trigger('detailExpand', [
+      state('collapsed', style({height: '0px', minHeight: '0'})),
+      state('expanded', style({height: '*'})),
+      transition('expanded <=> collapsed', animate('225ms cubic-bezier(0.4, 0.0, 0.2, 1)')),
+    ]),
+  ]
 })
 export class MygoalsComponent implements OnInit {
 
@@ -21,18 +31,29 @@ export class MygoalsComponent implements OnInit {
 
 
 
-  loggedIn: User = new User();
-  squads: Squad[] = [];
+  squads: Squad[] = []
+  loggedIn = new User()
+  // newSquad: Squad = new Squad();
+  updatedSquad: Squad = new Squad();
+  selectedSquad: Squad | null = null;
+  selectedMember: User | null = null;
+  squadImage: Image = new Image();
+  addSquad: boolean = false;
+  squadNameUnique: boolean = true;
+  editSquad: boolean = false;
+  addmember: boolean = false;
+  newMember: User = new User;
+  userName: string = "";
   goals: Goal[] = [];
-  newGoal: Goal = new Goal();
-  goalToUpdate: Goal = new Goal();
-  addGoal: boolean = false;
-  updateGoal: boolean = false;
-  squadName: string = '';
-  squadId: number = 0;
-  tasks: Task[] =[];
+  columnsToDisplay = ["name", "leader", "numActiveGoals"];
+  columnsToDisplayWithExpand = [...this.columnsToDisplay, 'expand'];
+  expandedElement: Squad | null = null;
+  updateGoal = false;
+  goalToUpdate = {} as Goal;
   squadToEditId: number = 0;
-
+  newGoal: Goal = new Goal();
+  addGoal: boolean = false;
+  squadId: number = 0;
   ngOnInit(): void {
     this.load();
   }
