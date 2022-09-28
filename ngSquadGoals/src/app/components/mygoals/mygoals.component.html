@@ -78,6 +78,8 @@
               <td class="px-3">{{goal.endDate}}</td>
               <td class="px-3">{{goal.creator.username}}</td>
               <td><mat-icon (click)="updateGoal = true; goalToUpdate = goal; squadToEditId = element.id">edit</mat-icon></td>
+              <td><mat-icon (click)="goal.completed = true; doUpdateGoal(goal)">done</mat-icon></td>
+              <td><mat-icon (click)="delete(goal.id)">delete</mat-icon></td>
             </tr>
           </tbody>
         </table>
