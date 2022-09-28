@@ -61,12 +61,19 @@ public class SquadController {
 		}
 		return squad;
 	}
+	
+	@GetMapping("squads/exist/{name}")
+	public boolean squadExistsByName(HttpServletRequest req, HttpServletResponse res, @PathVariable String name,
+			Principal principal) {
+		return authService.squadExists(name);
+	}
 
 	@PostMapping("squads")
 	public Squad create(@RequestBody Squad squad, HttpServletRequest req, HttpServletResponse res,
 			Principal principal) {
 		Squad created = null;
 		if (authService.isLoggedInUser(principal.getName())) {
+			if (authService.squadExists(squad.getName())) {
 			try {
 				System.out.println("IN SQUAD CONTROLLER CREATE");
 //				System.out.println(squad.getUsers());
@@ -84,6 +91,10 @@ public class SquadController {
 			} catch (Exception e) {
 				res.setStatus(400);
 				e.printStackTrace();
+			}
+			} else {
+				res.setStatus(400);
+				res.setHeader("Error", "Squad name '" + squad.getName() + "' already taken");
 			}
 		} else {
 			res.setStatus(401);
