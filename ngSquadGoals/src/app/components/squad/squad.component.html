@@ -100,7 +100,7 @@ class="example-element-row"
   <button class="btn btn-primary" (click)="displayTable()">Back</button>
 </div>
 
-<table mat-table
+<!-- <table mat-table
      [dataSource]="squads | active" multiTemplateDataRows
      class="mat-elevation-z8"  >
 <ng-container matColumnDef="name">
@@ -123,7 +123,7 @@ class="example-element-row"
       <mat-icon *ngIf="expandedElement === element">keyboard_arrow_up</mat-icon>
     </button>
   </td>
-</ng-container>
+</ng-container> -->
 <!-- add member to squad form -->
 <div *ngIf="selectedSquad && addmember">
   <form>

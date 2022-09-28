@@ -45,6 +45,7 @@
         <textarea rows="2" cols="40" name="bio" [(ngModel)]="loggedIn.bio" ngModel></textarea>
         <br>
         <button class="btn btn-success" (click)="updateUser(updateUserForm)">Update</button>
+        <button class="btn btn-danger" (click)="deleteUser(loggedIn.id)">Deactivate</button>
         <!-- <button class="btn btn-primary" (click)="displayTable()">Back</button> -->
       </form>
     </div>
