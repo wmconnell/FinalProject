@@ -71,19 +71,19 @@ export class MygoalsComponent implements OnInit {
     goal.active = true;
     console.log(goal);
 
-    this.goalService.createGoal(goal).subscribe({
+    this.goalService.createGoal(goal, squadId).subscribe({
 
       next: (result) => {
         this.newGoal = new Goal();
-        this.goalService.addSquadToGoal(result.id, squadId).subscribe({
-          next: () => {
+        // this.goalService.addSquadToGoal(result.id, squadId).subscribe({
+        //   next: () => {
             this.load();
-          },
-          error: (nojoy) => {
-             console.error('error creating goal:');
-            console.error(nojoy);
-          }
-        });
+        //   },
+        //   error: (nojoy) => {
+        //      console.error('error creating goal:');
+        //     console.error(nojoy);
+        //   }
+        // });
       },
       error: (nojoy) => {
         console.error('error creating goal:');

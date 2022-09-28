@@ -63,9 +63,9 @@ export class GoalComponent implements OnInit {
 
   createGoal(form: NgForm, squadId:number): void {
     let goal = form.value;
-    goal.creator = new User();
-    goal.creator.id = this.loggedIn.id;
-    goal.active = true;
+    // goal.creator = new User();
+    // goal.creator.id = this.loggedIn.id;
+    // goal.active = true;
     // let currentSquadName = this.squadName;
     // goal.squads = getSquadByName(this.squadName);
     // goal.squads.push(this.squads[0]);
@@ -84,21 +84,21 @@ export class GoalComponent implements OnInit {
     // goal.squads.push(squad);
     // console.log("This squad's ID: " + squad.id);
 
-    this.goalService.createGoal(goal).subscribe({
+    this.goalService.createGoal(goal, squadId).subscribe({
 
       next: (result) => {
-        this.newGoal = new Goal();
-        this.goalService.addSquadToGoal(result.id, squadId).subscribe({
-          next: () => {
+        // this.newGoal = new Goal();
+        // this.goalService.addSquadToGoal(result.id, squadId).subscribe({
+        //   next: () => {
             this.load();
           },
-          error: (nojoy) => {
-             console.error('error creating goal:');
-            console.error(nojoy);
-          }
-        });
-        // this.newGoal.creator = this.loggedIn;
-      },
+      //     error: (nojoy) => {
+      //        console.error('error creating goal:');
+      //       console.error(nojoy);
+      //     }
+      //   });
+      //   // this.newGoal.creator = this.loggedIn;
+      // },
       error: (nojoy) => {
         console.error('error creating goal:');
         console.error(nojoy);

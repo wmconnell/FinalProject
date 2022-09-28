@@ -1,7 +1,6 @@
 package com.skilldistillery.squadgoals.services;
 
 import java.lang.reflect.Field;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -26,26 +25,28 @@ public class GoalServiceImpl implements GoalService {
 	//
 	// CREATE
 	@Override
-	public Goal create(String username, Goal goal) {
+	public Goal create(String username, Goal goal, int squadId) {
 		try {
-			System.out.println("***IN GOAL SERVICEIMPL*** Num Squads: " + goal.getSquads().size());
-			List<Squad> squads = new ArrayList<>();
-			for (Squad squad : goal.getSquads()) {
-				Optional<Squad> squadOpt = squadRepo.findById(squad.getId());
-				if (squadOpt.isPresent()) {
-					squads.add(squadOpt.get());
-				}
-			}
-			System.out.println("All squads in squads");
-			for (Squad squad : squads) {
-				squad.addGoal(goal);
-			}
+//			System.out.println("***IN GOAL SERVICEIMPL*** Num Squads: " + goal.getSquads().size());
+//			List<Squad> squads = new ArrayList<>();
+//			for (Squad squad : goal.getSquads()) {
+//				Optional<Squad> squadOpt = squadRepo.findById(squad.getId());
+//				if (squadOpt.isPresent()) {
+//					squads.add(squadOpt.get());
+//				}
+//			}
+//			System.out.println("All squads in squads");
+//			for (Squad squad : squads) {
+//				squad.addGoal(goal);
+//			}
 //	DOESN"T DO ANYTHING?
 //			System.out.println("All squads in goal.getSquads()");
 //			for (Squad squad : goal.getSquads()) {
 //				System.out.println(squad.getId());
 //			}
-//			goal.setSquads(squads);
+			Squad squad = authService.getSquad(squadId);
+			goal.addSquad(squad);
+			squad.addGoal(goal);
 			goal.setCreator(authService.getUser(username));
 			return goalRepo.saveAndFlush(goal);
 		} catch (Exception e) {

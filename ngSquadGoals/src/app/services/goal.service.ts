@@ -66,8 +66,8 @@ addSquadToGoal(goalId:number, squadId:number) {
   );
 }
 
-createGoal(goal: Goal){
-  return this.http.post<Goal>(this.url, goal, this.getHttpOptions()).pipe(catchError((err: any) => {
+createGoal(goal: Goal, squadId:number){
+  return this.http.post<Goal>(this.url + "/" + squadId, goal, this.getHttpOptions()).pipe(catchError((err: any) => {
     console.log(err);
     return throwError(
       () => new Error('GoalService.createGoal(): error creating goal: '  + err)
