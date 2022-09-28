@@ -7,7 +7,7 @@
       <th>Leader </th>
       <th>Members </th>
     </thead>
-  <tbody *ngFor="let squad of squads |active">
+  <tbody *ngFor="let squad of squads |active| squadUser:loggedIn">
 <tr (click)="selectedSquad = squad"><td>{{squad.name}}</td>
   <td>{{squad.leader!.username}}</td>
   <td>{{squad.users.length}}</td></tr>
