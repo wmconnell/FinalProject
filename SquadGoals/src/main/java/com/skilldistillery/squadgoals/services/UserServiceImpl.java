@@ -36,6 +36,11 @@ public class UserServiceImpl implements UserService {
 		//	since its precision means that less data is available at any given time.
 		return userRepo.findAll();
 	}
+	
+	@Override
+	public List<User> getUsersBySquad(int squadId) {
+		return userRepo.findAllBySquads_Id(squadId);
+	}
 
 	@Override
 	public User show(String username, int userId) {
