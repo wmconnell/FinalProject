@@ -7,6 +7,7 @@ import { AuthService } from 'src/app/services/auth.service';
 import { GoalService } from 'src/app/services/goal.service';
 import { SquadService } from 'src/app/services/squad.service';
 import { UserService } from 'src/app/services/user.service';
+import { NgForm } from '@angular/forms';
 
 @Component({
   selector: 'app-squad',
@@ -169,11 +170,11 @@ deleteSquad(id: number){
     }
   })
 }
-updateSquad(squad: Squad){
+updateSquad(form: NgForm, id:number){
   // let id = this.loggedIn.id;
-  squad.active = true;
   console.log("In Update Squad Call! BEFORE HTTP");
-  this.squadService.updateSquad(squad,squad.id).subscribe({
+  console.log(form.value);
+  this.squadService.updateSquad(form.value,id).subscribe({
     next:(squad) =>{
       console.log("In Update Squad HTTP Call!");
       this.displayTable();
