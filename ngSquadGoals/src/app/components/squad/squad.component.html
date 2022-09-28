@@ -15,7 +15,7 @@
   </table> -->
 
   <table mat-table
-       [dataSource]="squads | active | squadUser:loggedIn" multiTemplateDataRows
+       [dataSource]="squads | active" multiTemplateDataRows
        class="mat-elevation-z8">
   <ng-container matColumnDef="name">
     <th mat-header-cell *matHeaderCellDef> Squad </th>
@@ -27,7 +27,7 @@
   </ng-container>
   <ng-container matColumnDef="numActiveGoals">
     <th mat-header-cell *matHeaderCellDef> Active Goals </th>
-    <td mat-cell *matCellDef="let element"> {{(element.goals | activeGoals | goalUser:loggedIn).length}} </td>
+    <td mat-cell *matCellDef="let element"> {{(element.goals | activeGoals).length}} </td>
   </ng-container>
   <ng-container matColumnDef="expand">
     <th mat-header-cell *matHeaderCellDef aria-label="row actions">&nbsp;</th>
@@ -111,18 +111,19 @@
 
 <!-- Create Squad Form -->
 <div>
-<form *ngIf="!selectedSquad && addSquad">
+<form #createNewSquadForm="ngForm" *ngIf="!selectedSquad && addSquad">
   <br>
   <label>Squad Name:</label>
-  <input type="text" name="name" [(ngModel)]="newSquad.name">
+  <input type="text" name="name" ngModel>
+  <label *ngIf="!squadNameUnique" style="color:red">Squad name already taken</label>
   <br>
   <label>Squad Bio:</label>
-  <input type="text" name="bio" [(ngModel)]="newSquad.bio">
+  <input type="text" name="bio" ngModel>
   <br>
   <label>Squad Picture:</label>
   <input type="text" name="profilePic" [(ngModel)]="squadImage.url">
   <br>
-  <button class="btn btn-success" (click)="createSquad()">Submit</button>
+  <button class="btn btn-success" (click)="checkSquadName(createNewSquadForm)">Submit</button>
   <button class="btn btn-primary" (click)="displayTable()">Back</button>
 </form>
 </div>

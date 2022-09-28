@@ -11,7 +11,9 @@ export class SquadUserPipe implements PipeTransform {
     if(user === null){
       return squads;
     }
-    const result:Squad[] = [];
+    const squadList:Squad[] = [];
+    if (squads != null && squads !== undefined && squads.length > 0) {
+
     for(let squad of squads){
       console.log(squad.users.length);
 
@@ -19,14 +21,14 @@ export class SquadUserPipe implements PipeTransform {
         console.log(member.id);
 
         if(member.id === user.id){
-            result.push(squad);
+            squadList.push(squad);
         }
 
       }
     }
-    return result;
   }
+  return squadList;
 
 }
 
-
+}

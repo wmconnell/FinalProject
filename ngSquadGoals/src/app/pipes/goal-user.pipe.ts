@@ -17,7 +17,7 @@ export class GoalUserPipe implements PipeTransform {
     const goalList:Goal[] = [];
     if (goals != null && goals !== undefined && goals.length > 0) {
     for(let goal of goals){
-      console.log(goal.users.length);
+      console.log("Number of goals" + goal.users.length);
 
       for (let squad of goal.squads) {
         console.log("Squad ID: " + squad.id);
