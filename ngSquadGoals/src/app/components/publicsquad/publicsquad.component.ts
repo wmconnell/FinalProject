@@ -17,8 +17,8 @@ import { animate, state, style, transition, trigger } from '@angular/animations'
   styleUrls: ['./publicsquad.component.css'],
   animations: [
     trigger('detailExpand', [
-      state('collapsed', style({height: '0px', minHeight: '0'})),
-      state('expanded', style({height: '*'})),
+      state('collapsed', style({ height: '0px', minHeight: '0' })),
+      state('expanded', style({ height: '*' })),
       transition('expanded <=> collapsed', animate('225ms cubic-bezier(0.4, 0.0, 0.2, 1)')),
     ]),
   ]
@@ -63,20 +63,30 @@ export class PublicsquadComponent implements OnInit {
 
 
   load = () => {
-    console.log("load called");
-    let getTheGoals = this.getGoalsBySquad;
-    this.squadService.squadsByUser().subscribe({
+    // console.log("load called");
+    // let getTheGoals = this.getGoalsBySquad;
+    // this.squadService.squadsByUser().subscribe({
+    //   next: (squads) => {
+    //     console.log("INDEX SUCCESSFUL");
+    //     squads.forEach(function(squad) {
+    //       getTheGoals(squad);
+    //     })
+    //     this.squads = squads;
+    //   },
+    //   error: (err) => {
+    //     console.error(err);
+    //   }
+    // });
+    this.squadService.index().subscribe({
       next: (squads) => {
-        console.log("INDEX SUCCESSFUL");
-        squads.forEach(function(squad) {
-          getTheGoals(squad);
-        })
+
         this.squads = squads;
       },
       error: (err) => {
         console.error(err);
       }
-    });
+
+    })
   }
 
   doUpdateGoal(goal: Goal): void {
@@ -139,7 +149,7 @@ export class PublicsquadComponent implements OnInit {
         } else {
           this.squadNameUnique = false;
         }
-    }
+      }
     });
   }
 
@@ -180,7 +190,7 @@ export class PublicsquadComponent implements OnInit {
             error: (err) => {
               console.error(err);
             }
-          })
+          });
         }
       },
       error: (err) => {
@@ -189,7 +199,6 @@ export class PublicsquadComponent implements OnInit {
       }
     });
   }
-
   deleteSquad(id: number) {
     console.log(id);
 
@@ -200,28 +209,28 @@ export class PublicsquadComponent implements OnInit {
       },
       error: (err) => {
         console.error(err);
-    }
-  })
-}
+      }
+    })
+  }
 
-updateSquad(form: NgForm, id:number){
-  // let id = this.loggedIn.id;
-  console.log("In Update Squad Call! BEFORE HTTP");
-  console.log(form.value);
-  this.squadService.updateSquad(form.value,id).subscribe({
-    next:(squad) =>{
-      console.log("In Update Squad HTTP Call!");
-      this.displayTable();
-      this.load();
-  },
-  error:(err) =>{
-    console.error(err);
+  updateSquad(form: NgForm, id: number) {
+    // let id = this.loggedIn.id;
+    console.log("In Update Squad Call! BEFORE HTTP");
+    console.log(form.value);
+    this.squadService.updateSquad(form.value, id).subscribe({
+      next: (squad) => {
+        console.log("In Update Squad HTTP Call!");
+        this.displayTable();
+        this.load();
+      },
+      error: (err) => {
+        console.error(err);
 
       }
     })
   }
 
-  getGoalsBySquad = (squad:Squad): void => {
+  getGoalsBySquad = (squad: Squad): void => {
     this.goalService.getGoalsBySquad(squad.id).subscribe({
       next: (result) => {
         squad.goals = result;
