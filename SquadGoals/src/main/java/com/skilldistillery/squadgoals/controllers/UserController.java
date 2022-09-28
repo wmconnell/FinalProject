@@ -1,6 +1,7 @@
 package com.skilldistillery.squadgoals.controllers;
 
 import java.security.Principal;
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
@@ -22,32 +23,32 @@ import com.skilldistillery.squadgoals.services.UserService;
 
 @RestController
 @RequestMapping(path = "api")
-@CrossOrigin({"*", "http://localhost:4200"})
+@CrossOrigin({ "*", "http://localhost:4200" })
 public class UserController {
 
-	@Autowired 
+	@Autowired
 	private UserService userService;
-	 
+
 	@Autowired
 	private AuthService authService;
-	
+
 	@GetMapping("users")
 	public List<User> index(HttpServletRequest req, HttpServletResponse res, Principal principal) {
 		System.out.println("****IN CONTROLLER - INDEX****");
 		List<User> users = userService.index("originaltom");
-			if (users.size() > 0) {
-				res.setStatus(200);
-				res.setHeader("Result", "Generated complete user list");
-			} else if (users.size() == 0) {
-				res.setStatus(404);
-				res.setHeader("Result", "No users found.");	
-			} else {
-				res.setStatus(400);
-				res.setHeader("Error", "Unable to generate user list");
-			}
+		if (users.size() > 0) {
+			res.setStatus(200);
+			res.setHeader("Result", "Generated complete user list");
+		} else if (users.size() == 0) {
+			res.setStatus(404);
+			res.setHeader("Result", "No users found.");
+		} else {
+			res.setStatus(400);
+			res.setHeader("Error", "Unable to generate user list");
+		}
 		return users;
 	}
-	
+
 	@GetMapping("users/uid/{id}")
 	public User show(HttpServletRequest req, HttpServletResponse res, @PathVariable int id, Principal principal) {
 		System.out.println(principal);
@@ -56,7 +57,7 @@ public class UserController {
 			user = userService.show(principal.getName(), id);
 			if (user == null) {
 				res.setStatus(404);
-				res.setHeader("Result", "User with id " + id + " does not exist");	
+				res.setHeader("Result", "User with id " + id + " does not exist");
 			} else {
 				res.setStatus(200);
 				res.setHeader("Result", "Returned user with id " + id);
@@ -67,9 +68,35 @@ public class UserController {
 		}
 		return user;
 	}
-	
+
+	@GetMapping("users/squads/{squadId}")
+	public List<User> getUsersBySquad(HttpServletRequest req, HttpServletResponse res, @PathVariable int squadId,
+			Principal principal) {
+		List<User> users = new ArrayList<>();
+		if (authService.isLoggedInUser(principal.getName())) {
+			if (authService.squadExists(squadId)) {
+				users = userService.getUsersBySquad(squadId);
+				if (users.size() > 0) {
+					res.setStatus(200);
+					res.setHeader("Result", "Returned user list");
+				} else {
+					res.setStatus(404);
+					res.setHeader("Result", "No users in squad id " + squadId);
+				}
+			} else {
+				res.setStatus(404);
+				res.setHeader("Error", "Squad with id " + squadId + " does not exist");
+			}
+		} else {
+			res.setStatus(401);
+			res.setHeader("Error", "Client must be logged in to perform this action");
+		}
+		return users;
+	}
+
 	@PutMapping("users/{id}")
-	public User update(HttpServletRequest req, HttpServletResponse res, @PathVariable int id, @RequestBody User user, Principal principal) {
+	public User update(HttpServletRequest req, HttpServletResponse res, @PathVariable int id, @RequestBody User user,
+			Principal principal) {
 		System.out.println("**** USER UPDATE ****" + principal);
 		User updated = null;
 		if (authService.isLoggedInUser(principal.getName())) {
@@ -90,7 +117,7 @@ public class UserController {
 					}
 				} else {
 					res.setStatus(404);
-					res.setHeader("Result", "User with id " + id + " does not exist");	
+					res.setHeader("Result", "User with id " + id + " does not exist");
 				}
 			} else {
 				res.setStatus(401);
@@ -102,7 +129,7 @@ public class UserController {
 		}
 		return updated;
 	}
-	
+
 	@DeleteMapping("users/{id}")
 	public void destroy(HttpServletRequest req, HttpServletResponse res, @PathVariable int id, Principal principal) {
 		if (authService.isLoggedInUser(principal.getName())) {
@@ -115,7 +142,7 @@ public class UserController {
 					}
 				} else {
 					res.setStatus(404);
-					res.setHeader("Result", "User with id " + id + " does not exist");	
+					res.setHeader("Result", "User with id " + id + " does not exist");
 				}
 			} else {
 				res.setStatus(401);
@@ -126,10 +153,12 @@ public class UserController {
 			res.setHeader("Error", "Client must be logged in to perform this action");
 		}
 	}
+
 	@GetMapping("users/{username}")
-	public User show(HttpServletRequest req, HttpServletResponse res, @PathVariable String username, Principal principal) {
+	public User show(HttpServletRequest req, HttpServletResponse res, @PathVariable String username,
+			Principal principal) {
 		System.out.println(principal);
-		System.out.println(username+ "***********");
+		System.out.println(username + "***********");
 //		User user = userService.show(principal.getName(), username);
 		User user = userService.getUserByUserName(username);
 		if (user == null) {

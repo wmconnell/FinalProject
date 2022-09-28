@@ -14,6 +14,7 @@ public interface UserService {
 	//	READ
 	List<User> index(String username);
 	User show(String username, int userId);
+	List<User> getUsersBySquad(int squadId);
 	//	UPDATE
 	User update(String username, int userId, User user);
 	//	DELETE
