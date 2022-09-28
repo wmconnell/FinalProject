@@ -108,9 +108,11 @@ export class SquadComponent implements OnInit {
     // console.log(this.loggedIn.id);
     // this.newSquad.leader = this.loggedIn
     // this.newSquad.profilePic = this.squadImage;
-    this.squadService.existsByName(form.value.name).subscribe({
+    let tempSquad = {} as Squad;
+    tempSquad.name = form.value.name;
+    this.squadService.existsByName(tempSquad).subscribe({
       next: (exists) => {
-        if (exists) {
+        if (!exists) {
           this.squadNameUnique = true;
           let newSquad = {} as Squad;
           newSquad.name = form.value.name;

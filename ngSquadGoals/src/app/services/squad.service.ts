@@ -56,8 +56,8 @@ export class SquadService {
   );
   }
 
-  existsByName(name: string) {
-    return this.http.get<boolean>(this.url + "/exist/" + name, this.getHttpOptions()).pipe(catchError((err: any) => {
+  existsByName(squad: Squad) {
+    return this.http.post<boolean>(this.url + "/exist", squad, this.getHttpOptions()).pipe(catchError((err: any) => {
       console.log(err);
       return throwError(
         () => new Error('SquadService.getSquadByName(): error retrieving squads: ' + err)

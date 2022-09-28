@@ -62,10 +62,10 @@ public class SquadController {
 		return squad;
 	}
 	
-	@GetMapping("squads/exist/{name}")
-	public boolean squadExistsByName(HttpServletRequest req, HttpServletResponse res, @PathVariable String name,
+	@PostMapping("squads/exist")
+	public boolean squadExistsByName(@RequestBody Squad squad, HttpServletRequest req, HttpServletResponse res,
 			Principal principal) {
-		return authService.squadExists(name);
+		return authService.squadExists(squad.getName());
 	}
 
 	@PostMapping("squads")
@@ -73,7 +73,7 @@ public class SquadController {
 			Principal principal) {
 		Squad created = null;
 		if (authService.isLoggedInUser(principal.getName())) {
-			if (authService.squadExists(squad.getName())) {
+			if (!authService.squadExists(squad.getName())) {
 			try {
 				System.out.println("IN SQUAD CONTROLLER CREATE");
 //				System.out.println(squad.getUsers());
