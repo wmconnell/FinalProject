@@ -26,7 +26,7 @@ import { animate, state, style, transition, trigger } from '@angular/animations'
 export class PublicsquadComponent implements OnInit {
   squads: Squad[] = []
   loggedIn = new User()
-  // newSquad: Squad = new Squad();
+  newSquad: Squad = new Squad();
   updatedSquad: Squad = new Squad();
   selectedSquad: Squad | null = null;
   selectedMember: User | null = null;
@@ -179,6 +179,8 @@ export class PublicsquadComponent implements OnInit {
       next: (user) => {
         this.newMember = user;
         if (this.selectedSquad) {
+          console.log(this.selectedSquad);
+
           this.selectedSquad!.users.push(this.newMember);
           let squadId: number = this.selectedSquad!.id;
           let memberId: number = this.newMember!.id;

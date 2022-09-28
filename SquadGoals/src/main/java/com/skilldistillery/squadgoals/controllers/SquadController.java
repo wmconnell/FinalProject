@@ -24,7 +24,7 @@ import com.skilldistillery.squadgoals.services.SquadService;
 
 @RestController
 @RequestMapping(path = "api")
-@CrossOrigin({ "*", "http://localhost:4250" })
+@CrossOrigin({ "*", "http://localhost" })
 public class SquadController {
 
 	@Autowired
@@ -128,7 +128,7 @@ public class SquadController {
 					}
 				} else {
 					res.setStatus(400);
-					res.setHeader("Error", "Squad name '" + squad.getName() + "' already taken");
+					res.setHeader("Error", "Squad name '" + squad.getName() + "' already taken"); 
 				}
 			} else {
 				res.setStatus(404);
@@ -146,6 +146,9 @@ public class SquadController {
 			@PathVariable int memberId, Principal principal) {
 
 		try {
+			System.out.println("************* in controller memberId: "+memberId+"*******");
+			System.out.println(id);
+			System.out.println(principal);
 			squadService.addMemberToSquad(id, memberId, principal.getName());
 			res.setStatus(200);
 		} catch (Exception e) {
