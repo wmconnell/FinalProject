@@ -7,7 +7,11 @@ import { AuthService } from 'src/app/services/auth.service';
 import { GoalService } from 'src/app/services/goal.service';
 import { SquadService } from 'src/app/services/squad.service';
 import { UserService } from 'src/app/services/user.service';
+<<<<<<< HEAD
 import { Goal } from 'src/app/models/goal';
+=======
+import { NgForm } from '@angular/forms';
+>>>>>>> 3afb4d8e572bfb300f320dd46bedd1a03ec0c493
 
 @Component({
   selector: 'app-squad',
@@ -175,9 +179,27 @@ export class SquadComponent implements OnInit {
         this.displayTable();
         this.load();
 
+<<<<<<< HEAD
       },
       error: (err) => {
         console.error(err);
+=======
+    }
+  })
+}
+updateSquad(form: NgForm, id:number){
+  // let id = this.loggedIn.id;
+  console.log("In Update Squad Call! BEFORE HTTP");
+  console.log(form.value);
+  this.squadService.updateSquad(form.value,id).subscribe({
+    next:(squad) =>{
+      console.log("In Update Squad HTTP Call!");
+      this.displayTable();
+      this.load();
+  },
+  error:(err) =>{
+    console.error(err);
+>>>>>>> 3afb4d8e572bfb300f320dd46bedd1a03ec0c493
 
       }
     })

@@ -77,6 +77,7 @@ export class SquadService {
 
     }
     updateSquad(squad: Squad, id:number){
+      console.log(squad);
       return this.http.put<Squad>(this.url+'/'+id,squad, this.getHttpOptions()).pipe(catchError((err: any) => {
         console.log(err);
         return throwError(

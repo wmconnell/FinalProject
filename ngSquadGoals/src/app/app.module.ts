@@ -2,6 +2,7 @@ import { UserService } from './services/user.service';
 import {HttpClientModule } from '@angular/common/http';
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
+import { MatIconModule } from '@angular/material/icon';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -27,6 +28,7 @@ import { ActiveGoalsPipe } from './pipes/active-goals.pipe';
 import { SquadUserPipe } from './pipes/squad-user.pipe';
 import { GoalUserPipe } from './pipes/goal-user.pipe';
 import { MygoalsComponent } from './components/mygoals/mygoals.component';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 @NgModule({
   declarations: [
@@ -56,7 +58,9 @@ import { MygoalsComponent } from './components/mygoals/mygoals.component';
     BrowserModule,
     AppRoutingModule,
     FormsModule,
-    HttpClientModule
+    HttpClientModule,
+    MatIconModule,
+    BrowserAnimationsModule
   ],
 
     providers:  [

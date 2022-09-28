@@ -1,14 +1,55 @@
-<div >
-  <table *ngIf="loggedIn">
-<tr><td>{{loggedIn.id}}</td></tr>
-<tr><td>{{loggedIn.username}}</td></tr>
-<tr><td>{{loggedIn.password}}</td></tr>
-<tr><td>{{loggedIn.firstName}}</td></tr>
-<tr><td>{{loggedIn.lastName}}</td></tr>
-<tr><td>{{loggedIn.bio}}</td></tr>
-  </table>
-</div>
-  <table class="table table-striped table-hover">
+<div class="container">
+  <div class="row">
+    <div class="col-sm-4 justify-content-center">
+      <div class="row align-content-center">
+        <img class="rounded-circle m-4 p-4" [src]="loggedIn.profilePic.url"/>
+        <span>{{loggedIn.firstName}} {{loggedIn.lastName}}</span>
+      </div>
+    </div>
+    <div class="col-sm-8">
+      <mat-icon (click)="editUser = true">edit</mat-icon>
+      <table *ngIf="loggedIn && !editUser">
+        <tr><td>User Id: {{loggedIn.id}}</td></tr>
+        <tr><td>Username: {{loggedIn.username}}</td></tr>
+        <tr><td>Bio: {{loggedIn.bio}}</td></tr>
+      </table>
+      <!-- <form *ngIf="loggedIn && editUser">
+        <input type="hidden" name="id" [(ngModel)]="loggedIn.id">
+        <label>First Name:</label>
+        <input type="text" name="firstName" [(ngModel)]="loggedIn.firstName">
+        <br>
+        <label>Last Name:</label>
+        <input type="text" name="lastName" [(ngModel)]="loggedIn.lastName">
+        <br>
+        <label>Email:</label>
+        <input type="text" name="email" [(ngModel)]="loggedIn.email">
+        <br>
+        <label>Bio:</label>
+        <input type="text" name="bio" [(ngModel)]="loggedIn.bio">
+        <br>
+        <button class="btn btn-success" (click)="updateUser(loggedIn)">Update</button>
+       <button class="btn btn-primary" (click)="displayTable()">Back</button>
+      </form> -->
+      <form #updateUserForm="ngForm" *ngIf="loggedIn && editUser">
+        <input type="hidden" name="id" [(ngModel)]="loggedIn.id" ngModel>
+        <label>First Name:</label>
+        <input type="text" name="firstName" [(ngModel)]="loggedIn.firstName" ngModel>
+        <br>
+        <label>Last Name:</label>
+        <input type="text" name="lastName" [(ngModel)]="loggedIn.lastName" ngModel>
+        <br>
+        <label>Email:</label>
+        <input type="text" name="email" [(ngModel)]="loggedIn.email" ngModel>
+        <br>
+        <label>Bio:</label>
+        <textarea rows="2" cols="40" name="bio" [(ngModel)]="loggedIn.bio" ngModel></textarea>
+        <br>
+        <button class="btn btn-success" (click)="updateUser(updateUserForm)">Update</button>
+        <!-- <button class="btn btn-primary" (click)="displayTable()">Back</button> -->
+      </form>
+    </div>
+<!--
+<table class="table table-striped table-hover">
     <thead>
       <th>Name </th>
       <th>Leader </th>
@@ -18,32 +59,13 @@
 <tr><td (>{{squad.name}}</td><td>{{squad.leader!.username}}</td><td>{{squad.users.length}}</td></tr>
 </tbody>
   <button (click)="deleteUser(loggedIn.id)">Delete Account</button>
-  <!-- <table *ngFor="let goal of goals">
+  <table *ngFor="let goal of goals">
   <tr><td>{{goal.active}}</td></tr>
   <tr><td>{{goal.completed}}</td></tr>
   <tr><td>{{goal.creator}}</td></tr>
   <tr><td>{{goal.description}}</td></tr>
   <tr><td>{{goal.endDate}}</td></tr>
-
 </table> -->
-<form >
-  <br>
-  <input type="hidden" name="id" [(ngModel)]="loggedIn.id">
-  <label>First Name:</label>
-  <input type="text" name="firstName" [(ngModel)]="updatedUser.firstName">
-  <br>
-  <label>Last Name:</label>
-  <input type="text" name="lastName" value="{{loggedIn.lastName}}" [(ngModel)]="updatedUser.lastName">
-  <br>
-  <label>Email:</label>
-  <input type="text" name="lastName" value="{{loggedIn.email}}" [(ngModel)]="updatedUser.email">
-  <br>
-  <label>Bio:</label>
-  <input type="text" name="bio" [(ngModel)]="updatedUser.bio">
-  <br>
 
-  <button class="btn btn-success" (click)="updateUser(updatedUser,loggedIn.id)">Submit</button>
-  <!-- <button class="btn btn-primary" (click)="displayTable()">Back</button> -->
-
-
-</form>
+</div>
+<!-- {{ loggedIn | json }} -->

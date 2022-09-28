@@ -63,17 +63,17 @@
 
 <!-- update Squad Form -->
 <div *ngIf="selectedSquad && editSquad">
-  <form >
+  <form #updateSquadForm="ngForm">
     <br>
-    <input type="hidden" name="id" [(ngModel)]="selectedSquad.id">
+    <input type="hidden" name="id" [(ngModel)]="selectedSquad.id" ngModel>
     <label>Squad Name:</label>
-    <input type="text" name="name" [(ngModel)]="selectedSquad.name">
+    <input type="text" name="name" [(ngModel)]="selectedSquad.name" ngModel>
     <br>
     <label>Squad Bio:</label>
-    <input type="text" name="bio" [(ngModel)]="selectedSquad.bio">
+    <input type="text" name="bio" [(ngModel)]="selectedSquad.bio" ngModel>
     <br>
 
-    <button class="btn btn-success" (click)="updateSquad(selectedSquad)">Submit</button>
+    <button class="btn btn-success" (click)="updateSquad(updateSquadForm, selectedSquad.id)">Submit</button>
     <button class="btn btn-primary" (click)="displayTable()">Back</button>
 
 

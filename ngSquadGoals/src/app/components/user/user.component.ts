@@ -7,6 +7,8 @@ import { AuthService } from 'src/app/services/auth.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Goal } from 'src/app/models/goal';
 import { Squad } from 'src/app/models/squad';
+import { MatIconModule } from '@angular/material/icon';
+import { NgForm } from '@angular/forms';
 
 @Component({
   selector: 'app-user',
@@ -17,6 +19,7 @@ export class UserComponent implements OnInit {
   loggedIn: User = new User();
   updatedUser: User = new User();
   squads: Squad[] = [];
+  editUser:boolean = false;
 
   constructor(private userService: UserService,private auth: AuthService,private router: Router, private route: ActivatedRoute, private squadService: SquadService) { }
 
@@ -50,16 +53,15 @@ deleteUser(id: number){
     }
   })
 }
-updateUser(user: User,id: number){
-  console.log(id);
+updateUser(form: NgForm){
+  // console.log(id);
 
-  user.id = id;
-  console.log(user.id);
-  user.active = true;
-
-  this.userService.updateUser(user, id).subscribe({
+  // user.id = id;
+  // console.log(user.id);
+  console.log(form.value);
+  this.userService.updateUser(form.value, form.value.id).subscribe({
     next:(user) =>{
-      this.updatedUser = new User();
+      this.load();
     },
     error: (err) =>{
       console.error(err);
