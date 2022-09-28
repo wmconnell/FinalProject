@@ -30,18 +30,18 @@
 </div>
 
 <div>
-  <form *ngIf="addGoal">
+  <form #createGoalForm="ngForm" *ngIf="addGoal">
    <label>Squad: </label>
     <select name="squad" id="squad" [(ngModel)]="squadId">
       <option *ngFor="let squad of squads | active" [value]="squad.id">{{squad.name}}</option>
     </select><br>
     <label>Title: </label>
-    <input type="text" name="title" [(ngModel)]="newGoal.title"><br>
+    <input type="text" name="title" ngModel><br>
     <label>Description: </label>
-    <textarea rows="2" cols="40" name="description" [(ngModel)]="newGoal.description"></textarea><br>
+    <textarea rows="2" cols="40" name="description" ngModel></textarea><br>
     <label>End Date: </label>
-    <input type="datetime" name="endDate" [(ngModel)]="newGoal.endDate"><br>
-    <button (click)="createGoal(newGoal); addGoal = false;">Submit</button>
+    <input type="datetime" name="endDate" ngModel><br>
+    <button (click)="createGoal(createGoalForm, squadId); addGoal = false;">Submit</button>
   </form>
 
 
