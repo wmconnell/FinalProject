@@ -33,6 +33,7 @@ export class GoalComponent implements OnInit {
 
   ngOnInit(): void {
     this.load();
+    this.loadGoals();
   }
 
   isLoggedIn(){
@@ -51,7 +52,7 @@ export class GoalComponent implements OnInit {
         this.loggedIn = user;
         console.log(user.goals.length)
 
-        this.getSquads();
+        // this.getSquads();
         // console.log("Successfully retrieved user id " + user.id);
       },
       error: (err) => {
@@ -60,6 +61,8 @@ export class GoalComponent implements OnInit {
     }
     );
   }
+
+
 
   createGoal(form: NgForm, squadId:number): void {
     let goal = form.value;
@@ -136,6 +139,22 @@ export class GoalComponent implements OnInit {
   })
   }
 
+  loadGoals(){
+    this.goalService.index().subscribe(
+      {
+        next: (goals) => {
+          console.log("******* showAllGoals func *******")
+          console.log(goals)
+          this.goals = goals;
+        },
+        error: (err) => {
+          console.error('goal.component.ts error: error loading all goals');
+          console.error(err);
+        }
+      }
+    )
+  }
+
   getAllGoals = (): void => {
     this.goals = [];
     let getDemGoals = this.getGoalBySquad;
@@ -154,6 +173,7 @@ export class GoalComponent implements OnInit {
     })
 
   }
+
 
   delete = (id: number): void => {
     this.goalService.deleteGoal(id).subscribe({
