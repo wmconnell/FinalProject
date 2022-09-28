@@ -11,9 +11,10 @@ import { UserService } from 'src/app/services/user.service';
 import { Squad } from 'src/app/models/squad';
 import { NgForm } from '@angular/forms';
 import { MatTable, MatTableDataSource } from '@angular/material/table';
-import { MatDialog } from '@angular/material/dialog';
+import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { MatMenuTrigger } from '@angular/material/menu';
 import { DeleteConfirmationDialogComponent } from '../delete-confirmation-dialog/delete-confirmation-dialog.component';
+import { DialogRef } from '@angular/cdk/dialog';
 
 @Component({
   selector: 'app-goal',
@@ -53,11 +54,20 @@ export class GoalComponent implements OnInit {
     this.load();
   }
 
-  openDialog(enterAnimationDuration: string, exitAnimationDuration: string): void {
-    this.dialog.open(DeleteConfirmationDialogComponent, {
+  openDialog(enterAnimationDuration: string, exitAnimationDuration: string, goal: Goal): void {
+    // let confirmed: boolean = false;
+    const dialogRef = this.dialog.open(DeleteConfirmationDialogComponent, {
       width: '250px',
       enterAnimationDuration,
       exitAnimationDuration,
+      data: goal
+    });
+
+    dialogRef.afterClosed().subscribe((result) => {
+      console.log("DELETE? " + result);
+      if (result) {
+        this.delete(goal.id);
+      }
     });
   }
 
