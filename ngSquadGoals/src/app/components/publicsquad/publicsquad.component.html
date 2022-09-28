@@ -1,1 +1,119 @@
-<p>publicsquad works!</p>
+<h1>All Squads</h1>
+<!-- Table displaying all Squads -->
+<div *ngIf="!selectedSquad && !addSquad && !addmember">
+  <table class="table table-striped table-hover">
+    <thead>
+      <th>Name</th>
+      <th>Leader</th>
+      <th>Members</th>
+    </thead>
+    <tbody *ngFor="let squad of squads |active">
+      <tr (click)="select(squad.id)">
+        <td>{{ squad.name }}</td>
+        <td>{{ squad.leader!.username }}</td>
+        <td>{{ squad.users.length }}</td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+  <!-- single squad view -->
+  <div *ngIf="selectedSquad && !editSquad && !selectedMember">
+    <table>
+      <tr>
+        <td>{{ selectedSquad.name }}</td>
+      </tr>
+      <tr>
+        <td>About Us: {{ selectedSquad.bio }}</td>
+      </tr>
+      <tr>
+        <td>Squad Leader: {{ selectedSquad.leader!.username }}</td>
+      </tr>
+      <tr>
+        <td>Members:</td>
+      </tr>
+      <tr *ngFor="let user of selectedSquad.users">
+        <td (click)="selectMember(user.username)">{{ user.username }}</td>
+      </tr>
+    </table>
+    <button
+      *ngIf="loggedIn.role === 'admin'"
+      class="btn btn-danger"
+      (click)="deleteSquad(selectedSquad.id)"
+    >
+      Delete
+    </button>
+    <button class="btn btn-primary" (click)="displayTable()">Back</button>
+  </div>
+
+  <!-- add member to squad form -->
+  <div *ngIf="selectedSquad && !selectedMember">
+    <form>
+      <input type="hidden" name="userName" [(ngModel)]="loggedIn.username">
+      <button (click)="addMember(loggedIn.username)">Join Squad</button>
+    </form>
+  </div>
+
+  <!-- Update Goal Form -->
+  <div>
+    <form *ngIf="updateGoal">
+      <label>Squad: </label>
+      <select name="squad" id="squad" [(ngModel)]="squadToEditId">
+        <option
+          *ngFor="let squad of goalToUpdate.squads | active"
+          [attr.selected]="squad.id == squadToEditId ? true : null"
+        >
+          {{ squad.name }}
+        </option></select
+      ><br />
+      <label>Title: </label>
+      <input type="text" name="title" [(ngModel)]="goalToUpdate.title" /><br />
+      <label>Description: </label>
+      <textarea
+        rows="2"
+        cols="40"
+        name="description"
+        [(ngModel)]="goalToUpdate.description"
+      ></textarea
+      ><br />
+      <label for="completed">Completed: </label><br />
+      <input
+        type="checkbox"
+        id="completed"
+        name="completed"
+        [(ngModel)]="goalToUpdate.completed"
+      />
+      <label>End Date: </label>
+      <input
+        type="datetime"
+        name="endDate"
+        [(ngModel)]="goalToUpdate.endDate"
+      /><br />
+      <button (click)="doUpdateGoal(goalToUpdate); updateGoal = false">
+        Submit
+      </button>
+    </form>
+  </div>
+
+  <!-- {{squads | json}} -->
+  <!-- Member Profile -->
+  <div>
+    <div class="container" *ngIf="selectedMember">
+      <div class="row">
+        <div class="col-sm-4 justify-content-center">
+          <div class="row align-content-center">
+            <img
+              class="rounded-circle m-4 p-4"
+              [src]="selectedMember.profilePic.url"
+            />
+            <span
+              >{{ selectedMember.firstName }}
+              {{ selectedMember.lastName }}</span
+            >
+            <span>{{ selectedMember.bio }}</span>
+            <button (click)="selectedMember = null">Back</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
