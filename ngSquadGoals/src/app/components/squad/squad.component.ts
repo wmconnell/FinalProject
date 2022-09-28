@@ -9,11 +9,20 @@ import { SquadService } from 'src/app/services/squad.service';
 import { UserService } from 'src/app/services/user.service';
 import { Goal } from 'src/app/models/goal';
 import { NgForm } from '@angular/forms';
+import { MatTableModule } from '@angular/material/table';
+import { animate, state, style, transition, trigger } from '@angular/animations';
 
 @Component({
   selector: 'app-squad',
   templateUrl: './squad.component.html',
-  styleUrls: ['./squad.component.css']
+  styleUrls: ['./squad.component.css'],
+  animations: [
+    trigger('detailExpand', [
+      state('collapsed', style({height: '0px', minHeight: '0'})),
+      state('expanded', style({height: '*'})),
+      transition('expanded <=> collapsed', animate('225ms cubic-bezier(0.4, 0.0, 0.2, 1)')),
+    ]),
+  ]
 })
 export class SquadComponent implements OnInit {
   squads: Squad[] = []
@@ -29,6 +38,9 @@ export class SquadComponent implements OnInit {
   newMember: User = new User;
   userName: string = "";
   goals: Goal[] = [];
+  columnsToDisplay = ["name", "leader", "numActiveGoals"];
+  columnsToDisplayWithExpand = [...this.columnsToDisplay, 'expand'];
+  expandedElement: Squad | null = null;
 
 
   constructor(private userService: UserService, private auth: AuthService, private router: Router, private route: ActivatedRoute, private goalService: GoalService, private squadService: SquadService) { }
@@ -56,12 +68,14 @@ export class SquadComponent implements OnInit {
   }
 
 
-  load() {
+  load = () => {
     console.log("load called");
-
+    let getTheGoals = this.getGoalsBySquad;
     this.squadService.index().subscribe({
       next: (squads) => {
-
+        squads.forEach(function(squad) {
+          getTheGoals(squad);
+        })
         this.squads = squads;
 
         // this.getAllGoals();
@@ -69,7 +83,6 @@ export class SquadComponent implements OnInit {
       },
       error: (err) => {
         console.error(err);
-
       }
     });
   }
@@ -199,4 +212,14 @@ updateSquad(form: NgForm, id:number){
     })
   }
 
+  getGoalsBySquad = (squad:Squad): void => {
+    this.goalService.getGoalsBySquad(squad.id).subscribe({
+      next: (result) => {
+        squad.goals = result;
+      },
+      error: (err) => {
+        console.error(err);
+      }
+    });
+  }
 }
