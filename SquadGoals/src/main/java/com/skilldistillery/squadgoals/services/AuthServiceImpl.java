@@ -117,6 +117,10 @@ public class AuthServiceImpl implements AuthService {
 		return squadRepo.existsById(squadId);
 	}
 	
+	public boolean squadExists(String name) {
+		return squadRepo.existsByName(name);
+	}
+	
 	public boolean reviewExists(int goalId, int userId) {
 		ReviewId rid = new ReviewId();
 		rid.setGoalId(goalId);
