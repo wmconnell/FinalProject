@@ -25,6 +25,9 @@ import { TagComponent } from './components/tag/tag.component';
 import { TaskComponent } from './components/task/task.component';
 import { ActivePipe } from './pipes/active.pipe';
 import { ActiveGoalsPipe } from './pipes/active-goals.pipe';
+import { SquadUserPipe } from './pipes/squad-user.pipe';
+import { GoalUserPipe } from './pipes/goal-user.pipe';
+import { MygoalsComponent } from './components/mygoals/mygoals.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 @NgModule({
@@ -46,7 +49,10 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
     TagComponent,
     TaskComponent,
     ActivePipe,
-    ActiveGoalsPipe
+    ActiveGoalsPipe,
+    SquadUserPipe,
+    GoalUserPipe,
+    MygoalsComponent
   ],
   imports: [
     BrowserModule,

@@ -1,23 +1,24 @@
-import { SquadService } from 'src/app/services/squad.service';
 import { Component, OnInit } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
-import { User } from 'src/app/models/user';
 import { Goal } from 'src/app/models/goal';
+import { Squad } from 'src/app/models/squad';
+import { User } from 'src/app/models/user';
 import { AuthService } from 'src/app/services/auth.service';
 import { GoalService } from 'src/app/services/goal.service';
+import { SquadService } from 'src/app/services/squad.service';
 import { TaskService } from 'src/app/services/task.service';
 import { UserService } from 'src/app/services/user.service';
-import { Squad } from 'src/app/models/squad';
 
 @Component({
-  selector: 'app-goal',
-  templateUrl: './goal.component.html',
-  styleUrls: ['./goal.component.css']
+  selector: 'app-mygoals',
+  templateUrl: './mygoals.component.html',
+  styleUrls: ['./mygoals.component.css']
 })
-export class GoalComponent implements OnInit {
-
+export class MygoalsComponent implements OnInit {
 
   constructor(private userService: UserService,private auth: AuthService,private router: Router, private route: ActivatedRoute, private goalService: GoalService, private taskService: TaskService, private squadService: SquadService) { }
+
+
 
   loggedIn: User = new User();
   squads: Squad[] = [];
@@ -158,3 +159,4 @@ export class GoalComponent implements OnInit {
   }
 
 }
+

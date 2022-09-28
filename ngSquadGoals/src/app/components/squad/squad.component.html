@@ -7,7 +7,7 @@
       <th>Leader </th>
       <th>Members </th>
     </thead>
-  <tbody *ngFor="let squad of squads |active">
+  <tbody *ngFor="let squad of squads |active| squadUser:loggedIn">
 <tr (click)="selectedSquad = squad"><td>{{squad.name}}</td>
   <td>{{squad.leader!.username}}</td>
   <td>{{squad.users.length}}</td></tr>
@@ -23,9 +23,9 @@
     <tr><td>About Us: {{selectedSquad.bio}}</td></tr>
     <tr><td>Squad Leader: {{selectedSquad.leader!.username}}</td></tr>
     <tr><td>Members:</td></tr>
-    <tr *ngFor="let user of selectedSquad.users"><td>{{user.username}}</td></tr>
+    <tr *ngFor="let user of selectedSquad.users"><td>{{user.firstName}}</td></tr>
     <tr><td>Goals:</td></tr>
-    <tr *ngFor="let goal of selectedSquad.goals"><td>{{goal}}</td></tr>
+    <tr *ngFor="let goal of selectedSquad.goals"><td>{{goal.description}}</td></tr>
   </table>
   <button class="btn btn-success" (click)="addmember = true">Add Members</button>
   <button class="btn btn-warning" (click)="editSquad = true">Edit</button>
@@ -79,3 +79,4 @@
 
 </form>
 </div>
+{{squads | json}}

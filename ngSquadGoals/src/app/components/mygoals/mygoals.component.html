@@ -3,7 +3,7 @@
 <div *ngIf="loggedIn">
   <p>Username: {{loggedIn.username}}</p>
   <p>Number of Active Goals: {{goals.length}}</p>
-  <div *ngFor="let squad of squads | active">
+  <div *ngFor="let squad of squads | active |squadUser:loggedIn">
     <p>Squad {{squad.id}}: {{squad.name}}</p>
     <table>
       <thead>
@@ -16,7 +16,7 @@
         </tr>
       </thead>
       <tbody>
-        <tr *ngFor="let goal of squad.goals | activeGoals">
+        <tr *ngFor="let goal of squad.goals | activeGoals |goalUser:loggedIn">
           <td (click)="updateGoal = true; goalToUpdate = goal">{{goal.title}}</td>
           <td (click)="updateGoal = true; goalToUpdate = goal">{{goal.description}}</td>
           <td (click)="updateGoal = true; goalToUpdate = goal">{{goal.completed}}</td>

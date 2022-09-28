@@ -31,6 +31,7 @@ public class Squad {
 	@Column(name="created_date")
 	private LocalDateTime createdDate;
 	@ManyToMany(mappedBy="squads")
+
 	@JsonIgnoreProperties({"squads", "password"})
 //	@JsonIgnore
 	private List<User> users;

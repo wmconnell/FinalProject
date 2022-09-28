@@ -24,10 +24,10 @@
         <li class="nav-item">
           <a class="nav-link" [routerLink]="['/mygoals']">My Goals</a>
         </li>
-        <li class="nav-item">
+        <li class="nav-item"  >
           <a class="nav-link" [routerLink]="['/goals']">Public Goals</a>
         </li>
-        <li class="nav-item">
+        <li class="nav-item" *ngIf="!logedIn()">
           <a class="nav-link" [routerLink]="['/login']">Log in</a>
         </li>
         <!-- <li class="nav-item dropdown">
@@ -41,14 +41,18 @@
             <li><a class="dropdown-item" href="#">Something else here</a></li>
           </ul>
         </li> -->
-        <li class="nav-item">
+        <li class="nav-item" *ngIf="!logedIn()">
           <a class="nav-link" [routerLink]="['/register']">Register</a>
+        </li>
+        <li class="nav-item" (click)="logout()" *ngIf="logedIn()">
+          <a class="nav-link" (click)="logout()"  >Log Out</a>
         </li>
       </ul>
       <form class="d-flex" role="search">
         <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
         <button class="btn btn-outline-success" type="submit">Search</button>
       </form>
-      <p *ngIf="logedIn()"><app-logout></app-logout></p> </div>
+      <!-- <p *ngIf="logedIn()"><app-logout></app-logout></p> </div> -->
   </div>
+</div>
 </nav>
