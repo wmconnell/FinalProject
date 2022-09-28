@@ -98,6 +98,9 @@ export class SquadService {
 
       }
       addMember(squadId: number, memberId:number){
+        console.log(squadId);
+        console.log(memberId);
+
       return this.http.get<Squad>(this.url+'/'+squadId+'/'+memberId, this.getHttpOptions()).pipe(catchError((err: any) => {
         console.log(err);
         return throwError(
