@@ -1,0 +1,24 @@
+<h1 mat-dialog-title>Add New Goal</h1>
+<div>
+  <form #createGoalForm="ngForm">
+    <label>Squad: </label>
+     <select name="squad" id="squad" [(ngModel)]="squadId">
+       <option *ngFor="let squad of data | active" [value]="squad.id">{{squad.name}}</option>
+     </select><br>
+     <label>Title: </label>
+     <input type="text" name="title" ngModel><br>
+     <label>Description: </label>
+     <textarea rows="2" cols="40" name="description" ngModel></textarea><br>
+     <mat-form-field class="example-full-width" appearance="fill">
+      <mat-label>Choose a date</mat-label>
+      <input matInput [matDatepickerFilter]="myFilter" [matDatepicker]="picker" name="endDate" ngModel>
+      <mat-hint>MM/DD/YYYY</mat-hint>
+      <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+      <mat-datepicker #picker></mat-datepicker>
+    </mat-form-field><br />
+    <div mat-dialog-actions style="justify-content: end">
+      <button class="cancel" mat-raised-button mat-dialog-close>Cancel</button>
+      <button color="primary" mat-raised-button [mat-dialog-close]="{squadId, createGoalForm}" cdkFocusInitial>Add</button>
+    </div>
+   </form>
+</div>
