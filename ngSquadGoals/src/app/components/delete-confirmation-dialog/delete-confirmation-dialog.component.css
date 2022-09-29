@@ -33,3 +33,23 @@ section {
 h1 {
   text-decoration: none;
 }
+
+.cancel {
+  border-style: solid;
+  border-color: lightgrey;
+}
+
+.cancel:hover {
+  background-color: lightgrey;
+}
+
+.delete {
+  background-color: rgb(255, 71, 71);
+  color:white;
+}
+
+.delete:hover {
+  background-color: red;
+  color: white;
+}
+

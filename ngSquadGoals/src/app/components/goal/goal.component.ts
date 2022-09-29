@@ -58,7 +58,6 @@ export class GoalComponent implements OnInit {
   openDeleteDialog(enterAnimationDuration: string, exitAnimationDuration: string, goal: Goal): void {
     // let confirmed: boolean = false;
     const dialogRef = this.dialog.open(DeleteConfirmationDialogComponent, {
-      width: '250px',
       enterAnimationDuration,
       exitAnimationDuration,
       data: goal

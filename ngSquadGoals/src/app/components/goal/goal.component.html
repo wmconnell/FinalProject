@@ -1,9 +1,9 @@
-<h1>All Goals</h1>
+<h1 class="m-2 mt-4">All Goals</h1>
 
-<div *ngIf="loggedIn.role === 'admin'">
-  <p>Admin: {{loggedIn.username}}</p>
+<div class="m-2 p-3" *ngIf="loggedIn.role === 'admin'" style="background-color:white;">
+  <!-- <p>Admin: {{loggedIn.username}}</p> -->
 
-  <mat-form-field appearance="standard">
+  <mat-form-field class="w-100" appearance="standard">
     <mat-label>Filter</mat-label>
     <input matInput (keyup)="applyFilter($event)" placeholder="Search by keyword" #input>
   </mat-form-field>
