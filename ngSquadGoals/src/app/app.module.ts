@@ -37,6 +37,8 @@ import { MatInputModule } from '@angular/material/input';
 import { MatMenuModule } from '@angular/material/menu';
 import { DeleteConfirmationDialogComponent } from './components/delete-confirmation-dialog/delete-confirmation-dialog.component';
 import { EditGoalDialogComponent } from './components/edit-goal-dialog/edit-goal-dialog.component';
+import { MatDatepickerModule } from '@angular/material/datepicker';
+import { MatNativeDateModule } from '@angular/material/core';
 
 @NgModule({
   declarations: [
@@ -76,7 +78,9 @@ import { EditGoalDialogComponent } from './components/edit-goal-dialog/edit-goal
     MatFormFieldModule,
     MatInputModule,
     MatMenuModule,
-    MatDialogModule
+    MatDialogModule,
+    MatDatepickerModule,
+    MatNativeDateModule
   ],
 
     providers:  [

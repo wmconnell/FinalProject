@@ -75,17 +75,13 @@ export class GoalComponent implements OnInit {
   openEditDialog(enterAnimationDuration: string, exitAnimationDuration: string, goal: Goal): void {
     // let confirmed: boolean = false;
     const dialogRef = this.dialog.open(EditGoalDialogComponent, {
-      width: '250px',
       enterAnimationDuration,
       exitAnimationDuration,
-      data: {goal: goal, goalToUpdate: this.goalToUpdate}
+      data: goal
     });
 
     dialogRef.afterClosed().subscribe((result) => {
-      console.log("DELETE? " + result);
-      if (result) {
-        this.delete(goal.id);
-      }
+      this.doUpdateGoal(result);
     });
   }
 
