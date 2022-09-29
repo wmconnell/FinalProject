@@ -101,7 +101,20 @@ export class SquadService {
         console.log(squadId);
         console.log(memberId);
 
-      return this.http.get<Squad>(this.url+'/'+squadId+'/'+memberId, this.getHttpOptions()).pipe(catchError((err: any) => {
+      return this.http.get<Squad>(this.url+'/add/'+squadId+'/'+memberId, this.getHttpOptions()).pipe(catchError((err: any) => {
+        console.log(err);
+        return throwError(
+          () => new Error('ParkService.updatePark(): error updating squad: '  + err)
+          );
+        })
+        );
+
+      }
+      removeMember(squadId: number, memberId:number){
+        console.log(squadId);
+        console.log(memberId);
+
+      return this.http.get<Squad>(this.url+'/remove/'+squadId+'/'+memberId, this.getHttpOptions()).pipe(catchError((err: any) => {
         console.log(err);
         return throwError(
           () => new Error('ParkService.updatePark(): error updating squad: '  + err)

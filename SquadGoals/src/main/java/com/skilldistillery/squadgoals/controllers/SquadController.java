@@ -141,12 +141,27 @@ public class SquadController {
 		return updated;
 	}
 
-	@GetMapping("squads/{id}/{memberId}")
+	@GetMapping("squads/add/{id}/{memberId}")
 	public void addMember(HttpServletRequest req, HttpServletResponse res, @PathVariable int id,
 			@PathVariable int memberId, Principal principal) {
 
 		try {
 			System.out.println("************* in controller memberId: "+memberId+"*******");
+			System.out.println(id);
+			System.out.println(principal);
+			squadService.addMemberToSquad(id, memberId, principal.getName());
+			res.setStatus(200);
+		} catch (Exception e) {
+			res.setStatus(400);
+			e.printStackTrace();
+		}
+	}
+	@GetMapping("squads/remove/{id}/{memberId}")
+	public void removeMember(HttpServletRequest req, HttpServletResponse res, @PathVariable int id,
+			@PathVariable int memberId, Principal principal) {
+		
+		try {
+			System.out.println("************* in remove memberId: "+memberId+"*******");
 			System.out.println(id);
 			System.out.println(principal);
 			squadService.addMemberToSquad(id, memberId, principal.getName());

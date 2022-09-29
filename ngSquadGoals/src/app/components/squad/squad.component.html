@@ -200,6 +200,7 @@ class="example-element-row"
           <img class="rounded-circle m-4 p-4" [src]="selectedMember.profilePic.url"/>
           <span>{{selectedMember.firstName}} {{selectedMember.lastName}}</span>
           <span>{{selectedMember.bio}}</span>
+          <button (click)="removeMember(selectedMember.username)">remove</button>
           <button (click)="selectedMember = null">Back</button>
         </div>
       </div>
