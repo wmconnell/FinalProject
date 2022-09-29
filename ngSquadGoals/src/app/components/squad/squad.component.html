@@ -36,7 +36,7 @@
     <!-- <p>Admin: {{loggedIn.username}}</p> -->
 
     <div class="mat-elevation-z8" >
-    <table class="w-100" #squadTable mat-table [dataSource]="squads" matSort>
+    <table class="w-100" #squadTable mat-table [dataSource]="squads | active" matSort>
 
       <!-- Squad Name Column -->
       <ng-container matColumnDef="name">
@@ -58,13 +58,13 @@
             <mat-icon [matBadge]="squad.numMembers" matBadgeColor="accent">account_circle</mat-icon>
           </button>
           <mat-menu #menu="matMenu">
-            <div>
-            <button mat-menu-item *ngFor="let member of squad.users">
-              <img class="rounded-circle me-2" [src]="member.profilePic.url" height="30rem" width="30rem" [routerLink]="['/user/' + member.username]"/>
-              <span [routerLink]="['/user/' + member.username]">{{ member.username }}</span>
-              <mat-icon style="color: red; justify-self: right;">remove_circle_outline</mat-icon>
+            <button class="w-100" mat-menu-item *ngFor="let member of squad.users">
+              <img class="rounded-circle me-2" [src]="member.profilePic.url" height="30rem" width="30rem" [routerLink]="['/user/' + member.username + '/' + squad.id + '/mysquads']"/>
+              <span [routerLink]="['/user/' + member.username + '/' + squad.id + '/mysquads']">{{ member.username }}</span>
+              <!-- <button mat-icon-button (click)="removeMember(member.username)">
+                <mat-icon style="color: red">remove_circle_outline</mat-icon>
+              </button> -->
             </button>
-          </div>
             <button mat-menu-item [matMenuTriggerFor]="addMenu">
               <mat-icon class="me-2">person_add</mat-icon>
               <span>Add Member</span>
@@ -93,7 +93,6 @@
             </mat-form-field>
           </div>
           </mat-menu>
-
         </td>
       </ng-container>
 
