@@ -592,7 +592,7 @@ SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS;
 START TRANSACTION;
 USE `squadgoalsdb`;
 INSERT INTO `image` (`id`, `url`, `active`) VALUES (1, 'https://pbs.twimg.com/profile_images/1237550450/mstom_400x400.jpg', 1);
-INSERT INTO `image` (`id`, `url`, `active`) VALUES (2, 'https://static.wikia.nocookie.net/godzilla/images/3/33/Godzilla_2021.jpg/revision/latest?cb=20210314011302', 1);
+INSERT INTO `image` (`id`, `url`, `active`) VALUES (2, 'https://images.unsplash.com/photo-1596029927859-420876aab22c?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=687&q=80', 1);
 INSERT INTO `image` (`id`, `url`, `active`) VALUES (3, 'https://static.wikia.nocookie.net/snl/images/6/66/Wild_and_crazy_guys.jpg/revision/latest?cb=20140804162910', 1);
 INSERT INTO `image` (`id`, `url`, `active`) VALUES (4, 'https://thepowerofthedream.org/wp-content/uploads/2015/09/generic-profile-picture.jpg', 1);
 INSERT INTO `image` (`id`, `url`, `active`) VALUES (5, 'https://thepowerofthedream.org/wp-content/uploads/2015/09/generic-profile-picture.jpg', 1);
