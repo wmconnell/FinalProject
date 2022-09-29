@@ -14,6 +14,8 @@ export class Squad {
   squadMessages: any[] = [];
   profilePic: any = null;
   leader: User;
+  leaderName: string = "";
+  numMembers: number | null = null;
 
   constructor(
     id: number = 0,

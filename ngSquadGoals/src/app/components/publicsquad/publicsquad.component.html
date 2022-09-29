@@ -1,5 +1,72 @@
-<h1>All Squads</h1>
-<!-- Table displaying all Squads -->
+<h1 class="m-2 mt-4">All Squads</h1>
+
+<div class="m-2 p-3 w-100" *ngIf="loggedIn.role === 'admin'" style="background-color:white;">
+  <!-- <p>Admin: {{loggedIn.username}}</p> -->
+
+  <mat-form-field class="w-100" appearance="standard">
+    <mat-label>Filter</mat-label>
+    <input matInput (keyup)="applyFilter($event)" placeholder="Search by keyword" #input>
+  </mat-form-field>
+
+  <div class="mat-elevation-z8" >
+  <table class="w-100" #squadTable mat-table [dataSource]="dataSource" matSort>
+
+    <!-- Squad Name Column -->
+    <ng-container matColumnDef="name">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header> Squad </th>
+      <td mat-cell *matCellDef="let squad"> {{squad.name}} </td>
+    </ng-container>
+
+    <!-- Leader Column -->
+    <ng-container matColumnDef="leaderName">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header> Leader </th>
+      <td mat-cell *matCellDef="let squad"> {{squad.leaderName}} </td>
+    </ng-container>
+
+    <!-- Number of Members Column -->
+    <ng-container matColumnDef="numMembers">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header> Members </th>
+      <td mat-cell *matCellDef="let squad"> {{squad.numMembers}} </td>
+    </ng-container>
+
+     <!-- Actions Column -->
+     <ng-container matColumnDef="actions">
+      <th mat-header-cell *matHeaderCellDef>  </th>
+      <td mat-cell *matCellDef="let squad">
+        <!-- <mat-icon [matMenuTriggerFor]="menu" #menuTrigger>more_vert</mat-icon>
+          <mat-menu #menu="matMenu">
+            <button mat-icon-button aria-label="Edit goal" (click)="openEditDialog('1000ms', '500ms', goal)"><mat-icon>edit</mat-icon> Edit </button><br />
+            <button mat-icon-button aria-label="Delete goal" (click)="openDeleteDialog('1000ms', '500ms', goal)"><mat-icon>delete</mat-icon> Delete </button>
+          </mat-menu> -->
+          <button mat-icon-button [matMenuTriggerFor]="menu" #menuTrigger aria-label="Squad actions">
+            <mat-icon>more_vert</mat-icon>
+          </button>
+          <mat-menu #menu="matMenu">
+            <button mat-menu-item aria-label="Edit squad" (click)="openEditDialog('1000ms', '500ms', squad)">
+              <mat-icon>edit</mat-icon>
+              <span>Edit</span>
+            </button>
+            <button mat-menu-item aria-label="Delete squad" (click)="openDeleteDialog('1000ms', '500ms', squad)">
+              <mat-icon>delete</mat-icon>
+              <span>Delete</span>
+            </button>
+          </mat-menu>
+      </td>
+    </ng-container>
+
+    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+    <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+
+    <!-- Row shown when there is no matching data. -->
+    <tr class="mat-row" *matNoDataRow>
+      <td class="mat-cell" colspan="4">No data matching the filter "{{input.value}}"</td>
+    </tr>
+  </table>
+
+    <mat-paginator [pageSizeOptions]="[5, 10, 25, 100]" aria-label="Select page of squads"></mat-paginator>
+</div>
+<!-- <h1>All Squads</h1>
+<!-- Table displaying all Squads
 <div *ngIf="!selectedSquad && !addSquad && !addmember">
   <table class="table table-striped table-hover">
     <thead>
@@ -7,7 +74,7 @@
       <th>Leader</th>
       <th>Members</th>
     </thead>
-    <tbody *ngFor="let squad of squads |active">
+    <tbody *ngFor="let squad of squads | active">
       <tr (click)="select(squad.id)">
         <td>{{ squad.name }}</td>
         <td>{{ squad.leader!.username }}</td>
@@ -17,7 +84,7 @@
   </table>
 </div>
 
-  <!-- single squad view -->
+  <!-- single squad view
   <div *ngIf="selectedSquad && !editSquad && !selectedMember">
     <table>
       <tr>
@@ -46,7 +113,7 @@
     <button class="btn btn-primary" (click)="displayTable()">Back</button>
   </div>
 
-  <!-- add member to squad form -->
+  <!-- add member to squad form
   <div *ngIf="selectedSquad && !selectedMember">
     <form>
       <input type="hidden" name="userName" [(ngModel)]="loggedIn.username">
@@ -54,7 +121,7 @@
     </form>
   </div>
 
-  <!-- Update Goal Form -->
+  <!-- Update Goal Form
   <div>
     <form *ngIf="updateGoal">
       <label>Squad: </label>
@@ -95,8 +162,8 @@
     </form>
   </div>
 
-  <!-- {{squads | json}} -->
-  <!-- Member Profile -->
+  <!-- {{squads | json}}
+  <!-- Member Profile
   <div>
     <div class="container" *ngIf="selectedMember">
       <div class="row">
@@ -116,4 +183,4 @@
         </div>
       </div>
     </div>
-  </div>
+  </div> -->

@@ -176,6 +176,7 @@ public class SquadController {
 	public void destroy(HttpServletRequest req, HttpServletResponse res, @PathVariable int id, Principal principal) {
 		boolean deleted = squadService.disable(principal.getName(), id);
 		if (deleted) {
+			System.out.println("SUCCESSFULLY DELETED ID " + id + ": " + deleted);
 			res.setStatus(204);
 		} else {
 			res.setStatus(404);
