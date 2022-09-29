@@ -11,7 +11,7 @@ import { Goal } from 'src/app/models/goal';
 export class DeleteConfirmationDialogComponent implements OnInit {
   delete:string = "";
 
-  constructor(public dialogRef: MatDialogRef<DeleteConfirmationDialogComponent>, @Inject(MAT_DIALOG_DATA) public data: Goal)  {}
+  constructor(public dialogRef: MatDialogRef<DeleteConfirmationDialogComponent>, @Inject(MAT_DIALOG_DATA) public data: string)  {}
 
   ngOnInit(): void {
   }

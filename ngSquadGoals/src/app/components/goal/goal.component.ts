@@ -17,6 +17,7 @@ import { DeleteConfirmationDialogComponent } from '../delete-confirmation-dialog
 import { EditGoalDialogComponent } from '../edit-goal-dialog/edit-goal-dialog.component';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort, Sort } from '@angular/material/sort';
+import { ActivePipe } from 'src/app/pipes/active.pipe';
 
 @Component({
   selector: 'app-goal',
@@ -67,7 +68,7 @@ export class GoalComponent implements OnInit {
     const dialogRef = this.dialog.open(DeleteConfirmationDialogComponent, {
       enterAnimationDuration,
       exitAnimationDuration,
-      data: goal
+      data: goal.title
     });
 
     dialogRef.afterClosed().subscribe((result) => {

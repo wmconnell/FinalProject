@@ -17,6 +17,7 @@ export class SquadUserPipe implements PipeTransform {
     for(let squad of squads){
       console.log(squad.users.length);
 
+      if (squads !== null && squads !== undefined && squads.length > 0) {
       for (let member of squad.users) {
         console.log(member.id);
 
@@ -25,6 +26,7 @@ export class SquadUserPipe implements PipeTransform {
         }
 
       }
+    }
     }
   }
   return squadList;

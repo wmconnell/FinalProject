@@ -1,5 +1,7 @@
+import { SquadUserPipe } from './../../pipes/squad-user.pipe';
+import { MatDialog } from '@angular/material/dialog';
 import { Image } from './../../models/image';
-import { Component, LOCALE_ID, OnInit } from '@angular/core';
+import { Component, LOCALE_ID, OnInit, ViewChild } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { Squad } from 'src/app/models/squad';
 import { User } from 'src/app/models/user';
@@ -10,6 +12,14 @@ import { UserService } from 'src/app/services/user.service';
 import { Goal } from 'src/app/models/goal';
 import { NgForm } from '@angular/forms';
 import { animate, state, style, transition, trigger } from '@angular/animations';
+import { ActiveGoalsPipe } from 'src/app/pipes/active-goals.pipe';
+import { MatMenuTrigger } from '@angular/material/menu';
+import { MatTable, MatTableDataSource } from '@angular/material/table';
+import { MatPaginator } from '@angular/material/paginator';
+import { MatSort } from '@angular/material/sort';
+import { EditGoalDialogComponent } from '../edit-goal-dialog/edit-goal-dialog.component';
+import { DeleteConfirmationDialogComponent } from '../delete-confirmation-dialog/delete-confirmation-dialog.component';
+import { ActivePipe } from 'src/app/pipes/active.pipe';
 
 @Component({
   selector: 'app-squad',
@@ -24,7 +34,7 @@ import { animate, state, style, transition, trigger } from '@angular/animations'
   ]
 })
 export class PublicsquadComponent implements OnInit {
-  squads: Squad[] = []
+  squads: Squad[] = [];
   loggedIn = new User()
   newSquad: Squad = new Squad();
   updatedSquad: Squad = new Squad();
@@ -44,7 +54,25 @@ export class PublicsquadComponent implements OnInit {
   updateGoal = false;
   goalToUpdate = {} as Goal;
   squadToEditId: number = 0;
-  constructor(private userService: UserService, private auth: AuthService, private router: Router, private route: ActivatedRoute, private goalService: GoalService, private squadService: SquadService) { }
+  displayedColumns: string[] = ['name', 'leaderName', 'numMembers', 'actions'];
+  dataSource = new MatTableDataSource(this.squads);
+
+
+  @ViewChild('menuTrigger') menuTrigger!: MatMenuTrigger;
+  @ViewChild(MatTable) squadTable!: MatTable<any>;
+  @ViewChild(MatPaginator) paginator!: MatPaginator;
+  @ViewChild(MatSort) sort!: MatSort;
+
+  constructor(
+    private userService: UserService,
+    private auth: AuthService,
+    private router: Router,
+    private route: ActivatedRoute,
+    private goalService: GoalService,
+    private squadService: SquadService,
+    private squadUserPipe: SquadUserPipe,
+    private activePipe: ActivePipe,
+    public dialog: MatDialog) { }
 
   ngOnInit(): void {
     this.auth.getLoggedInUser().subscribe(
@@ -61,6 +89,43 @@ export class PublicsquadComponent implements OnInit {
     this.load()
   }
 
+  applyFilter(event: Event) {
+    const filterValue = (event.target as HTMLInputElement).value;
+    this.dataSource.filter = filterValue.trim().toLowerCase();
+
+    if (this.dataSource.paginator) {
+      this.dataSource.paginator.firstPage();
+    }
+  }
+
+  openDeleteDialog(enterAnimationDuration: string, exitAnimationDuration: string, squad: Squad): void {
+    // let confirmed: boolean = false;
+    const dialogRef = this.dialog.open(DeleteConfirmationDialogComponent, {
+      enterAnimationDuration,
+      exitAnimationDuration,
+      data: squad.name
+    });
+
+    dialogRef.afterClosed().subscribe((result) => {
+      console.log("DELETE? " + result);
+      if (result) {
+        this.deleteSquad(squad.id);
+      }
+    });
+  }
+
+  openEditDialog(enterAnimationDuration: string, exitAnimationDuration: string, squad: Squad): void {
+    // let confirmed: boolean = false;
+    const dialogRef = this.dialog.open(EditGoalDialogComponent, {
+      enterAnimationDuration,
+      exitAnimationDuration,
+      data: squad
+    });
+
+    dialogRef.afterClosed().subscribe((result) => {
+      this.updateSquad(result.form, result.squadId);
+    });
+  }
 
   load = () => {
     // console.log("load called");
@@ -79,8 +144,17 @@ export class PublicsquadComponent implements OnInit {
     // });
     this.squadService.index().subscribe({
       next: (squads) => {
-
         this.squads = squads;
+        this.squads.forEach(function(squad) {
+          if (squad.leader) {
+          squad.leaderName = squad.leader.username;
+          squad.numMembers = squad.users.length;
+          }
+        });
+        this.dataSource = new MatTableDataSource(this.activePipe.transform(this.squadUserPipe.transform(this.squads)));
+        this.squadTable.renderRows();
+        this.dataSource.paginator = this.paginator;
+        this.dataSource.sort = this.sort;
       },
       error: (err) => {
         console.error(err);
@@ -176,7 +250,7 @@ export class PublicsquadComponent implements OnInit {
 
   addMember(userName: string) {
     console.log(userName);
-    
+
     this.userService.showUser(userName).subscribe({
       next: (user) => {
         this.newMember = user;

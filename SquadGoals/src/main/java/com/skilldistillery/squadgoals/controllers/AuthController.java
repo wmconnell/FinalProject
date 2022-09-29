@@ -47,7 +47,7 @@ public class AuthController {
 	     return null;
 	  }
 	  User user = authService.getUserByUsername(principal.getName());
-	  System.out.println(user.getGoals().size());
+//	  System.out.println("In AuthController user.goals size: " + user.getGoals().size());
 	  return authService.getUserByUsername(principal.getName());
 	}
 	

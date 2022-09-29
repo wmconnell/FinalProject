@@ -95,6 +95,8 @@ import { AddGoalDialogComponent } from './components/add-goal-dialog/add-goal-di
     AuthService,
     UserService,
     ActiveGoalsPipe,
+    SquadUserPipe,
+    ActivePipe,
     MatDialog
 
     ],

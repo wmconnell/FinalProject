@@ -10,6 +10,8 @@ import { UserService } from 'src/app/services/user.service';
 import { Goal } from 'src/app/models/goal';
 import { NgForm } from '@angular/forms';
 import { animate, state, style, transition, trigger } from '@angular/animations';
+import { ActiveGoalsPipe } from 'src/app/pipes/active-goals.pipe';
+import { MatDialog } from '@angular/material/dialog';
 
 @Component({
   selector: 'app-squad',
@@ -46,7 +48,7 @@ export class SquadComponent implements OnInit {
   squadToEditId: number = 0;
 
 
-  constructor(private userService: UserService, private auth: AuthService, private router: Router, private route: ActivatedRoute, private goalService: GoalService, private squadService: SquadService) { }
+  constructor(private userService: UserService, private auth: AuthService, private router: Router, private route: ActivatedRoute, private goalService: GoalService, private squadService: SquadService, private activeGoalsPipe: ActiveGoalsPipe, public dialog: MatDialog) { }
 
   ngOnInit(): void {
     this.auth.getLoggedInUser().subscribe(

@@ -124,6 +124,7 @@ export class SquadService {
 
       }
       deleteSquad(id:number){
+        console.log("Squad Service DeleteSquad: id " + id);
         return this.http.delete<Squad>(this.url+'/'+id, this.getHttpOptions()).pipe(catchError((err: any) => {
           console.log(err);
           return throwError(

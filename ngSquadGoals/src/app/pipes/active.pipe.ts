@@ -12,11 +12,13 @@ export class ActivePipe implements PipeTransform {
       return squads;
     }
     const result:Squad[] = [];
-    for(let squad of squads){
+    if (squads !== null && squads !== undefined && squads.length > 0) {
+      for(let squad of squads){
       if(squad.active === status){
         result.push(squad);
       }
     }
+  }
     return result;
   }
 
