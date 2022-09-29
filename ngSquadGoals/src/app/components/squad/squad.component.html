@@ -1,5 +1,130 @@
-<h1>Your Squads</h1>
-<!-- Table displaying all Squads -->
+<div class="w-100"><h1 class="m-2 mt-4" style="display: inline-block;">My Squads</h1>
+  <button mat-icon-button *ngIf="squads.length > 0" aria-label="Add goal" (click)="openAddDialog('1000ms', '500ms')">
+    <mat-icon class="plain" style="float: right">add_circle</mat-icon>
+  </button>
+  </div>
+  <!--
+  <div *ngIf="loggedIn">
+    <p>Username: {{loggedIn.username}}</p>
+    <p>Number of Active Goals: {{goals.length}}</p>
+    <div *ngFor="let squad of squads | active |squadUser:loggedIn">
+      <p>Squad {{squad.id}}: {{squad.name}}</p>
+      <table>
+        <thead>
+          <tr>
+            <th>Goal</th>
+            <th>Description</th>
+            <th>Completed</th>
+            <th>End Date</th>
+            <th>Creator</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let goal of squad.goals | activeGoals | goalUser:loggedIn">
+            <td (click)="updateGoal = true; goalToUpdate = goal; squadToEditId = squad.id">{{goal.title}}</td>
+            <td (click)="updateGoal = true; goalToUpdate = goal; squadToEditId = squad.id">{{goal.description}}</td>
+            <td (click)="updateGoal = true; goalToUpdate = goal; squadToEditId = squad.id">{{goal.completed}}</td>
+            <td (click)="updateGoal = true; goalToUpdate = goal; squadToEditId = squad.id">{{goal.endDate}}</td>
+            <td (click)="updateGoal = true; goalToUpdate = goal; squadToEditId = squad.id">{{goal.creator}}</td>
+            <td *ngIf="loggedIn.role ==='admin'"><button (click)="delete(goal.id)" style="background-color:red; color: white">X</button></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div> -->
+  <div class="m-2 p-3 w-100" *ngIf="loggedIn.role === 'admin'" style="background-color:white;">
+    <!-- <p>Admin: {{loggedIn.username}}</p> -->
+
+    <div class="mat-elevation-z8" >
+    <table class="w-100" #squadTable mat-table [dataSource]="squads" matSort>
+
+      <!-- Squad Name Column -->
+      <ng-container matColumnDef="name">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header> Squad </th>
+        <td mat-cell *matCellDef="let squad"> {{squad.name}} </td>
+      </ng-container>
+
+      <!-- Leader Column -->
+      <ng-container matColumnDef="leaderName">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header> Leader </th>
+        <td mat-cell *matCellDef="let squad"> {{squad.leaderName}} </td>
+      </ng-container>
+
+      <!-- Number of Members Column -->
+      <ng-container matColumnDef="numMembers">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header> Members </th>
+        <td mat-cell *matCellDef="let squad">
+          <button mat-icon-button [matMenuTriggerFor]="menu" #menuTrigger aria-label="Members">
+            <mat-icon [matBadge]="squad.numMembers" matBadgeColor="accent">account_circle</mat-icon>
+          </button>
+          <mat-menu #menu="matMenu">
+            <button mat-menu-item *ngFor="let member of squad.users" [routerLink]="['/user/' + member.username]">
+              <img class="rounded-circle me-2" [src]="member.profilePic.url" height="30rem" width="30rem"/>
+              <span>{{ member.username }}</span>
+            </button>
+            <button mat-menu-item [matMenuTriggerFor]="addMenu">
+              <mat-icon class="me-2">person_add</mat-icon>
+              <span>Add Member</span>
+            </button>
+          </mat-menu>
+          <mat-menu #addMenu="matMenu">
+            <div (click) = "$event.stopPropagation()">
+            <mat-form-field appearance="fill">
+              <!-- <mat-label>Add member</mat-label>
+              <input matInput placeholder="Enter username" [(ngModel)]="userName"> -->
+              <mat-label>Add member</mat-label>
+              <input type="text"
+                     placeholder="Username"
+                     matInput
+                     [formControl]="myControl"
+                     [matAutocomplete]="auto"
+                     [(ngModel)]="userName">
+              <mat-autocomplete #auto="matAutocomplete">
+                <mat-option *ngFor="let option of filteredOptions | async" [value]="option">
+                  {{option}}
+                </mat-option>
+              </mat-autocomplete>
+              <button mat-icon-button matSuffix (click)="selectedSquad = squad; addMember(userName)">
+                <mat-icon>add</mat-icon>
+              </button>
+            </mat-form-field>
+          </div>
+          </mat-menu>
+
+        </td>
+      </ng-container>
+
+       <!-- Actions Column -->
+       <ng-container matColumnDef="actions">
+        <th mat-header-cell *matHeaderCellDef>  </th>
+        <td mat-cell *matCellDef="let squad">
+          <!-- <mat-icon [matMenuTriggerFor]="menu" #menuTrigger>more_vert</mat-icon>
+            <mat-menu #menu="matMenu">
+              <button mat-icon-button aria-label="Edit goal" (click)="openEditDialog('1000ms', '500ms', goal)"><mat-icon>edit</mat-icon> Edit </button><br />
+              <button mat-icon-button aria-label="Delete goal" (click)="openDeleteDialog('1000ms', '500ms', goal)"><mat-icon>delete</mat-icon> Delete </button>
+            </mat-menu> -->
+            <button mat-icon-button [matMenuTriggerFor]="menu" #menuTrigger aria-label="Squad actions">
+              <mat-icon>more_vert</mat-icon>
+            </button>
+            <mat-menu #menu="matMenu">
+              <button mat-menu-item aria-label="Edit squad" (click)="openEditSquadDialog('1000ms', '500ms', squad)">
+                <mat-icon>edit</mat-icon>
+                <span>Edit</span>
+              </button>
+              <button mat-menu-item aria-label="Delete squad" (click)="openDeleteSquadDialog('1000ms', '500ms', squad)">
+                <mat-icon>delete</mat-icon>
+                <span>Delete</span>
+              </button>
+            </mat-menu>
+        </td>
+      </ng-container>
+
+      <tr mat-header-row *matHeaderRowDef="columnsToDisplay"></tr>
+      <tr mat-row *matRowDef="let row; columns: columnsToDisplay;"></tr>
+    </table>
+  </div>
+
+<!-- Table displaying all Squads
 <div *ngIf="!selectedSquad && !addSquad && !addmember">
    <table class="table table-striped table-hover">
     <thead>
@@ -12,7 +137,7 @@
   <td>{{squad.leader!.username}}</td>
   <td>{{squad.users.length}}</td></tr>
 </tbody>
-  </table>
+  </table> -->
 
   <!-- <table mat-table
        [dataSource]="squads | active" multiTemplateDataRows
@@ -80,9 +205,6 @@ class="example-element-row"
 <tr mat-row *matRowDef="let row; columns: ['expandedDetail']" class="example-detail-row"></tr>
 </table> -->
 
-<button class="btn btn-success" (click)="addSquad = true">Add Squad</button>
-</div>
-
 <!-- single squad view -->
 <div *ngIf="selectedSquad && !editSquad && !selectedMember">
   <table>
@@ -132,24 +254,7 @@ class="example-element-row"
   </form>
 </div>
 
-<!-- Create Squad Form -->
-<div>
-  <form #createNewSquadForm="ngForm" *ngIf="!selectedSquad && addSquad">
-    <br>
-    <label>Squad Name:</label>
-    <input type="text" name="name" ngModel>
-    <label *ngIf="!squadNameUnique" style="color:red">Squad name already taken</label>
-    <br>
-    <label>Squad Bio:</label>
-    <input type="text" name="bio" ngModel>
-    <br>
-    <label>Squad Picture:</label>
-    <input type="text" name="profilePic" [(ngModel)]="squadImage.url">
-    <br>
-    <button class="btn btn-success" (click)="checkSquadName(createNewSquadForm)">Submit</button>
-    <button class="btn btn-primary" (click)="displayTable()">Back</button>
-  </form>
-</div>
+
 
 <!-- update Squad Form -->
 <div *ngIf="selectedSquad && editSquad">
@@ -192,17 +297,4 @@ class="example-element-row"
 <!-- {{squads | json}} -->
 <!-- Member Profile -->
 <div>
-
-  <div class="container" *ngIf="selectedMember">
-    <div class="row">
-      <div class="col-sm-4 justify-content-center">
-        <div class="row align-content-center">
-          <img class="rounded-circle m-4 p-4" [src]="selectedMember.profilePic.url"/>
-          <span>{{selectedMember.firstName}} {{selectedMember.lastName}}</span>
-          <span>{{selectedMember.bio}}</span>
-          <button (click)="removeMember(selectedMember.username)">remove</button>
-          <button (click)="selectedMember = null">Back</button>
-        </div>
-      </div>
-    </div>
 

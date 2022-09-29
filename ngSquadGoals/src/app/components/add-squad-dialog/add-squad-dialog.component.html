@@ -1,0 +1,21 @@
+<h1 mat-dialog-title>Add New Squad</h1>
+<!-- Create Squad Form -->
+<div>
+  <form #createNewSquadForm="ngForm">
+    <br>
+    <label>Squad Name:</label>
+    <input type="text" name="name" (keyup)="checkSquadNameUnique($event)" ngModel>
+    <label *ngIf="!squadNameUnique" style="color:red">Squad name already taken</label>
+    <br>
+    <label>Squad Bio:</label>
+    <input type="text" name="bio" ngModel>
+    <br>
+    <label>Squad Picture:</label>
+    <input type="text" name="profilePic" [(ngModel)]="squadImage.url">
+    <br>
+    <div mat-dialog-actions style="justify-content: end">
+      <button class="cancel" mat-raised-button mat-dialog-close>Cancel</button>
+      <button color="primary" mat-raised-button [mat-dialog-close]="{createNewSquadForm, squadImage}" cdkFocusInitial>Add</button>
+    </div>
+  </form>
+</div>

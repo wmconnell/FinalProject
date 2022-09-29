@@ -58,7 +58,6 @@ export class PublicsquadComponent implements OnInit {
   displayedColumns: string[] = ['name', 'leaderName', 'numMembers', 'actions'];
   dataSource = new MatTableDataSource(this.squads);
 
-
   @ViewChild('menuTrigger') menuTrigger!: MatMenuTrigger;
   @ViewChild(MatTable) squadTable!: MatTable<any>;
   @ViewChild(MatPaginator) paginator!: MatPaginator;
