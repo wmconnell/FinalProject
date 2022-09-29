@@ -164,7 +164,7 @@ public class SquadController {
 			System.out.println("************* in remove memberId: "+memberId+"*******");
 			System.out.println(id);
 			System.out.println(principal);
-			squadService.addMemberToSquad(id, memberId, principal.getName());
+			squadService.removeMemberFromSquad(id, memberId, principal.getName());
 			res.setStatus(200);
 		} catch (Exception e) {
 			res.setStatus(400);
