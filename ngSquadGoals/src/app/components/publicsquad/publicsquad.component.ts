@@ -20,6 +20,7 @@ import { MatSort } from '@angular/material/sort';
 import { EditGoalDialogComponent } from '../edit-goal-dialog/edit-goal-dialog.component';
 import { DeleteConfirmationDialogComponent } from '../delete-confirmation-dialog/delete-confirmation-dialog.component';
 import { ActivePipe } from 'src/app/pipes/active.pipe';
+import { EditSquadDialogComponent } from '../edit-squad-dialog/edit-squad-dialog.component';
 
 @Component({
   selector: 'app-squad',
@@ -116,7 +117,7 @@ export class PublicsquadComponent implements OnInit {
 
   openEditDialog(enterAnimationDuration: string, exitAnimationDuration: string, squad: Squad): void {
     // let confirmed: boolean = false;
-    const dialogRef = this.dialog.open(EditGoalDialogComponent, {
+    const dialogRef = this.dialog.open(EditSquadDialogComponent, {
       enterAnimationDuration,
       exitAnimationDuration,
       data: squad

@@ -1,0 +1,18 @@
+<div>
+  <form #updateSquadForm="ngForm">
+    <br>
+    <input type="hidden" name="id" [(ngModel)]="data.id" ngModel>
+    <label>Squad Name:</label>
+    <input type="text" name="name" [(ngModel)]="data.name" ngModel>
+    <br>
+    <label>Squad Bio:</label>
+    <input type="text" name="bio" [(ngModel)]="data.bio" ngModel>
+    <br>
+
+    <div mat-dialog-actions style="justify-content: end">
+      <button class="cancel" mat-raised-button mat-dialog-close>Cancel</button>
+      <button color="primary" mat-raised-button [mat-dialog-close]="{updateSquadForm, squadId}" cdkFocusInitial>Save</button>
+    </div>
+
+  </form>
+</div>
