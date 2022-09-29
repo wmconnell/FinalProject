@@ -8,7 +8,7 @@ import { GoalService } from 'src/app/services/goal.service';
 import { SquadService } from 'src/app/services/squad.service';
 import { UserService } from 'src/app/services/user.service';
 import { Goal } from 'src/app/models/goal';
-import { NgForm } from '@angular/forms';
+import { FormControl, NgForm } from '@angular/forms';
 import { animate, state, style, transition, trigger } from '@angular/animations';
 import { ActiveGoalsPipe } from 'src/app/pipes/active-goals.pipe';
 import { MatDialog } from '@angular/material/dialog';
@@ -20,6 +20,11 @@ import { DeleteConfirmationDialogComponent } from '../delete-confirmation-dialog
 import { EditSquadDialogComponent } from '../edit-squad-dialog/edit-squad-dialog.component';
 import { AddSquadDialogComponent } from '../add-squad-dialog/add-squad-dialog.component';
 import { EditGoalDialogComponent } from '../edit-goal-dialog/edit-goal-dialog.component';
+import { ConditionalExpr } from '@angular/compiler';
+import { Observable } from 'rxjs';
+import { MatOptionSelectionChange } from '@angular/material/core';
+import {map, startWith} from 'rxjs/operators';
+import { MatFormFieldControl } from '@angular/material/form-field';
 
 @Component({
   selector: 'app-squad',
@@ -48,14 +53,17 @@ export class SquadComponent implements OnInit {
   newMember: User = new User;
   userName: string = "";
   goals: Goal[] = [];
-  columnsToDisplay = ["name", "leader", "numActiveGoals"];
-  columnsToDisplayWithExpand = [...this.columnsToDisplay, 'expand'];
   expandedElement: Squad | null = null;
   updateGoal = false;
   goalToUpdate = {} as Goal;
   squadToEditId: number = 0;
-  displayedColumns: string[] = ['name', 'leaderName', 'numMembers', 'actions'];
+  columnsToDisplay: string[] = ['name', 'leaderName', 'numMembers', 'actions'];
+  columnsToDisplayWithExpand = [...this.columnsToDisplay, 'expand'];
   dataSource = new MatTableDataSource(this.squads);
+  // For addMember autocomplete
+  myControl = new FormControl('');
+  options: string[] = [];
+  filteredOptions: Observable<string[]> | null = null;
 
 
   @ViewChild('menuTrigger') menuTrigger!: MatMenuTrigger;
@@ -86,7 +94,19 @@ export class SquadComponent implements OnInit {
         }
       }
     );
+
     this.load()
+
+    this.filteredOptions = this.myControl.valueChanges.pipe(
+      startWith(''),
+      map(value => this._filter(value || '')),
+    );
+  }
+
+  private _filter(value: string): string[] {
+    const filterValue = value.toLowerCase();
+
+    return this.options.filter(option => option.toLowerCase().includes(filterValue));
   }
 
   openAddDialog(enterAnimationDuration: string, exitAnimationDuration: string): void {
@@ -167,6 +187,15 @@ export class SquadComponent implements OnInit {
 
   load = () => {
     console.log("load called");
+    this.options = [];
+    let userList = this.options;
+    this.userService.index().subscribe({
+      next: (users) => {
+        users.forEach(function(user) {
+          userList.push(user.username);
+        })
+      }
+    })
     let getTheGoals = this.getGoalsBySquad;
     this.squadService.squadsByUser().subscribe({
       next: (squads) => {
@@ -175,6 +204,12 @@ export class SquadComponent implements OnInit {
           getTheGoals(squad);
         })
         this.squads = squads;
+        this.squads.forEach(function(squad) {
+          if (squad.leader) {
+          squad.leaderName = squad.leader.username;
+          squad.numMembers = squad.users.length;
+          }
+        });
       },
       error: (err) => {
         console.error(err);
@@ -269,9 +304,10 @@ export class SquadComponent implements OnInit {
 
   addMember(userName: string) {
     console.log(userName);
-
+    this.userName="";
     this.userService.showUser(userName).subscribe({
       next: (user) => {
+        console.log(user);
         this.newMember = user;
         if (this.selectedSquad) {
           this.selectedSquad!.users.push(this.newMember);
