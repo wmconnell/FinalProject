@@ -46,8 +46,8 @@
       <td mat-cell *matCellDef="let goal">
         <mat-icon [matMenuTriggerFor]="menu" #menuTrigger>more_vert</mat-icon>
           <mat-menu #menu="matMenu">
-            <div class="justify-content-center"><mat-icon>edit</mat-icon> Edit </div>
-            <div class="justify-content-center" (click)="openDialog('1000ms', '500ms', goal)"><mat-icon>delete</mat-icon> Delete </div>
+            <div class="justify-content-center" (click)="openEditDialog('1000ms', '500ms', goal)"><mat-icon>edit</mat-icon> Edit </div>
+            <div class="justify-content-center" (click)="openDeleteDialog('1000ms', '500ms', goal)"><mat-icon>delete</mat-icon> Delete </div>
           </mat-menu>
         </td>
     </ng-container>
@@ -139,10 +139,6 @@
 
 <div>
   <form *ngIf="updateGoal">
-   <label>Squad: </label>
-    <select name="squad" id="squad" [(ngModel)]="goalToUpdate.squads">
-      <option *ngFor="let squad of squads | active">{{squad}}</option>
-    </select><br>
     <label>Title: </label>
     <input type="text" name="title" [(ngModel)]="goalToUpdate.title"><br>
     <label>Description: </label>

@@ -15,6 +15,7 @@ import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { MatMenuTrigger } from '@angular/material/menu';
 import { DeleteConfirmationDialogComponent } from '../delete-confirmation-dialog/delete-confirmation-dialog.component';
 import { DialogRef } from '@angular/cdk/dialog';
+import { EditGoalDialogComponent } from '../edit-goal-dialog/edit-goal-dialog.component';
 
 @Component({
   selector: 'app-goal',
@@ -54,13 +55,30 @@ export class GoalComponent implements OnInit {
     this.load();
   }
 
-  openDialog(enterAnimationDuration: string, exitAnimationDuration: string, goal: Goal): void {
+  openDeleteDialog(enterAnimationDuration: string, exitAnimationDuration: string, goal: Goal): void {
     // let confirmed: boolean = false;
     const dialogRef = this.dialog.open(DeleteConfirmationDialogComponent, {
       width: '250px',
       enterAnimationDuration,
       exitAnimationDuration,
       data: goal
+    });
+
+    dialogRef.afterClosed().subscribe((result) => {
+      console.log("DELETE? " + result);
+      if (result) {
+        this.delete(goal.id);
+      }
+    });
+  }
+
+  openEditDialog(enterAnimationDuration: string, exitAnimationDuration: string, goal: Goal): void {
+    // let confirmed: boolean = false;
+    const dialogRef = this.dialog.open(EditGoalDialogComponent, {
+      width: '250px',
+      enterAnimationDuration,
+      exitAnimationDuration,
+      data: {goal: goal, goalToUpdate: this.goalToUpdate}
     });
 
     dialogRef.afterClosed().subscribe((result) => {
