@@ -1,6 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { catchError, throwError } from 'rxjs';
+import { environment } from 'src/environments/environment';
 import { Tag } from '../models/tag';
 import { AuthService } from './auth.service';
 
@@ -10,9 +11,9 @@ import { AuthService } from './auth.service';
 export class TagService {
 
 
-  private baseUrl = 'http://localhost:8088/'; // adjust port to match server
+  // private baseUrl = 'http://localhost:8088/'; // adjust port to match server
   // private url = environment.baseUrl + 'api/tags'; // change 'todos' to your API path
-  private url = this.baseUrl + 'api/tags'; // change 'todos' to your API path
+  private url = environment.baseUrl + 'api/tags'; // change 'todos' to your API path
   constructor(private http: HttpClient, private auth: AuthService) { }
 
   getHttpOptions() {
@@ -75,7 +76,7 @@ createTag(tag: Tag){
 
     }
     showTag(tagId: any){
-      return this.http.get<Tag>("http://localhost:8088/api/tags/" + tagId,this.getHttpOptions()).pipe(catchError((err: any) => {
+      return this.http.get<Tag>(this.url + tagId,this.getHttpOptions()).pipe(catchError((err: any) => {
         console.log(err);
         return throwError(
           () => new Error('TagService.showTag(): error retrieving Tags: ' + err)

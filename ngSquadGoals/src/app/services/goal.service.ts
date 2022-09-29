@@ -1,3 +1,4 @@
+import { environment } from './../../environments/environment';
 import { User } from './../models/user';
 import { Goal } from './../models/goal';
 import { Injectable } from '@angular/core';
@@ -10,9 +11,9 @@ import { catchError, throwError } from 'rxjs';
 })
 export class GoalService {
 
-  private baseUrl = 'http://localhost:8088/'; // adjust port to match server
+  // private baseUrl = 'http://localhost:8088/'; // adjust port to match server
   // private url = environment.baseUrl + 'api/goals'; // change 'todos' to your API path
-  private url = this.baseUrl + 'api/goals'; // change 'todos' to your API path
+  private url = environment.baseUrl + 'api/goals'; // change 'todos' to your API path
   constructor(private http: HttpClient, private auth: AuthService) { }
 
   getHttpOptions() {
@@ -97,7 +98,7 @@ createGoal(goal: Goal, squadId:number){
 
     }
     showGoal(goalId: any){
-      return this.http.get<Goal>("http://localhost:8088/api/goals/" + goalId,this.getHttpOptions()).pipe(catchError((err: any) => {
+      return this.http.get<Goal>(this.url + goalId,this.getHttpOptions()).pipe(catchError((err: any) => {
         console.log(err);
         return throwError(
           () => new Error('GoalService.showGoal(): error retrieving Goals: ' + err)

@@ -12,9 +12,9 @@ export class UserService {
 
 
 
-  private baseUrl = 'http://localhost:8088/'; // adjust port to match server
+  // private baseUrl = 'http://localhost:8088/'; // adjust port to match server
   // private url = environment.baseUrl + 'api/users'; // change 'todos' to your API path
-  private url = this.baseUrl + 'api/users'; // change 'todos' to your API path
+  private url = environment.baseUrl + 'api/users'; // change 'todos' to your API path
   constructor(private http: HttpClient, private auth: AuthService) { }
 
   getHttpOptions() {
