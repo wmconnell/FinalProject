@@ -1,4 +1,8 @@
-<h1>Goals!</h1>
+<div class="w-100"><h1 class="m-2 mt-4" style="display: inline-block;">Goals!</h1>
+<button mat-icon-button *ngIf="squads.length > 0" aria-label="Add goal" (click)="openAddDialog('1000ms', '500ms')">
+  <mat-icon class="plain" style="float: right">add_circle</mat-icon>
+</button>
+</div>
 <!--
 <div *ngIf="loggedIn">
   <p>Username: {{loggedIn.username}}</p>
@@ -28,7 +32,7 @@
     </table>
   </div>
 </div> -->
-
+<div class="m-2 p-3" style="background-color:white;">
 <table mat-table
        [dataSource]="squads | active" multiTemplateDataRows
        class="mat-elevation-z8"  >
@@ -77,9 +81,9 @@
               <td class="px-3">{{goal.completed}}</td>
               <td class="px-3">{{goal.endDate}}</td>
               <td class="px-3">{{goal.creator.username}}</td>
-              <td><mat-icon (click)="updateGoal = true; goalToUpdate = goal; squadToEditId = element.id">edit</mat-icon></td>
+              <td><mat-icon (click)="squadToEditId = element.id; openEditDialog('1000ms', '500ms', goal)">edit</mat-icon></td>
               <td><mat-icon (click)="goal.completed = true; doUpdateGoal(goal)">done</mat-icon></td>
-              <td><mat-icon (click)="delete(goal.id)">delete</mat-icon></td>
+              <td><mat-icon (click)="openDeleteDialog('1000ms', '500ms', goal)">delete</mat-icon></td>
             </tr>
           </tbody>
         </table>
@@ -96,27 +100,6 @@ class="example-element-row"
 </tr>
 <tr mat-row *matRowDef="let row; columns: ['expandedDetail']" class="example-detail-row"></tr>
 </table>
-
-
-<div>
-  <form #createGoalForm="ngForm" *ngIf="addGoal">
-    <label>Squad: </label>
-     <select name="squad" id="squad" [(ngModel)]="squadId">
-       <option *ngFor="let squad of squads | active" [value]="squad.id">{{squad.name}}</option>
-     </select><br>
-     <label>Title: </label>
-     <input type="text" name="title" ngModel><br>
-     <label>Description: </label>
-     <textarea rows="2" cols="40" name="description" ngModel></textarea><br>
-     <label>End Date: </label>
-     <input type="datetime" name="endDate" ngModel><br>
-     <button (click)="createGoal(createGoalForm, squadId); addGoal = false;">Submit</button>
-   </form>
-
-
-  <form *ngIf="!addGoal && !updateGoal && squads.length > 0">
-    <button (click)="addGoal = true">Add Goal</button>
-  </form>
 </div>
 
 <div>

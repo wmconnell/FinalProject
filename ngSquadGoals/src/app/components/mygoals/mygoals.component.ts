@@ -11,6 +11,10 @@ import { TaskService } from 'src/app/services/task.service';
 import { UserService } from 'src/app/services/user.service';
 import { animate, state, style, transition, trigger } from '@angular/animations';
 import { Image } from './../../models/image';
+import { MatDialog } from '@angular/material/dialog';
+import { EditGoalDialogComponent } from '../edit-goal-dialog/edit-goal-dialog.component';
+import { DeleteConfirmationDialogComponent } from '../delete-confirmation-dialog/delete-confirmation-dialog.component';
+import { AddGoalDialogComponent } from '../add-goal-dialog/add-goal-dialog.component';
 
 
 @Component({
@@ -27,7 +31,7 @@ import { Image } from './../../models/image';
 })
 export class MygoalsComponent implements OnInit {
 
-  constructor(private userService: UserService,private auth: AuthService,private router: Router, private route: ActivatedRoute, private goalService: GoalService, private taskService: TaskService, private squadService: SquadService) { }
+  constructor(private userService: UserService,private auth: AuthService,private router: Router, private route: ActivatedRoute, private goalService: GoalService, private taskService: TaskService, private squadService: SquadService, public dialog: MatDialog) { }
 
 
 
@@ -54,8 +58,55 @@ export class MygoalsComponent implements OnInit {
   newGoal: Goal = new Goal();
   addGoal: boolean = false;
   squadId: number = 0;
+
   ngOnInit(): void {
     this.load();
+  }
+
+  openAddDialog(enterAnimationDuration: string, exitAnimationDuration: string): void {
+    // let confirmed: boolean = false;
+    const dialogRef = this.dialog.open(AddGoalDialogComponent, {
+      enterAnimationDuration,
+      exitAnimationDuration,
+      data: this.squads
+    });
+
+    dialogRef.afterClosed().subscribe((result) => {
+      if (result) {
+        this.createGoal(result.createGoalForm, result.squadId);
+      }
+
+    });
+  }
+
+  openDeleteDialog(enterAnimationDuration: string, exitAnimationDuration: string, goal: Goal): void {
+    // let confirmed: boolean = false;
+    const dialogRef = this.dialog.open(DeleteConfirmationDialogComponent, {
+      enterAnimationDuration,
+      exitAnimationDuration,
+      data: goal
+    });
+
+    dialogRef.afterClosed().subscribe((result) => {
+      console.log(result);
+      console.log("DELETE? " + result);
+      if (result) {
+        this.delete(goal.id);
+      }
+    });
+  }
+
+  openEditDialog(enterAnimationDuration: string, exitAnimationDuration: string, goal: Goal): void {
+    // let confirmed: boolean = false;
+    const dialogRef = this.dialog.open(EditGoalDialogComponent, {
+      enterAnimationDuration,
+      exitAnimationDuration,
+      data: goal
+    });
+
+    dialogRef.afterClosed().subscribe((result) => {
+      this.doUpdateGoal(result);
+    });
   }
 
   isLoggedIn(){
