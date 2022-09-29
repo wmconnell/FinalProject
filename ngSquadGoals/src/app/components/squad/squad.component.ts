@@ -194,6 +194,34 @@ export class SquadComponent implements OnInit {
     });
   }
 
+  removeMember(userName: string) {
+    console.log(userName);
+
+    this.userService.showUser(userName).subscribe({
+      next: (user) => {
+        this.newMember = user;
+        if (this.selectedSquad) {
+          this.selectedSquad!.users.push(this.newMember);
+          let squadId: number = this.selectedSquad!.id;
+          let memberId: number = this.newMember!.id;
+          this.squadService.removeMember(squadId, memberId).subscribe({
+            next: (squad) => {
+              this.newMember = new User();
+              this.load();
+            },
+            error: (err) => {
+              console.error(err);
+            }
+          })
+        }
+      },
+      error: (err) => {
+        console.log(err);
+
+      }
+    });
+  }
+
   deleteSquad(id: number) {
     console.log(id);
 

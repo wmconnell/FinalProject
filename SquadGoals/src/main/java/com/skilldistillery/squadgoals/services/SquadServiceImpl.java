@@ -319,4 +319,27 @@ public class SquadServiceImpl implements SquadService {
 	
 
 }
+	@Override
+	public void removeMemberFromSquad(int squadId, int memberId, String username) {
+		
+		
+		
+		if (isUser(username) && (belongsToSquad(username, squadId) || isAdmin(username))) {
+			Optional<Squad> squadOpt = squadRepo.findById(squadId);
+			Squad toUpdate = null;
+			//	
+			if (squadOpt.isPresent()) {
+				toUpdate = squadOpt.get();
+				Optional<User> userOpt = userRepo.findById(memberId);
+				if(userOpt.isPresent()) {
+					User user = userOpt.get();
+					user.removeSquad(toUpdate);
+					
+				}
+			}
+			squadRepo.saveAndFlush(toUpdate);
+		}
+		
+		
+	}
 }

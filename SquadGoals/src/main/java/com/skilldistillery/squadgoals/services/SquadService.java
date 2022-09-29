@@ -20,4 +20,5 @@ public interface SquadService {
 	//	DELETE
 	boolean disable(String username, int squadId);
 	void addMemberToSquad(int id, int memberId, String userName);
+	void removeMemberFromSquad(int squadId, int memberId, String username);
 }

@@ -175,6 +175,8 @@ export class PublicsquadComponent implements OnInit {
   }
 
   addMember(userName: string) {
+    console.log(userName);
+    
     this.userService.showUser(userName).subscribe({
       next: (user) => {
         this.newMember = user;
