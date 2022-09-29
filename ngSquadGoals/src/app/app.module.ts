@@ -11,7 +11,7 @@ import { NavBarComponent } from './components/nav-bar/nav-bar.component';
 import { HomeComponent } from './components/home/home.component';
 import { LoginComponent } from './components/login/login.component';
 import { LogoutComponent } from './components/logout/logout.component';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { RegisterComponent } from './components/register/register.component';
 import { NotFoundComponent } from './components/not-found/not-found.component';
 import { AuthService } from './services/auth.service';
@@ -32,7 +32,7 @@ import { MygoalsComponent } from './components/mygoals/mygoals.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MatTableModule } from '@angular/material/table';
 import { PublicsquadComponent } from './components/publicsquad/publicsquad.component';
-import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatFormFieldControl, MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatMenuModule } from '@angular/material/menu';
 import { DeleteConfirmationDialogComponent } from './components/delete-confirmation-dialog/delete-confirmation-dialog.component';
@@ -44,6 +44,10 @@ import { MatPaginatorModule } from '@angular/material/paginator';
 import { MatSortModule } from '@angular/material/sort';
 import { AddGoalDialogComponent } from './components/add-goal-dialog/add-goal-dialog.component';
 import { EditSquadDialogComponent } from './components/edit-squad-dialog/edit-squad-dialog.component';
+import { AddSquadDialogComponent } from './components/add-squad-dialog/add-squad-dialog.component';
+import { MatBadgeModule } from '@angular/material/badge';
+import { UserProfileComponent } from './components/user-profile/user-profile.component';
+import { MatAutocompleteModule } from '@angular/material/autocomplete';
 
 @NgModule({
   declarations: [
@@ -72,7 +76,9 @@ import { EditSquadDialogComponent } from './components/edit-squad-dialog/edit-sq
     DeleteConfirmationDialogComponent,
     EditGoalDialogComponent,
     AddGoalDialogComponent,
-    EditSquadDialogComponent
+    EditSquadDialogComponent,
+    AddSquadDialogComponent,
+    UserProfileComponent
   ],
   imports: [
     BrowserModule,
@@ -90,7 +96,10 @@ import { EditSquadDialogComponent } from './components/edit-squad-dialog/edit-sq
     MatNativeDateModule,
     MatButtonModule,
     MatPaginatorModule,
-    MatSortModule
+    MatSortModule,
+    MatBadgeModule,
+    MatAutocompleteModule,
+    ReactiveFormsModule
   ],
 
     providers:  [
