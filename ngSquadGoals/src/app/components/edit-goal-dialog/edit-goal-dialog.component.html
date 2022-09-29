@@ -1,14 +1,21 @@
 <div>
   <form>
     <label>Title: </label>
-    <input type="text" name="title" [(ngModel)]="goalToUpdate.title"><br>
+    <input type="text" name="title" [(ngModel)]="data.title"><br>
     <label>Description: </label>
-    <textarea rows="2" cols="40" name="description" [(ngModel)]="goalToUpdate.description"></textarea><br>
-    <label for="completed">Completed: </label><br>
-    <input type="checkbox" id="completed" name="completed" [(ngModel)]="goalToUpdate.completed"/>
+    <textarea rows="2" cols="40" name="description" [(ngModel)]="data.description"></textarea><br>
+    <label for="completed">Completed: </label>
+    <input type="checkbox" id="completed" name="completed" [(ngModel)]="data.completed"/><br/>
     <label>End Date: </label>
-    <input type="datetime" name="endDate" [(ngModel)]="goalToUpdate.endDate"><br>
+    <!-- <input type="datetime" name="endDate" [(ngModel)]="data.endDate"><br> -->
+    <mat-form-field class="example-full-width" appearance="fill">
+      <mat-label>Choose a date</mat-label>
+      <input matInput [matDatepickerFilter]="myFilter" [matDatepicker]="picker" name="endDate" [(ngModel)]="data.endDate">
+      <mat-hint>MM/DD/YYYY</mat-hint>
+      <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+      <mat-datepicker #picker></mat-datepicker>
+    </mat-form-field><br />
     <button mat-button mat-dialog-close>Cancel</button>
-    <button mat-button [mat-dialog-close]="true" cdkFocusInitial>Edit</button>
+    <button mat-button [mat-dialog-close]="data" cdkFocusInitial>Save</button>
   </form>
 </div>
