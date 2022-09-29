@@ -49,13 +49,12 @@ export class PublicsquadComponent implements OnInit {
   newMember: User = new User;
   userName: string = "";
   goals: Goal[] = [];
-  columnsToDisplay = ["name", "leader", "numActiveGoals"];
-  columnsToDisplayWithExpand = [...this.columnsToDisplay, 'expand'];
   expandedElement: Squad | null = null;
   updateGoal = false;
   goalToUpdate = {} as Goal;
   squadToEditId: number = 0;
-  displayedColumns: string[] = ['name', 'leaderName', 'numMembers', 'actions'];
+  displayedColumns: string[] = [];
+  columnsToDisplayWithExpand: string[] = [];
   dataSource = new MatTableDataSource(this.squads);
 
   @ViewChild('menuTrigger') menuTrigger!: MatMenuTrigger;
@@ -80,13 +79,18 @@ export class PublicsquadComponent implements OnInit {
         next: (user) => {
           this.loggedIn = user;
           console.log(user.username);
+          this.load()
+          this.displayedColumns = ['name', 'leaderName', 'numMembers'];
+          if (user.role === "admin") {
+            this.displayedColumns.push('actions');
+          }
+          this.columnsToDisplayWithExpand = [...this.displayedColumns, 'expand'];
         },
         error: (err) => {
           console.error("Unable to retrieve user: " + err);
         }
       }
     );
-    this.load()
   }
 
   applyFilter(event: Event) {
@@ -151,7 +155,7 @@ export class PublicsquadComponent implements OnInit {
           squad.numMembers = squad.users.length;
           }
         });
-        this.dataSource = new MatTableDataSource(this.activePipe.transform(this.squadUserPipe.transform(this.squads)));
+        this.dataSource = new MatTableDataSource(this.activePipe.transform(this.squads));
         this.squadTable.renderRows();
         this.dataSource.paginator = this.paginator;
         this.dataSource.sort = this.sort;

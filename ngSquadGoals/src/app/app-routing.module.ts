@@ -9,6 +9,7 @@ import { NotFoundComponent } from './components/not-found/not-found.component';
 import { PublicsquadComponent } from './components/publicsquad/publicsquad.component';
 import { RegisterComponent } from './components/register/register.component';
 import { SquadComponent } from './components/squad/squad.component';
+import { UserProfileComponent } from './components/user-profile/user-profile.component';
 import { UserComponent } from './components/user/user.component';
 
 const routes: Routes = [
@@ -23,6 +24,7 @@ const routes: Routes = [
 { path: 'mysquads', component: SquadComponent },
 { path: 'squads', component: PublicsquadComponent },
 { path: 'user/:username', component: UserComponent },
+{ path: 'user/:username/:squadId/:backRoute', component: UserProfileComponent },
 { path: '**', component: NotFoundComponent}
 ]
 

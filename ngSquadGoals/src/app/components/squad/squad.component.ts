@@ -1,3 +1,4 @@
+import { SquadUserPipe } from './../../pipes/squad-user.pipe';
 import { Image } from './../../models/image';
 import { Component, LOCALE_ID, OnInit, ViewChild } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
@@ -25,6 +26,7 @@ import { Observable } from 'rxjs';
 import { MatOptionSelectionChange } from '@angular/material/core';
 import {map, startWith} from 'rxjs/operators';
 import { MatFormFieldControl } from '@angular/material/form-field';
+import { ActivePipe } from 'src/app/pipes/active.pipe';
 
 @Component({
   selector: 'app-squad',
@@ -79,7 +81,8 @@ export class SquadComponent implements OnInit {
     private route: ActivatedRoute,
     private goalService: GoalService,
     private squadService: SquadService,
-    private activeGoalsPipe: ActiveGoalsPipe,
+    private activePipe: ActivePipe,
+    private squadUserPipe: SquadUserPipe,
     public dialog: MatDialog) { }
 
   ngOnInit(): void {
@@ -168,7 +171,7 @@ export class SquadComponent implements OnInit {
     });
 
     dialogRef.afterClosed().subscribe((result) => {
-      this.updateSquad(result.form, result.squadId);
+      this.updateSquad(result.updateSquadForm, result.squadId);
     });
   }
 
@@ -193,7 +196,8 @@ export class SquadComponent implements OnInit {
       next: (users) => {
         users.forEach(function(user) {
           userList.push(user.username);
-        })
+        });
+
       }
     })
     let getTheGoals = this.getGoalsBySquad;
@@ -210,6 +214,8 @@ export class SquadComponent implements OnInit {
           squad.numMembers = squad.users.length;
           }
         });
+        this.dataSource = new MatTableDataSource(this.activePipe.transform(this.squadUserPipe.transform(this.squads)));
+        this.squadTable.renderRows();
       },
       error: (err) => {
         console.error(err);
@@ -332,6 +338,7 @@ export class SquadComponent implements OnInit {
   }
 
   removeMember(userName: string) {
+    console.log("IN REMOVE");
     console.log(userName);
 
     this.userService.showUser(userName).subscribe({

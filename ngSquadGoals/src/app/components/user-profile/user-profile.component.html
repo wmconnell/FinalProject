@@ -1,13 +1,15 @@
 <h1>User Profile</h1>
-<!-- <div class="container" *ngIf="selectedMember">
+<div class="container">
   <div class="row">
     <div class="col-sm-4 justify-content-center">
       <div class="row align-content-center">
-        <img class="rounded-circle m-4 p-4" [src]="selectedMember.profilePic.url"/>
-        <span>{{selectedMember.firstName}} {{selectedMember.lastName}}</span>
-        <span>{{selectedMember.bio}}</span>
-        <button (click)="removeMember(selectedMember.username)">remove</button>
-        <button (click)="selectedMember = null">Back</button>
+        <img class="rounded-circle m-4 p-4" [src]="selectedMember!.profilePic.url"/>
+        <span>{{selectedMember!.firstName}} {{selectedMember!.lastName}}</span>
+        <span>{{selectedMember!.bio}}</span>
+        <div name="buttonDiv" *ngIf="squadMemberIds.includes(loggedIn!.id)">
+          <button (click)="removeMember(selectedMember!.username)">remove</button>
+        </div>
+        <button (click)="back()">Back</button>
       </div>
     </div>
-  </div> -->
+  </div>

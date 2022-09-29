@@ -21,7 +21,12 @@ export class UserComponent implements OnInit {
   squads: Squad[] = [];
   editUser:boolean = false;
 
-  constructor(private userService: UserService,private auth: AuthService,private router: Router, private route: ActivatedRoute, private squadService: SquadService) { }
+  constructor(
+    private userService: UserService,
+    private auth: AuthService,
+    private router: Router,
+    private route: ActivatedRoute,
+    private squadService: SquadService) { }
 
   ngOnInit(): void {
     this.load();
