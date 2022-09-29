@@ -104,7 +104,7 @@ export class AuthService {
   }
 
   checkUsernameUnique(username: string): Observable<boolean> {
-    return this.http.get<boolean>(this.baseUrl + "checkusernameunique/" + username).pipe(
+    return this.http.get<boolean>(environment.baseUrl + "checkusernameunique/" + username).pipe(
       catchError((err: any) => {
         console.log(err);
         return throwError(

@@ -1,6 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { catchError, throwError } from 'rxjs';
+import { environment } from 'src/environments/environment';
 import { Task } from '../models/task';
 import { AuthService } from './auth.service';
 
@@ -12,8 +13,8 @@ export class TaskService {
 
   private baseUrl = 'http://localhost:8088/'; // adjust port to match server
   // private url = environment.baseUrl + 'api/tasks'; // change 'todos' to your API path
-  private url1 = this.baseUrl + 'api/goals'; // change 'todos' to your API path
-  private url2 = this.baseUrl + 'api/tasks'; // change 'todos' to your API path
+  private url1 = environment.baseUrl + 'api/goals'; // change 'todos' to your API path
+  private url2 = environment.baseUrl + 'api/tasks'; // change 'todos' to your API path
   constructor(private http: HttpClient, private auth: AuthService) { }
 
   getHttpOptions() {
@@ -76,7 +77,7 @@ createTask(task: Task){
 
     }
     showTask(taskId: any){
-      return this.http.get<Task>("http://localhost:8084/api/tasks/" + taskId,this.getHttpOptions()).pipe(catchError((err: any) => {
+      return this.http.get<Task>(this.url2 + taskId,this.getHttpOptions()).pipe(catchError((err: any) => {
         console.log(err);
         return throwError(
           () => new Error('TodoService.showTask(): error retrieving Tasks: ' + err)

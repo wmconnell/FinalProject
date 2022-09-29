@@ -12,9 +12,9 @@ export class UserService {
 
 
 
-  private baseUrl = 'http://localhost:8088/'; // adjust port to match server
+  // private baseUrl = 'http://localhost:8088/'; // adjust port to match server
   // private url = environment.baseUrl + 'api/users'; // change 'todos' to your API path
-  private url = this.baseUrl + 'api/users'; // change 'todos' to your API path
+  private url = environment.baseUrl + 'api/users'; // change 'todos' to your API path
   constructor(private http: HttpClient, private auth: AuthService) { }
 
   getHttpOptions() {
@@ -77,7 +77,7 @@ createUser(user: User){
 
     }
     showUser(userId: any){
-      return this.http.get<User>("http://localhost:8088/api/users/" + userId,this.getHttpOptions()).pipe(catchError((err: any) => {
+      return this.http.get<User>(this.url + userId,this.getHttpOptions()).pipe(catchError((err: any) => {
         console.log(err);
         return throwError(
           () => new Error('TodoService.showUser(): error retrieving todos: ' + err)

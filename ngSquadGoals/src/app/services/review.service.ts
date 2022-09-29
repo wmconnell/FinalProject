@@ -1,3 +1,4 @@
+import { environment } from './../../environments/environment.prod';
 import { Review } from './../models/review';
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
@@ -10,9 +11,9 @@ import { AuthService } from './auth.service';
 export class ReviewService {
 
 
-  private baseUrl = 'http://localhost:8088/'; // adjust port to match server
+  // private baseUrl = 'http://localhost:8088/'; // adjust port to match server
   // private url = environment.baseUrl + 'api/reviews'; // change 'todos' to your API path
-  private url = this.baseUrl + 'api/reviews'; // change 'todos' to your API path
+  private url = environment.baseUrl + 'api/reviews'; // change 'todos' to your API path
   constructor(private http: HttpClient, private auth: AuthService) { }
 
   getHttpOptions() {
@@ -75,7 +76,7 @@ createReview(review: Review){
 
     }
     showReview(reviewId: any){
-      return this.http.get<Review>("http://localhost:8088/api/reviews/" + reviewId,this.getHttpOptions()).pipe(catchError((err: any) => {
+      return this.http.get<Review>(this.url + reviewId,this.getHttpOptions()).pipe(catchError((err: any) => {
         console.log(err);
         return throwError(
           () => new Error('ReviewService.showReview(): error retrieving Review: ' + err)
