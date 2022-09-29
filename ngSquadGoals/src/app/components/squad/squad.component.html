@@ -32,7 +32,7 @@
       </table>
     </div>
   </div> -->
-  <div class="m-2 p-3 w-100" *ngIf="loggedIn.role === 'admin'" style="background-color:white;">
+  <div class="m-2 p-3 w-100" style="background-color:white;">
     <!-- <p>Admin: {{loggedIn.username}}</p> -->
 
     <div class="mat-elevation-z8" >
@@ -58,10 +58,13 @@
             <mat-icon [matBadge]="squad.numMembers" matBadgeColor="accent">account_circle</mat-icon>
           </button>
           <mat-menu #menu="matMenu">
-            <button mat-menu-item *ngFor="let member of squad.users" [routerLink]="['/user/' + member.username]">
-              <img class="rounded-circle me-2" [src]="member.profilePic.url" height="30rem" width="30rem"/>
-              <span>{{ member.username }}</span>
+            <div>
+            <button mat-menu-item *ngFor="let member of squad.users">
+              <img class="rounded-circle me-2" [src]="member.profilePic.url" height="30rem" width="30rem" [routerLink]="['/user/' + member.username]"/>
+              <span [routerLink]="['/user/' + member.username]">{{ member.username }}</span>
+              <mat-icon style="color: red; justify-self: right;">remove_circle_outline</mat-icon>
             </button>
+          </div>
             <button mat-menu-item [matMenuTriggerFor]="addMenu">
               <mat-icon class="me-2">person_add</mat-icon>
               <span>Add Member</span>
