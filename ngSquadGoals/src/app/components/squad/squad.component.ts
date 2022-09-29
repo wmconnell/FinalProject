@@ -1,5 +1,5 @@
 import { Image } from './../../models/image';
-import { Component, LOCALE_ID, OnInit } from '@angular/core';
+import { Component, LOCALE_ID, OnInit, ViewChild } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { Squad } from 'src/app/models/squad';
 import { User } from 'src/app/models/user';
@@ -12,6 +12,14 @@ import { NgForm } from '@angular/forms';
 import { animate, state, style, transition, trigger } from '@angular/animations';
 import { ActiveGoalsPipe } from 'src/app/pipes/active-goals.pipe';
 import { MatDialog } from '@angular/material/dialog';
+import { MatTable, MatTableDataSource } from '@angular/material/table';
+import { MatMenuTrigger } from '@angular/material/menu';
+import { MatPaginator } from '@angular/material/paginator';
+import { MatSort } from '@angular/material/sort';
+import { DeleteConfirmationDialogComponent } from '../delete-confirmation-dialog/delete-confirmation-dialog.component';
+import { EditSquadDialogComponent } from '../edit-squad-dialog/edit-squad-dialog.component';
+import { AddSquadDialogComponent } from '../add-squad-dialog/add-squad-dialog.component';
+import { EditGoalDialogComponent } from '../edit-goal-dialog/edit-goal-dialog.component';
 
 @Component({
   selector: 'app-squad',
@@ -46,9 +54,25 @@ export class SquadComponent implements OnInit {
   updateGoal = false;
   goalToUpdate = {} as Goal;
   squadToEditId: number = 0;
+  displayedColumns: string[] = ['name', 'leaderName', 'numMembers', 'actions'];
+  dataSource = new MatTableDataSource(this.squads);
 
 
-  constructor(private userService: UserService, private auth: AuthService, private router: Router, private route: ActivatedRoute, private goalService: GoalService, private squadService: SquadService, private activeGoalsPipe: ActiveGoalsPipe, public dialog: MatDialog) { }
+  @ViewChild('menuTrigger') menuTrigger!: MatMenuTrigger;
+  @ViewChild(MatTable) squadTable!: MatTable<any>;
+  @ViewChild(MatPaginator) paginator!: MatPaginator;
+  @ViewChild(MatSort) sort!: MatSort;
+
+
+  constructor(
+    private userService: UserService,
+    private auth: AuthService,
+    private router: Router,
+    private route: ActivatedRoute,
+    private goalService: GoalService,
+    private squadService: SquadService,
+    private activeGoalsPipe: ActiveGoalsPipe,
+    public dialog: MatDialog) { }
 
   ngOnInit(): void {
     this.auth.getLoggedInUser().subscribe(
@@ -65,6 +89,81 @@ export class SquadComponent implements OnInit {
     this.load()
   }
 
+  openAddDialog(enterAnimationDuration: string, exitAnimationDuration: string): void {
+    // let confirmed: boolean = false;
+    const dialogRef = this.dialog.open(AddSquadDialogComponent, {
+      enterAnimationDuration,
+      exitAnimationDuration,
+      data: this.squads
+    });
+
+    dialogRef.afterClosed().subscribe((result) => {
+      if (result) {
+        let squad: Squad = result.createNewSquadForm.value;
+        squad.profilePic = result.squadImage;
+        this.createSquad(squad);
+      }
+
+    });
+  }
+
+  openDeleteSquadDialog(enterAnimationDuration: string, exitAnimationDuration: string, squad: Squad): void {
+    // let confirmed: boolean = false;
+    const dialogRef = this.dialog.open(DeleteConfirmationDialogComponent, {
+      enterAnimationDuration,
+      exitAnimationDuration,
+      data: squad.name
+    });
+
+    dialogRef.afterClosed().subscribe((result) => {
+      console.log("DELETE? " + result);
+      if (result) {
+        this.deleteSquad(squad.id);
+      }
+    });
+  }
+
+  openDeleteGoalDialog(enterAnimationDuration: string, exitAnimationDuration: string, goal: Goal): void {
+    // let confirmed: boolean = false;
+    const dialogRef = this.dialog.open(DeleteConfirmationDialogComponent, {
+      enterAnimationDuration,
+      exitAnimationDuration,
+      data: goal.title
+    });
+
+    dialogRef.afterClosed().subscribe((result) => {
+      console.log("DELETE? " + result);
+      if (result) {
+        this.deleteGoal(goal.id);
+      }
+    });
+  }
+
+  openEditSquadDialog(enterAnimationDuration: string, exitAnimationDuration: string, squad: Squad): void {
+    // let confirmed: boolean = false;
+    const dialogRef = this.dialog.open(EditSquadDialogComponent, {
+      enterAnimationDuration,
+      exitAnimationDuration,
+      data: squad
+    });
+
+    dialogRef.afterClosed().subscribe((result) => {
+      this.updateSquad(result.form, result.squadId);
+    });
+  }
+
+  openEditGoalDialog(enterAnimationDuration: string, exitAnimationDuration: string, goal: Goal): void {
+    // let confirmed: boolean = false;
+    const dialogRef = this.dialog.open(EditGoalDialogComponent, {
+      enterAnimationDuration,
+      exitAnimationDuration,
+      data: goal
+    });
+
+    dialogRef.afterClosed().subscribe((result) => {
+      this.doUpdateGoal(result);
+    });
+  }
 
   load = () => {
     console.log("load called");
@@ -236,6 +335,19 @@ export class SquadComponent implements OnInit {
         console.error(err);
     }
   })
+}
+
+deleteGoal = (id: number): void => {
+  this.goalService.deleteGoal(id).subscribe({
+
+    next: (result) => {
+      this.load();
+    },
+    error: (nojoy) => {
+      console.error('error creating goal:');
+      console.error(nojoy);
+    },
+  });
 }
 
 updateSquad(form: NgForm, id:number){

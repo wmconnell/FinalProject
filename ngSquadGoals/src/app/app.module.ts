@@ -44,6 +44,7 @@ import { MatPaginatorModule } from '@angular/material/paginator';
 import { MatSortModule } from '@angular/material/sort';
 import { AddGoalDialogComponent } from './components/add-goal-dialog/add-goal-dialog.component';
 import { EditSquadDialogComponent } from './components/edit-squad-dialog/edit-squad-dialog.component';
+import { AddSquadDialogComponent } from './components/add-squad-dialog/add-squad-dialog.component';
 
 @NgModule({
   declarations: [
@@ -72,7 +73,8 @@ import { EditSquadDialogComponent } from './components/edit-squad-dialog/edit-sq
     DeleteConfirmationDialogComponent,
     EditGoalDialogComponent,
     AddGoalDialogComponent,
-    EditSquadDialogComponent
+    EditSquadDialogComponent,
+    AddSquadDialogComponent
   ],
   imports: [
     BrowserModule,
