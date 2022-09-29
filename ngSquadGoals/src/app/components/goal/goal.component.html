@@ -1,42 +1,43 @@
-<h1>All Goals</h1>
+<h1 class="m-2 mt-4">All Goals</h1>
 
-<div *ngIf="loggedIn.role === 'admin'">
-  <p>Admin: {{loggedIn.username}}</p>
+<div class="m-2 p-3" *ngIf="loggedIn.role === 'admin'" style="background-color:white;">
+  <!-- <p>Admin: {{loggedIn.username}}</p> -->
 
-  <mat-form-field appearance="standard">
+  <mat-form-field class="w-100" appearance="standard">
     <mat-label>Filter</mat-label>
     <input matInput (keyup)="applyFilter($event)" placeholder="Search by keyword" #input>
   </mat-form-field>
 
-  <table #goalTable mat-table [dataSource]="dataSource" class="mat-elevation-z8">
+  <div class="mat-elevation-z8" >
+  <table #goalTable mat-table [dataSource]="dataSource" matSort>
 
     <!-- Title Column -->
     <ng-container matColumnDef="title">
-      <th mat-header-cell *matHeaderCellDef> Goal </th>
+      <th mat-header-cell *matHeaderCellDef mat-sort-header> Goal </th>
       <td mat-cell *matCellDef="let goal"> {{goal.title}} </td>
     </ng-container>
 
     <!-- SquadName Column -->
     <ng-container matColumnDef="squadName">
-      <th mat-header-cell *matHeaderCellDef> Squad </th>
-      <td mat-cell *matCellDef="let goal"> {{goal.squads[0].name}} </td>
+      <th mat-header-cell *matHeaderCellDef mat-sort-header> Squad </th>
+      <td mat-cell *matCellDef="let goal"> {{goal.squadName}} </td>
     </ng-container>
 
     <!-- Description Column -->
     <ng-container matColumnDef="description">
-      <th mat-header-cell *matHeaderCellDef> Description </th>
+      <th mat-header-cell *matHeaderCellDef mat-sort-header> Description </th>
       <td mat-cell *matCellDef="let goal"> {{goal.description}} </td>
     </ng-container>
 
     <!-- Completed Column -->
     <ng-container matColumnDef="completed">
-      <th mat-header-cell *matHeaderCellDef> Completed </th>
+      <th mat-header-cell *matHeaderCellDef mat-sort-header> Completed </th>
       <td mat-cell *matCellDef="let goal"> {{goal.completed}} </td>
     </ng-container>
 
      <!-- End Date Column -->
      <ng-container matColumnDef="endDate">
-      <th mat-header-cell *matHeaderCellDef> End Date </th>
+      <th mat-header-cell *matHeaderCellDef mat-sort-header> End Date </th>
       <td mat-cell *matCellDef="let goal"> {{goal.endDate}} </td>
     </ng-container>
 
@@ -73,6 +74,9 @@
       <td class="mat-cell" colspan="4">No data matching the filter "{{input.value}}"</td>
     </tr>
   </table>
+
+    <mat-paginator [pageSizeOptions]="[5, 10, 25, 100]" aria-label="Select page of users"></mat-paginator>
+</div>
 
 
   <!-- <table class="table table-striped table-hover">

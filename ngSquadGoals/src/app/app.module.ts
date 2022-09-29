@@ -40,6 +40,8 @@ import { EditGoalDialogComponent } from './components/edit-goal-dialog/edit-goal
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatNativeDateModule } from '@angular/material/core';
 import { MatButtonModule } from '@angular/material/button';
+import { MatPaginatorModule } from '@angular/material/paginator';
+import { MatSortModule } from '@angular/material/sort';
 
 @NgModule({
   declarations: [
@@ -82,7 +84,9 @@ import { MatButtonModule } from '@angular/material/button';
     MatDialogModule,
     MatDatepickerModule,
     MatNativeDateModule,
-    MatButtonModule
+    MatButtonModule,
+    MatPaginatorModule,
+    MatSortModule
   ],
 
     providers:  [

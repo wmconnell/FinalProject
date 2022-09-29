@@ -1,6 +1,6 @@
 import { ActiveGoalsPipe } from './../../pipes/active-goals.pipe';
 import { SquadService } from 'src/app/services/squad.service';
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, ViewChild, OnInit } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { User } from 'src/app/models/user';
 import { Goal } from 'src/app/models/goal';
@@ -14,8 +14,9 @@ import { MatTable, MatTableDataSource } from '@angular/material/table';
 import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { MatMenuTrigger } from '@angular/material/menu';
 import { DeleteConfirmationDialogComponent } from '../delete-confirmation-dialog/delete-confirmation-dialog.component';
-import { DialogRef } from '@angular/cdk/dialog';
 import { EditGoalDialogComponent } from '../edit-goal-dialog/edit-goal-dialog.component';
+import { MatPaginator } from '@angular/material/paginator';
+import { MatSort, Sort } from '@angular/material/sort';
 
 @Component({
   selector: 'app-goal',
@@ -23,24 +24,6 @@ import { EditGoalDialogComponent } from '../edit-goal-dialog/edit-goal-dialog.co
   styleUrls: ['./goal.component.css']
 })
 export class GoalComponent implements OnInit {
-
-  constructor(private userService: UserService,private auth: AuthService,private router: Router, private route: ActivatedRoute, private goalService: GoalService, private taskService: TaskService, private squadService: SquadService, private activeGoalsPipe: ActiveGoalsPipe, public dialog: MatDialog) { }
-
-  @ViewChild('menuTrigger')
-  menuTrigger!: MatMenuTrigger;
-
-  goals: Goal[] = [];
-  displayedColumns: string[] = ['title', 'squadName', 'description', 'completed', 'endDate', 'delete'];
-  dataSource = new MatTableDataSource(this.goals);
-
-  applyFilter(event: Event) {
-    const filterValue = (event.target as HTMLInputElement).value;
-    this.dataSource.filter = filterValue.trim().toLowerCase();
-  }
-
-  @ViewChild(MatTable) goalTable!: MatTable<any>;
-
-
   loggedIn: User = new User();
   squads: Squad[] = [];
   newGoal: Goal = new Goal();
@@ -50,15 +33,38 @@ export class GoalComponent implements OnInit {
   addGoal: boolean = false;
   squadId: number = 0;
   tasks: Task[] =[];
+  goals: Goal[] = [];
+  displayedColumns: string[] = ['title', 'squadName', 'description', 'completed', 'endDate', 'delete'];
+  dataSource = new MatTableDataSource(this.goals);
+
+  constructor(private userService: UserService,private auth: AuthService,private router: Router, private route: ActivatedRoute, private goalService: GoalService, private taskService: TaskService, private squadService: SquadService, private activeGoalsPipe: ActiveGoalsPipe, public dialog: MatDialog) { }
 
   ngOnInit(): void {
     this.load();
   }
 
+  @ViewChild('menuTrigger') menuTrigger!: MatMenuTrigger;
+  @ViewChild(MatTable) goalTable!: MatTable<any>;
+  @ViewChild(MatPaginator) paginator!: MatPaginator;
+  @ViewChild(MatSort) sort!: MatSort;
+
+  // applyFilter(event: Event) {
+  //   const filterValue = (event.target as HTMLInputElement).value;
+  //   this.dataSource.filter = filterValue.trim().toLowerCase();
+  // }
+
+  applyFilter(event: Event) {
+    const filterValue = (event.target as HTMLInputElement).value;
+    this.dataSource.filter = filterValue.trim().toLowerCase();
+
+    if (this.dataSource.paginator) {
+      this.dataSource.paginator.firstPage();
+    }
+  }
+
   openDeleteDialog(enterAnimationDuration: string, exitAnimationDuration: string, goal: Goal): void {
     // let confirmed: boolean = false;
     const dialogRef = this.dialog.open(DeleteConfirmationDialogComponent, {
-      width: '250px',
       enterAnimationDuration,
       exitAnimationDuration,
       data: goal
@@ -101,7 +107,6 @@ export class GoalComponent implements OnInit {
           this.loggedIn = user;
           console.log(user.goals.length)
           this.loadGoals();
-
         // this.getSquads();
         // console.log("Successfully retrieved user id " + user.id);
       },
@@ -196,8 +201,16 @@ export class GoalComponent implements OnInit {
           console.log("******* showAllGoals func *******")
           console.log(goals)
           this.goals = goals;
+          this.goals.forEach(function(goal) {
+            if (goal.squads[0]) {
+            let squad: Squad = goal.squads[0];
+            goal.squadName = squad.name!;
+          }
+          })
           this.dataSource = new MatTableDataSource(this.activeGoalsPipe.transform(this.goals));
           this.goalTable.renderRows();
+          this.dataSource.paginator = this.paginator;
+          this.dataSource.sort = this.sort;
         },
         error: (err) => {
           console.error('goal.component.ts error: error loading all goals');
