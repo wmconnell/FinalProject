@@ -36,6 +36,7 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatMenuModule } from '@angular/material/menu';
 import { DeleteConfirmationDialogComponent } from './components/delete-confirmation-dialog/delete-confirmation-dialog.component';
+import { EditGoalDialogComponent } from './components/edit-goal-dialog/edit-goal-dialog.component';
 
 @NgModule({
   declarations: [
@@ -61,7 +62,8 @@ import { DeleteConfirmationDialogComponent } from './components/delete-confirmat
     GoalUserPipe,
     MygoalsComponent,
     PublicsquadComponent,
-    DeleteConfirmationDialogComponent
+    DeleteConfirmationDialogComponent,
+    EditGoalDialogComponent
   ],
   imports: [
     BrowserModule,
