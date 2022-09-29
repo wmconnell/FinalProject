@@ -19,6 +19,7 @@ export class Goal {
   creator: any = null;
   tasks: any[] = [];
   tags: any[] = [];
+  squadName: string = "";
 
   constructor(
     id: number = 0,
@@ -40,7 +41,8 @@ export class Goal {
   images: any[] = [],
   creator: any = null,
   tasks: any[] = [],
-  tags: any[] = []
+  tags: any[] = [],
+  squadName: string = ""
   ) {
   this.id = id;
   this.title = title;
@@ -62,7 +64,7 @@ export class Goal {
   this.creator = creator;
   this.tasks = tasks;
   this.tags = tags;
-
+  this.squadName = squadName;
 
   }
 }
