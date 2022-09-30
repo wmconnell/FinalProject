@@ -164,7 +164,6 @@ public class UserController {
 		if (user == null) {
 			res.setStatus(404);
 		}
-		System.out.println(user.getUsername());
 		return user;
 	}
 
