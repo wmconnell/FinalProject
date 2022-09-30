@@ -149,7 +149,7 @@ export class PublicsquadComponent implements OnInit {
     });
 
     dialogRef.afterClosed().subscribe((result) => {
-      this.updateSquad(result.form, result.squadId);
+      this.updateSquad(result.updateSquadForm, result.squadId);
     });
   }
 
@@ -322,7 +322,7 @@ export class PublicsquadComponent implements OnInit {
   updateSquad(form: NgForm, id: number) {
     // let id = this.loggedIn.id;
     console.log("In Update Squad Call! BEFORE HTTP");
-    console.log(form.value);
+    console.log(form.value.name);
     this.squadService.updateSquad(form.value, id).subscribe({
       next: (squad) => {
         console.log("In Update Squad HTTP Call!");

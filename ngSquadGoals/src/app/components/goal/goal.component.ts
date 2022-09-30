@@ -88,6 +88,7 @@ export class GoalComponent implements OnInit {
     });
 
     dialogRef.afterClosed().subscribe((result) => {
+      console.log(result);
       this.doUpdateGoal(result);
     });
   }
