@@ -107,12 +107,17 @@ public class SquadController {
 	@PutMapping("squads/{id}")
 	public Squad update(HttpServletRequest req, HttpServletResponse res, @PathVariable int id, @RequestBody Squad squad,
 			Principal principal) {
+		System.out.println("IN SQUAD CONTROLLER UPDATE!");
 		Squad updated = null;
 		if (authService.isLoggedInUser(principal.getName())) {
+			System.out.println("USer logged in");
 			if (authService.squadExists(id)) {
+				System.out.println("squad exists");
 				if (authService.squadNameUnique(squad.getName())) {
+					System.out.println("squad name unique");
 					if (authService.belongsToSquad(principal.getName(), Arrays.asList(authService.getSquad(id)))
 							|| authService.isAdmin(principal.getName())) {
+						System.out.println("belongs to squad or is admin");
 
 						try {
 

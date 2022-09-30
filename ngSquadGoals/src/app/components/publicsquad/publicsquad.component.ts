@@ -79,8 +79,12 @@ export class PublicsquadComponent implements OnInit {
         next: (user) => {
           this.loggedIn = user;
           console.log(user.username);
-          this.load()
-
+          this.load();
+          this.displayedColumns = ['name', 'leaderName', 'numMembers'];
+          if (user.role === "admin") {
+            this.displayedColumns.push('actions');
+          }
+          this.columnsToDisplayWithExpand = [...this.displayedColumns, 'expand'];
         },
         error: (err) => {
           console.error("Unable to retrieve user: " + err);
