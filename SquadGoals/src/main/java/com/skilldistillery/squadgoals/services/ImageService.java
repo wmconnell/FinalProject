@@ -12,6 +12,7 @@ public interface ImageService {
 	Image create(String username, Image image);
 	//	READ
 	Image show(String username, int imageId);
+	Image getImageBySquad(int squadId);
 	List<Image> index(String username);
 	//	UPDATE
 	Image update(String username, int imageId, Image image);

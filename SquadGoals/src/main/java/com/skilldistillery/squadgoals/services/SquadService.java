@@ -2,6 +2,7 @@ package com.skilldistillery.squadgoals.services;
 
 import java.util.List;
 
+import com.skilldistillery.squadgoals.entities.Image;
 import com.skilldistillery.squadgoals.entities.Squad;
 
 public interface SquadService {
@@ -17,6 +18,7 @@ public interface SquadService {
 	List<Squad> squadsByUser(String username);
 	//	UPDATE
 	Squad update(String username, int squadId, Squad squad);
+	void addImageToSquad(int squadId, Image image);
 	//	DELETE
 	boolean disable(String username, int squadId);
 	void addMemberToSquad(int id, int memberId, String userName);

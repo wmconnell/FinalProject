@@ -33,7 +33,13 @@ public class SquadServiceImpl implements SquadService {
 			try {
 				//	TODO:	Consider adding a "creator" property to the Squad entity.
 				//			squad.setCreator(userRepo.findById(username);
-				Image newImage = new Image("https://thepowerofthedream.org/wp-content/uploads/2015/09/generic-profile-picture.jpg", true);
+				System.out.println(squad.getProfilePic());
+				Image newImage = new Image();
+				if (squad.getProfilePic() == null || squad.getProfilePic().getUrl() == null || squad.getProfilePic().getUrl().equals("")) {
+					newImage = new Image("https://thepowerofthedream.org/wp-content/uploads/2015/09/generic-profile-picture.jpg", true);
+				} else {
+					newImage = squad.getProfilePic();
+				}
 				newImage = imageRepo.saveAndFlush(newImage);
 				squad.setProfilePic(newImage);
 //				List<User> users = new ArrayList<>(squad.getUsers());
@@ -241,6 +247,16 @@ public class SquadServiceImpl implements SquadService {
 				return squadRepo.saveAndFlush(toUpdate);
 			}
 		return null;
+	}
+	
+	public void addImageToSquad(int squadId, Image image) {
+		Squad squad = null;
+		Optional<Squad> squadOpt = squadRepo.findById(squadId);
+		if (squadOpt.isPresent()) {
+			squad = squadOpt.get();
+			squad.setProfilePic(image);
+			squadRepo.saveAndFlush(squad);
+		}
 	}
 
 	// DELETE

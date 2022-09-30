@@ -49,12 +49,12 @@ export class PublicsquadComponent implements OnInit {
   newMember: User = new User;
   userName: string = "";
   goals: Goal[] = [];
-  expandedElement: Squad | null = null;
+  expandedSquad: Squad | null = null;
   updateGoal = false;
   goalToUpdate = {} as Goal;
   squadToEditId: number = 0;
-  displayedColumns: string[] = [];
-  columnsToDisplayWithExpand: string[] = [];
+  displayedColumns: string[] = ['name', 'leaderName', 'numMembers', 'actions'];
+  columnsToDisplayWithExpand: string[] = [...this.displayedColumns, 'expand'];
   dataSource = new MatTableDataSource(this.squads);
 
   @ViewChild('menuTrigger') menuTrigger!: MatMenuTrigger;
@@ -79,7 +79,7 @@ export class PublicsquadComponent implements OnInit {
         next: (user) => {
           this.loggedIn = user;
           console.log(user.username);
-          this.load()
+          this.load();
           this.displayedColumns = ['name', 'leaderName', 'numMembers'];
           if (user.role === "admin") {
             this.displayedColumns.push('actions');

@@ -76,6 +76,18 @@ public class ImageServiceImpl implements ImageService {
 		return null;
 	}
 
+	@Override
+	public Image getImageBySquad(int squadId) {
+		//	Any user may look up any image.
+		//	TODO: 	Refine this
+			try {
+				return imageRepo.findBySquad_Id(squadId);
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		return null;
+	}
+
 	//	UPDATE
 	//
 	//	This update method allows for a partially defined entity to

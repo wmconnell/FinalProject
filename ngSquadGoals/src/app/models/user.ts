@@ -1,3 +1,5 @@
+import { Image } from './image';
+
 export class User {
 id: number = 0;
 username: string = '';
@@ -16,7 +18,7 @@ tasks: any[] = [];
 badges: any[] = [];
 squadMessages: any[] = [];
 tags: any[] = [];
-profilePic: any = null;
+profilePic: Image = new Image();
 goalsCreated: any[] = [];
 
 
@@ -38,7 +40,7 @@ tasks: any[] = [],
 badges: any[] = [],
 squadMessages: any[] = [],
 tags: any[] = [],
-profilePic: any = null,
+profilePic: Image = new Image(),
 goalsCreated: any[] = []
 ) {
   this.id = id;

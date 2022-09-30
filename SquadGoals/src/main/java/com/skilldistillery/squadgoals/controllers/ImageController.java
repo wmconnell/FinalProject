@@ -8,6 +8,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -24,6 +25,7 @@ import com.skilldistillery.squadgoals.services.ImageService;
 
 @RestController
 @RequestMapping(path = "api")
+@CrossOrigin({ "*", "http://localhost:4200/"})
 public class ImageController {
 
 	@Autowired
@@ -60,6 +62,26 @@ public class ImageController {
 			res.setStatus(401);
 			res.setHeader("Error", "Client must be logged in to perform this action");
 		}
+		return image;
+	}
+
+	@GetMapping("images/squad/{squadId}")
+	public Image getImageBySquad(HttpServletRequest req, HttpServletResponse res, @PathVariable int squadId, Principal principal) {
+		Image image = null;
+		if (authService.isLoggedInUser(principal.getName())) {
+			image = imageService.getImageBySquad(squadId);
+			if (image == null) {
+				res.setStatus(404);
+				res.setHeader("Result", "Squad id " + squadId + " has no associated image");
+			} else {
+				res.setStatus(200);
+				res.setHeader("Result", "Returned image for squad id " + squadId);
+			}
+		} else {
+			res.setStatus(401);
+			res.setHeader("Error", "Client must be logged in to perform this action");
+		}
+		System.out.println("Image for squad " + squadId + ": " + image.getUrl());
 		return image;
 	}
 

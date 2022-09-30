@@ -102,24 +102,6 @@ class="example-element-row"
 </table>
 </div>
 
-<div>
-  <form *ngIf="updateGoal">
-   <label>Squad: </label>
-    <select name="squad" id="squad" [(ngModel)]="squadId">
-      <option *ngFor="let squad of goalToUpdate.squads | active" [attr.selected]="squad.id == squadToEditId ? true : null">{{squad.name}}</option>
-    </select><br>
-    <label>Title: </label>
-    <input type="text" name="title" [(ngModel)]="goalToUpdate.title"><br>
-    <label>Description: </label>
-    <textarea rows="2" cols="40" name="description" [(ngModel)]="goalToUpdate.description"></textarea><br>
-    <label for="completed">Completed: </label><br>
-    <input type="checkbox" id="completed" name="completed" [(ngModel)]="goalToUpdate.completed"/>
-    <label>End Date: </label>
-    <input type="datetime" name="endDate" [(ngModel)]="goalToUpdate.endDate"><br>
-    <button (click)="doUpdateGoal(goalToUpdate); updateGoal = false;">Submit</button>
-  </form>
-</div>
-
 
 
 

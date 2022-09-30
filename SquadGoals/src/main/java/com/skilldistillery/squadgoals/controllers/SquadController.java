@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.skilldistillery.squadgoals.entities.Image;
 import com.skilldistillery.squadgoals.entities.Squad;
 import com.skilldistillery.squadgoals.services.AuthService;
 import com.skilldistillery.squadgoals.services.SquadService;
@@ -106,12 +107,17 @@ public class SquadController {
 	@PutMapping("squads/{id}")
 	public Squad update(HttpServletRequest req, HttpServletResponse res, @PathVariable int id, @RequestBody Squad squad,
 			Principal principal) {
+		System.out.println("IN SQUAD CONTROLLER UPDATE!");
 		Squad updated = null;
 		if (authService.isLoggedInUser(principal.getName())) {
+			System.out.println("USer logged in");
 			if (authService.squadExists(id)) {
+				System.out.println("squad exists");
 				if (authService.squadNameUnique(squad.getName())) {
+					System.out.println("squad name unique");
 					if (authService.belongsToSquad(principal.getName(), Arrays.asList(authService.getSquad(id)))
 							|| authService.isAdmin(principal.getName())) {
+						System.out.println("belongs to squad or is admin");
 
 						try {
 
@@ -139,6 +145,15 @@ public class SquadController {
 			res.setHeader("Error", "Client must be logged in to perform this action");
 		}
 		return updated;
+	}
+	
+	@PutMapping("squads/addImage/{squadId}")
+	public void addImageToSquad(@PathVariable int squadId, @RequestBody Image image, HttpServletRequest req, HttpServletResponse res, Principal principal) {
+		try {
+			squadService.addImageToSquad(squadId, image);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 	}
 
 	@GetMapping("squads/add/{id}/{memberId}")
