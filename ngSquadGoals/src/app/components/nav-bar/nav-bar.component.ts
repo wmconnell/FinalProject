@@ -13,7 +13,23 @@ export class NavBarComponent implements OnInit {
   constructor(private auth: AuthService,private router: Router) { }
 loggedIn: User = new User();
   ngOnInit(): void {
+    // this.load();
   }
+
+  load = (): void => {
+    this.auth.getLoggedInUser().subscribe(
+      {
+      next: (user) => {
+        this.loggedIn = user;
+        // console.log("Successfully retrieved user id " + user.id);
+      },
+      error: (err) => {
+        console.error("Unable to retrieve user: " + err);
+      }
+    }
+    );
+  }
+
   logedIn(){
     if(this.auth.checkLogin()){
       return true
@@ -26,7 +42,19 @@ loggedIn: User = new User();
     this.auth.logout()
     this.router.navigateByUrl('/home')
   }
-  isAdmin(){
+
+  isAdmin() {
+    if(this.loggedIn.role === "admin"){
+      return true;
+    }
+    else{
+      return false;
+    }
+  }
+
+  isNotAdmin(){
+
+
     this.auth.getLoggedInUser().subscribe(
       {
         next: (user) => {

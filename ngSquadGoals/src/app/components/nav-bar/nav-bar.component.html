@@ -6,11 +6,11 @@
     </button>
     <div class="collapse navbar-collapse" id="navbarSupportedContent">
       <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-        <li class="nav-item">
+        <!-- <li class="nav-item">
           <a class="nav-link active" aria-current="page" [routerLink]="['/about']">About</a>
-        </li>
+        </li> -->
         <li class="nav-item">
-          <a class="nav-link" [routerLink]="['/user']">user</a>
+          <a class="nav-link" [routerLink]="['/user']">User</a>
         </li>
         <li class="nav-item">
           <a class="nav-link" [routerLink]="['/mysquads']">My Squads</a>
@@ -18,14 +18,14 @@
         <li class="nav-item">
           <a class="nav-link" [routerLink]="['/squads']">All Squads</a>
         </li>
-        <li class="nav-item">
+        <!-- <li class="nav-item">
           <a class="nav-link" [routerLink]="['/tasks']">My Tasks</a>
-        </li>
+        </li> -->
         <li class="nav-item">
           <a class="nav-link" [routerLink]="['/mygoals']">My Goals</a>
         </li>
-        <li class="nav-item"  >
-          <a class="nav-link" [routerLink]="['/goals']">Public Goals</a>
+        <li class="nav-item">
+            <a class="nav-link" [routerLink]="['/goals']">All Goals</a>
         </li>
         <li class="nav-item" *ngIf="!logedIn()">
           <a class="nav-link" [routerLink]="['/login']">Log in</a>
@@ -45,13 +45,13 @@
           <a class="nav-link" [routerLink]="['/register']">Register</a>
         </li>
         <li class="nav-item" (click)="logout()" *ngIf="logedIn()">
-          <a class="nav-link" (click)="logout()"  >Log Out</a>
+          <a  class="nav-link" (click)="logout()"  >Log Out</a>
         </li>
       </ul>
-      <form class="d-flex" role="search">
+      <!-- <form class="d-flex" role="search">
         <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
         <button class="btn btn-outline-success" type="submit">Search</button>
-      </form>
+      </form> -->
       <!-- <p *ngIf="logedIn()"><app-logout></app-logout></p> </div> -->
   </div>
 </div>
