@@ -5,6 +5,7 @@ import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { MatIconModule } from '@angular/material/icon';
 
+
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { NavBarComponent } from './components/nav-bar/nav-bar.component';
@@ -48,6 +49,7 @@ import { AddSquadDialogComponent } from './components/add-squad-dialog/add-squad
 import { MatBadgeModule } from '@angular/material/badge';
 import { UserProfileComponent } from './components/user-profile/user-profile.component';
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
+import { MatCardModule } from '@angular/material/card';
 
 @NgModule({
   declarations: [
@@ -99,7 +101,8 @@ import { MatAutocompleteModule } from '@angular/material/autocomplete';
     MatSortModule,
     MatBadgeModule,
     MatAutocompleteModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    MatCardModule
   ],
 
     providers:  [

@@ -1,0 +1,23 @@
+.example-card {
+  max-width: 400px;
+  border: 3px solid #000;
+}
+
+.example-header-image {
+  background-image: url('https://as2.ftcdn.net/v2/jpg/03/54/12/21/1000_F_354122131_lvL2nSdQU9x1RJwST1I02fQFRBna2rge.jpg');
+  background-size: cover;
+}
+
+.editForm {
+  background-color: white;
+  border: 2px solid black;
+  align-items: flex-end;
+  width: fit-content;
+  display: inline-block;
+}
+
+.textArea {
+  align-items: flex-end;
+  width: fit-content;
+  display: inline-block;
+}
