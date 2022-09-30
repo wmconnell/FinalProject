@@ -196,9 +196,11 @@ export class PublicsquadComponent implements OnInit {
   isUserInSquad = (user: User, squad: Squad) => {
     this.userService.getUsersBySquad(squad.id).subscribe({
       next: (users) => {
-        if (users.includes(user)) {
-          squad.containsLoggedInUser = true;
-        }
+        users.forEach(function(member) {
+          if (member.id === user.id) {
+            squad.containsLoggedInUser = true;
+          }
+        })
       },
       error: (nojoy) => {
         console.error('error creating goal:');

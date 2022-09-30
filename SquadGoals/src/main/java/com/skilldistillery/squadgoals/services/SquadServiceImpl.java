@@ -317,7 +317,6 @@ public class SquadServiceImpl implements SquadService {
 		
 		
 	
-	if (isUser(username) && (belongsToSquad(username, squadId) || isAdmin(username))) {
 		Optional<Squad> squadOpt = squadRepo.findById(squadId);
 		Squad toUpdate = null;
 		//	
@@ -327,10 +326,11 @@ public class SquadServiceImpl implements SquadService {
 			if(userOpt.isPresent()) {
 				User user = userOpt.get();
 						user.addSquad(toUpdate);
+						toUpdate.addUser(user);
 												
+						squadRepo.saveAndFlush(toUpdate);
+						userRepo.saveAndFlush(user);
 				}
-		}
-			squadRepo.saveAndFlush(toUpdate);
 		}
 	
 
