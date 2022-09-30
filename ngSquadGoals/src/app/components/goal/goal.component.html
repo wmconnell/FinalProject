@@ -1,6 +1,8 @@
-<h1 class="m-2 mt-4">All Goals</h1>
+<div *ngIf="loggedIn.role === 'admin'">
+  <div class="container">
+  <h1 class="m-2 mt-4">All Goals</h1>
 
-<div class="m-2 p-3" *ngIf="loggedIn.role === 'admin'" style="background-color:white;">
+<div class="m-2 p-3 rounded" style="background-color:white;">
   <!-- <p>Admin: {{loggedIn.username}}</p> -->
 
   <mat-form-field class="w-100" appearance="standard">
@@ -171,4 +173,5 @@
 <!-- {{squads | json}} -->
 
 
-
+</div>
+</div>

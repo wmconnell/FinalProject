@@ -188,9 +188,7 @@ public class GoalController {
 		// ACCESS RULES:
 		// A user with role "member" may only update a goal to which they belong.
 		// A user with role "admin" may update any goal.
-		if (authService.isLoggedInUser(principal.getName())) {
-			if (authService.goalExists(id)) {
-				if (authService.belongsToGoal(principal.getName(), id) || authService.isAdmin(principal.getName())) {
+
 					try {
 						updated = goalService.update(principal.getName(), id, goal);
 						if (updated == null) {
@@ -204,18 +202,7 @@ public class GoalController {
 						res.setHeader("Error", "Unable to update goal id " + id);
 						e.printStackTrace();
 					}
-				} else {
-					res.setStatus(401);
-					res.setHeader("Error", "User does not have permission to perform this action");
-				}
-			} else {
-				res.setStatus(404);
-				res.setHeader("Error", "Goal with id " + id + " does not exist");
-			}
-		} else {
-			res.setStatus(401);
-			res.setHeader("Error", "Client must be logged in to perform this action");
-		}
+		
 		return updated;
 	}
 

@@ -109,16 +109,7 @@ public class SquadController {
 			Principal principal) {
 		System.out.println("IN SQUAD CONTROLLER UPDATE!");
 		Squad updated = null;
-		if (authService.isLoggedInUser(principal.getName())) {
-			System.out.println("USer logged in");
-			if (authService.squadExists(id)) {
-				System.out.println("squad exists");
-				if (authService.squadNameUnique(squad.getName())) {
-					System.out.println("squad name unique");
-					if (authService.belongsToSquad(principal.getName(), Arrays.asList(authService.getSquad(id)))
-							|| authService.isAdmin(principal.getName())) {
-						System.out.println("belongs to squad or is admin");
-
+		
 						try {
 
 							updated = squadService.update(principal.getName(), id, squad);
@@ -128,22 +119,7 @@ public class SquadController {
 							e.printStackTrace();
 						}
 //		System.out.println(updated.getUsers() + " In controller!!!!!!");
-					} else {
-						res.setStatus(401);
-						res.setHeader("Error", "User does not have permission to perform this action");
-					}
-				} else {
-					res.setStatus(400);
-					res.setHeader("Error", "Squad name '" + squad.getName() + "' already taken"); 
-				}
-			} else {
-				res.setStatus(404);
-				res.setHeader("Error", "Squad with id " + id + " does not exist");
-			}
-		} else {
-			res.setStatus(401);
-			res.setHeader("Error", "Client must be logged in to perform this action");
-		}
+					
 		return updated;
 	}
 	

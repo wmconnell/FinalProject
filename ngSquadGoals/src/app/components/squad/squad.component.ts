@@ -1,3 +1,4 @@
+import { RemoveUserFromSquadDialogComponent } from './../remove-user-from-squad-dialog/remove-user-from-squad-dialog.component';
 import { SquadUserPipe } from './../../pipes/squad-user.pipe';
 import { Image } from './../../models/image';
 import { Component, LOCALE_ID, OnInit, ViewChild } from '@angular/core';
@@ -60,8 +61,8 @@ export class SquadComponent implements OnInit {
   updateGoal = false;
   goalToUpdate = {} as Goal;
   squadToEditId: number = 0;
-  columnsToDisplay: string[] = ['name', 'leaderName', 'numMembers', 'actions'];
-  columnsToDisplayWithExpand = [...this.columnsToDisplay, 'expand'];
+  columnsToDisplay: string[] = ['name', 'numMembers', 'actions'];
+  columnsToDisplayWithExpand = [...this.columnsToDisplay];
   dataSource = new MatTableDataSource(this.squads);
   // For addMember autocomplete
   myControl = new FormControl('');
@@ -148,12 +149,45 @@ export class SquadComponent implements OnInit {
     });
 
     dialogRef.afterClosed().subscribe((result) => {
-      console.log("DELETE? " + result);
       if (result) {
         this.deleteSquad(squad.id);
       }
     });
   }
+
+  openRemoveUserDialog(enterAnimationDuration: string, exitAnimationDuration: string, squad: Squad, member: User): void {
+    const dialogRef = this.dialog.open(RemoveUserFromSquadDialogComponent, {
+      width: '300px',
+      enterAnimationDuration,
+      exitAnimationDuration,
+      data: {squad: squad, member: member}
+    });
+
+    dialogRef.afterClosed().subscribe((result) => {
+      if (result) {
+        this.removeMemberFromSquad(squad, member);
+      }
+    });
+  }
+
+  removeMemberFromSquad = (squad: Squad, member: User) => {
+    // squad.users.forEach(function(user, index, array) {
+    //   if (user.id === member.id) {
+    //           array.splice(index, 1);
+    //         }
+    //       });
+
+          this.squadService.removeMember(squad.id, member.id).subscribe({
+            next: (squad) => {
+              this.load();
+            },
+            error: (err) => {
+              console.error(err);
+            }
+          });
+        }
+
+
 
   openDeleteGoalDialog(enterAnimationDuration: string, exitAnimationDuration: string, goal: Goal): void {
     // let confirmed: boolean = false;
@@ -180,6 +214,7 @@ export class SquadComponent implements OnInit {
     });
 
     dialogRef.afterClosed().subscribe((result) => {
+      console.log(result);
       this.updateSquad(result.updateSquadForm, result.squadId);
     });
   }
@@ -319,6 +354,7 @@ export class SquadComponent implements OnInit {
       next: (result) => {
         // console.log("RETURNED CREATED SQUAD IMAGE: " + result.profilePic.url);
         // this.createImageForSquad(result, squad.profilePic);
+        this.load();
       },
       error: (nojoy) => {
         console.error('Error creating squad');

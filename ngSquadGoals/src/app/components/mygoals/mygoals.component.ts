@@ -18,7 +18,7 @@ import { AddGoalDialogComponent } from '../add-goal-dialog/add-goal-dialog.compo
 
 
 @Component({
-  selector: 'app-squad',
+  selector: 'app-mygoals',
   templateUrl: './mygoals.component.html',
   styleUrls: ['./mygoals.component.css'],
   animations: [
@@ -49,7 +49,7 @@ export class MygoalsComponent implements OnInit {
   newMember: User = new User;
   userName: string = "";
   goals: Goal[] = [];
-  columnsToDisplay = ["name", "leader", "numActiveGoals"];
+  columnsToDisplay = ["name", "numActiveGoals"];
   columnsToDisplayWithExpand = [...this.columnsToDisplay, 'expand'];
   expandedElement: Squad | null = null;
   updateGoal = false;

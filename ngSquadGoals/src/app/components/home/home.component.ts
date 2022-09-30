@@ -1,5 +1,7 @@
+import { UserService } from 'src/app/services/user.service';
 import { Component, OnInit } from '@angular/core';
 import { AuthService } from 'src/app/services/auth.service';
+import { User } from 'src/app/models/user';
 
 @Component({
   selector: 'app-home',
@@ -8,16 +10,41 @@ import { AuthService } from 'src/app/services/auth.service';
 })
 export class HomeComponent implements OnInit {
 
-  constructor(private auth: AuthService) { }
+  constructor(private auth: AuthService, private userService: UserService) { }
 
-  ngOnInit(): void {
-  }
-  logedIn(){
-    if(this.auth.checkLogin()){
-      return true
+  loggedInUser: User = new User();
+  isLoggedIn: boolean = false;
+
+    ngOnInit(): void {
+      this.load();
     }
-    else{
-      return false;
+
+    load = (): void => {
+      this.auth.getLoggedInUser().subscribe(
+        {
+        next: (user) => {
+          console.log(user);
+          this.loggedInUser = user;
+          this.isLoggedIn = true;
+          this.userService.show(user.id).subscribe({
+            next: (result) => {
+              console.log(result);
+              this.loggedInUser.profilePic = result.profilePic;
+            },
+            error: (err) => {
+              console.error("Unable to retrieve user: " + err);
+            }
+          })
+        },
+        error: (err) => {
+          console.error("Unable to retrieve user: " + err);
+        }
+      }
+      );
     }
-  }
+
+    logout(){
+      this.isLoggedIn = false;
+      this.auth.logout()
+    }
 }

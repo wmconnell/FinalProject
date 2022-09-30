@@ -211,9 +211,7 @@ public class SquadServiceImpl implements SquadService {
 	public Squad update(String username, int squadId, Squad squad) {
 		//	A user with role "member" can only update a squad to which they belong.
 		//	A user with role "admin" can update any squad.
-		System.out.println("**** UPDATE SQUAD ****");
-		System.out.println(squad.getUsers());
-		System.out.println("**** UPDATE SQUAD ****");
+
 			Optional<Squad> squadOpt = squadRepo.findById(squadId);
 			Squad toUpdate = null;
 			//	
@@ -317,7 +315,6 @@ public class SquadServiceImpl implements SquadService {
 		
 		
 	
-	if (isUser(username) && (belongsToSquad(username, squadId) || isAdmin(username))) {
 		Optional<Squad> squadOpt = squadRepo.findById(squadId);
 		Squad toUpdate = null;
 		//	
@@ -327,10 +324,11 @@ public class SquadServiceImpl implements SquadService {
 			if(userOpt.isPresent()) {
 				User user = userOpt.get();
 						user.addSquad(toUpdate);
+						toUpdate.addUser(user);
 												
+						squadRepo.saveAndFlush(toUpdate);
+						userRepo.saveAndFlush(user);
 				}
-		}
-			squadRepo.saveAndFlush(toUpdate);
 		}
 	
 

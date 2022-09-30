@@ -1,5 +1,6 @@
-<div class="w-100"><h1 class="m-2 mt-4" style="display: inline-block;">My Squads</h1>
-  <button mat-icon-button *ngIf="squads.length > 0" aria-label="Add goal" (click)="openAddDialog('1000ms', '500ms')">
+<div class="container">
+  <h1 class="m-2 mt-4" style="display: inline-block;">My Squads</h1>
+  <button mat-icon-button *ngIf="squads.length > 0" matTooltip="Create new squad" matTooltipPosition="right" (click)="openAddDialog('1000ms', '500ms')">
     <mat-icon class="plain" style="float: right">add_circle</mat-icon>
   </button>
   </div>
@@ -32,35 +33,32 @@
       </table>
     </div>
   </div> -->
-  <div class="m-2 p-3 w-100" style="background-color:white;">
+  <div class="m-2 p-3 w-100 rounded" style="background-color:white;">
     <!-- <p>Admin: {{loggedIn.username}}</p> -->
 
     <div class="mat-elevation-z8" >
-    <table class="w-100" #squadTable mat-table [dataSource]="squads | active" matSort multiTemplateDataRows>
+    <table class="w-100" #squadTable mat-table [dataSource]="squads | active">
 
       <!-- Squad Name Column -->
       <ng-container matColumnDef="name">
-        <th mat-header-cell *matHeaderCellDef mat-sort-header> Squad </th>
         <td mat-cell *matCellDef="let squad"> {{squad.name}} </td>
       </ng-container>
 
       <!-- Leader Column -->
       <ng-container matColumnDef="leaderName">
-        <th mat-header-cell *matHeaderCellDef mat-sort-header> Leader </th>
         <td mat-cell *matCellDef="let squad"> {{squad.leaderName}} </td>
       </ng-container>
 
       <!-- Number of Members Column -->
       <ng-container matColumnDef="numMembers">
-        <th mat-header-cell *matHeaderCellDef mat-sort-header> Members </th>
         <td mat-cell *matCellDef="let squad">
           <button mat-icon-button [matMenuTriggerFor]="menu" #menuTrigger aria-label="Members">
             <mat-icon [matBadge]="squad.numMembers" matBadgeColor="accent">account_circle</mat-icon>
           </button>
           <mat-menu #menu="matMenu">
-            <button class="w-100" mat-menu-item *ngFor="let member of squad.users">
-              <img class="rounded-circle me-2" [src]="member.profilePic.url" height="30rem" width="30rem" [routerLink]="['/user/' + member.username + '/' + squad.id + '/mysquads']"/>
-              <span [routerLink]="['/user/' + member.username + '/' + squad.id + '/mysquads']">{{ member.username }}</span>
+            <button class="w-100" mat-menu-item *ngFor="let member of squad.users" (click)="openRemoveUserDialog('1000ms', '1000ms', squad, member)">
+              <img [style]="member.username === squad.leaderName ? 'outline:5px solid gold' : ''" class="rounded-circle me-3" [src]="member.profilePic.url" height="30rem" width="30rem"/>
+              <span>{{ member.username }}</span>
               <!-- <button mat-icon-button (click)="removeMember(member.username)">
                 <mat-icon style="color: red">remove_circle_outline</mat-icon>
               </button> -->
@@ -98,7 +96,6 @@
 
        <!-- Actions Column -->
        <ng-container matColumnDef="actions">
-        <th mat-header-cell *matHeaderCellDef>  </th>
         <td mat-cell *matCellDef="let squad">
           <!-- <mat-icon [matMenuTriggerFor]="menu" #menuTrigger>more_vert</mat-icon>
             <mat-menu #menu="matMenu">
@@ -121,7 +118,7 @@
         </td>
       </ng-container>
 
-      <ng-container matColumnDef="expand">
+      <!-- <ng-container matColumnDef="expand">
         <th mat-header-cell *matHeaderCellDef aria-label="row actions">&nbsp;</th>
         <td mat-cell *matCellDef="let squad">
           <button mat-icon-button aria-label="expand row" (click)="(expandedSquad = expandedSquad === squad ? null : squad); $event.stopPropagation()">
@@ -131,7 +128,7 @@
         </td>
       </ng-container>
 
-      <!-- Expanded Content Column - The detail row is made up of this one column that spans across all columns -->
+      <!-- Expanded Content Column - The detail row is made up of this one column that spans across all columns
   <ng-container matColumnDef="expandedDetail">
     <td mat-cell *matCellDef="let squad" [attr.colspan]="columnsToDisplayWithExpand.length">
       <div class="example-squad-detail"
@@ -146,17 +143,18 @@
       </div>
     </div>
   </td>
-</ng-container>
+</ng-container> -->
 
-<tr mat-header-row *matHeaderRowDef="columnsToDisplayWithExpand"></tr>
+<!-- <tr mat-header-row *matHeaderRowDef="columnsToDisplayWithExpand"></tr>
 <tr mat-row *matRowDef="let squad; columns: columnsToDisplayWithExpand;"
 class="example-squad-row"
 [class.example-expanded-row]="expandedSquad === squad"
 (click)="expandedSquad = expandedSquad === squad ? null : squad">
 </tr>
 
-<tr mat-row *matRowDef="let row; columns: ['expandedDetail']" class="example-detail-row"></tr>
+<tr mat-row *matRowDef="let row; columns: ['expandedDetail']" class="example-detail-row"></tr> -->
 
+<tr mat-row *matRowDef="let row; columns: columnsToDisplay;"></tr>
     </table>
   </div>
 
@@ -241,7 +239,20 @@ class="example-element-row"
 <tr mat-row *matRowDef="let row; columns: ['expandedDetail']" class="example-detail-row"></tr>
 </table> -->
 
-
+<!-- single squad view -->
+<!-- <div *ngIf="selectedSquad && !editSquad && !selectedMember">
+  <table>
+    <tr><td>{{selectedSquad.name}}</td></tr>
+    <tr><td>About Us: {{selectedSquad.bio}}</td></tr>
+    <tr><td>Squad Leader: {{selectedSquad.leader!.username}}</td></tr>
+    <tr><td>Members:</td></tr>
+    <tr *ngFor="let user of selectedSquad.users"><td (click)="selectMember(user.username)" >{{user.username}}</td></tr>
+  </table>
+  <button class="btn btn-success" (click)="addmember = true">Add Members</button>
+  <button class="btn btn-warning" (click)="editSquad = true">Edit</button>
+  <button class="btn btn-danger" (click)="deleteSquad(selectedSquad.id)">Delete</button>
+  <button class="btn btn-primary" (click)="displayTable()">Back</button>
+</div> -->
 
 <!-- <table mat-table
      [dataSource]="squads | active" multiTemplateDataRows
@@ -267,12 +278,20 @@ class="example-element-row"
     </button>
   </td>
 </ng-container> -->
+<!-- add member to squad form -->
+<!-- <div *ngIf="selectedSquad && addmember && !selectedMember">
+  <form>
+    <label>New Members User Name</label>
+    <input type="text" name="userName" [(ngModel)]="userName">
+    <button (click)="addMember(userName)"> Add Member</button>
 
+  </form>
+</div> -->
 
 
 
 <!-- update Squad Form -->
-<div *ngIf="selectedSquad && editSquad">
+<!-- <div *ngIf="selectedSquad && editSquad">
   <form #updateSquadForm="ngForm">
     <br>
     <input type="hidden" name="id" [(ngModel)]="selectedSquad.id" ngModel>
@@ -288,10 +307,10 @@ class="example-element-row"
 
 
   </form>
-</div>
+</div> -->
 
 <!-- Update Goal Form -->
-<div>
+<!-- <div>
   <form *ngIf="updateGoal">
     <label>Squad: </label>
     <select name="squad" id="squad" [(ngModel)]="squadToEditId">
@@ -307,7 +326,7 @@ class="example-element-row"
     <input type="datetime" name="endDate" [(ngModel)]="goalToUpdate.endDate"><br>
     <button (click)="doUpdateGoal(goalToUpdate); updateGoal = false;">Submit</button>
   </form>
-</div>
+</div> -->
 
 <!-- {{squads | json}} -->
 <!-- Member Profile -->

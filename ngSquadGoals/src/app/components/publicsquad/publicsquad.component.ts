@@ -21,9 +21,10 @@ import { EditGoalDialogComponent } from '../edit-goal-dialog/edit-goal-dialog.co
 import { DeleteConfirmationDialogComponent } from '../delete-confirmation-dialog/delete-confirmation-dialog.component';
 import { ActivePipe } from 'src/app/pipes/active.pipe';
 import { EditSquadDialogComponent } from '../edit-squad-dialog/edit-squad-dialog.component';
+import { AddSquadDialogComponent } from '../add-squad-dialog/add-squad-dialog.component';
 
 @Component({
-  selector: 'app-squad',
+  selector: 'app-all-squad',
   templateUrl: './publicsquad.component.html',
   styleUrls: ['./publicsquad.component.css'],
   animations: [
@@ -56,6 +57,7 @@ export class PublicsquadComponent implements OnInit {
   displayedColumns: string[] = ['name', 'leaderName', 'numMembers', 'join', 'actions'];
   columnsToDisplayWithExpand: string[] = [...this.displayedColumns, 'expand'];
   dataSource = new MatTableDataSource(this.squads);
+  userInSquad: boolean | null = null;
 
   @ViewChild('menuTrigger') menuTrigger!: MatMenuTrigger;
   @ViewChild(MatTable) squadTable!: MatTable<any>;
@@ -102,6 +104,26 @@ export class PublicsquadComponent implements OnInit {
     }
   }
 
+  openAddDialog(enterAnimationDuration: string, exitAnimationDuration: string): void {
+    // let confirmed: boolean = false;
+    const dialogRef = this.dialog.open(AddSquadDialogComponent, {
+      enterAnimationDuration,
+      exitAnimationDuration,
+      data: this.squads
+    });
+
+    dialogRef.afterClosed().subscribe((result) => {
+      if (result) {
+        let squad: Squad = result.createNewSquadForm.value;
+        // squad.profilePic = result.squadImage;
+        // console.log("FROM ADD IMAGE DIALOG IMAGE: " + result.squadImage.url);
+        // console.log("SQUAD TO CREATE IMAGE: " + squad.profilePic.url);
+        this.createSquad(squad);
+      }
+
+    });
+  }
+
   openDeleteDialog(enterAnimationDuration: string, exitAnimationDuration: string, squad: Squad): void {
     // let confirmed: boolean = false;
     const dialogRef = this.dialog.open(DeleteConfirmationDialogComponent, {
@@ -127,7 +149,7 @@ export class PublicsquadComponent implements OnInit {
     });
 
     dialogRef.afterClosed().subscribe((result) => {
-      this.updateSquad(result.form, result.squadId);
+      this.updateSquad(result.updateSquadForm, result.squadId);
     });
   }
 
@@ -148,12 +170,16 @@ export class PublicsquadComponent implements OnInit {
     // });
     this.squadService.index().subscribe({
       next: (squads) => {
+        let loggedInUser = this.loggedIn;
+        let isSquadMember = this.isUserInSquad;
         this.squads = squads;
         this.squads.forEach(function(squad) {
           if (squad.leader) {
           squad.leaderName = squad.leader.username;
           squad.numMembers = squad.users.length;
           }
+          console.log(squad.users.includes(loggedInUser));
+          isSquadMember(loggedInUser, squad);
         });
         this.dataSource = new MatTableDataSource(this.activePipe.transform(this.squads));
         this.squadTable.renderRows();
@@ -164,6 +190,22 @@ export class PublicsquadComponent implements OnInit {
         console.error(err);
       }
 
+    })
+  }
+
+  isUserInSquad = (user: User, squad: Squad) => {
+    this.userService.getUsersBySquad(squad.id).subscribe({
+      next: (users) => {
+        users.forEach(function(member) {
+          if (member.id === user.id) {
+            squad.containsLoggedInUser = true;
+          }
+        })
+      },
+      error: (nojoy) => {
+        console.error('error creating goal:');
+        console.error(nojoy);
+      }
     })
   }
 
@@ -280,7 +322,7 @@ export class PublicsquadComponent implements OnInit {
   updateSquad(form: NgForm, id: number) {
     // let id = this.loggedIn.id;
     console.log("In Update Squad Call! BEFORE HTTP");
-    console.log(form.value);
+    console.log(form.value.name);
     this.squadService.updateSquad(form.value, id).subscribe({
       next: (squad) => {
         console.log("In Update Squad HTTP Call!");
