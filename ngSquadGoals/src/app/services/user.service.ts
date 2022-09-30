@@ -77,7 +77,7 @@ createUser(user: User){
 
     }
     showUser(userId: any){
-      return this.http.get<User>(this.url + userId,this.getHttpOptions()).pipe(catchError((err: any) => {
+      return this.http.get<User>(this.url + '/' + userId,this.getHttpOptions()).pipe(catchError((err: any) => {
         console.log(err);
         return throwError(
           () => new Error('TodoService.showUser(): error retrieving todos: ' + err)
