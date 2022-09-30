@@ -318,7 +318,7 @@ export class SquadComponent implements OnInit {
     this.squadService.createSquad(squad).subscribe({
       next: (result) => {
         // console.log("RETURNED CREATED SQUAD IMAGE: " + result.profilePic.url);
-        this.createImageForSquad(result, squad.profilePic);
+        // this.createImageForSquad(result, squad.profilePic);
       },
       error: (nojoy) => {
         console.error('Error creating squad');

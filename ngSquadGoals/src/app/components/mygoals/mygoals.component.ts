@@ -84,7 +84,7 @@ export class MygoalsComponent implements OnInit {
     const dialogRef = this.dialog.open(DeleteConfirmationDialogComponent, {
       enterAnimationDuration,
       exitAnimationDuration,
-      data: goal
+      data: goal.title
     });
 
     dialogRef.afterClosed().subscribe((result) => {
