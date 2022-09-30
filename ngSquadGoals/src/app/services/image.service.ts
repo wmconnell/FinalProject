@@ -45,6 +45,18 @@ show(id:number){
   );
 
 }
+
+getImageBySquad(squadId: number) {
+  return this.http.get<Image>(this.url + '/squad/' + squadId, this.getHttpOptions()).pipe(
+    catchError((err: any) => {
+      console.log(err);
+      return throwError(
+        () => new Error('ImageService.createPark(): error creating image: '  + err)
+        );
+      })
+      );
+}
+
 createImage(image: Image){
   return this.http.post<Image>(this.url,image, this.getHttpOptions()).pipe(catchError((err: any) => {
     console.log(err);

@@ -1,0 +1,103 @@
+table {
+  width: 100%;
+}
+
+tr.example-detail-row {
+  height: 0;
+}
+
+tr.example-squad-row:not(.example-expanded-row):hover {
+  background: whitesmoke;
+}
+
+tr.example-squad-row:not(.example-expanded-row):active {
+  background: #efefef;
+}
+
+.example-squad-row td {
+  border-bottom-width: 0;
+}
+
+.example-squad-detail {
+  overflow: hidden;
+  display: flex;
+}
+
+.example-squad-diagram {
+  min-width: 80px;
+  border: 2px solid black;
+  padding: 8px;
+  font-weight: lighter;
+  margin: 8px 0;
+  height: 104px;
+}
+
+.example-squad-symbol {
+  font-weight: bold;
+  font-size: 40px;
+  line-height: normal;
+}
+
+.example-squad-description {
+  padding: 16px;
+}
+
+.example-squad-description-attribution {
+  opacity: 0.5;
+}
+
+table {
+  width: 100%;
+}
+
+tr.example-detail-row {
+  height: 0;
+}
+
+tr.example-squad-row:not(.example-expanded-row):hover {
+  background: whitesmoke;
+}
+
+tr.example-squad-row:not(.example-expanded-row):active {
+  background: #efefef;
+}
+
+.example-squad-row td {
+  border-bottom-width: 0;
+}
+
+.example-squad-detail {
+  overflow: hidden;
+  display: flex;
+}
+
+.example-squad-diagram {
+  min-width: 80px;
+  border: 2px solid black;
+  padding: 8px;
+  font-weight: lighter;
+  margin: 8px 0;
+  height: 104px;
+}
+
+.example-squad-symbol {
+  font-weight: bold;
+  font-size: 40px;
+  line-height: normal;
+}
+
+.example-squad-description {
+  padding: 16px;
+}
+
+.example-squad-description-attribution {
+  opacity: 0.5;
+}
+
+.plain {
+  color: white;
+}
+
+.plain:hover {
+  color: yellow;
+}

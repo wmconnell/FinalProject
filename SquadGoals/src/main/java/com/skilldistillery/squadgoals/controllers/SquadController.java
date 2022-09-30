@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.skilldistillery.squadgoals.entities.Image;
 import com.skilldistillery.squadgoals.entities.Squad;
 import com.skilldistillery.squadgoals.services.AuthService;
 import com.skilldistillery.squadgoals.services.SquadService;
@@ -139,6 +140,15 @@ public class SquadController {
 			res.setHeader("Error", "Client must be logged in to perform this action");
 		}
 		return updated;
+	}
+	
+	@PutMapping("squads/addImage/{squadId}")
+	public void addImageToSquad(@PathVariable int squadId, @RequestBody Image image, HttpServletRequest req, HttpServletResponse res, Principal principal) {
+		try {
+			squadService.addImageToSquad(squadId, image);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 	}
 
 	@GetMapping("squads/add/{id}/{memberId}")

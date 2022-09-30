@@ -27,6 +27,7 @@ import { MatOptionSelectionChange } from '@angular/material/core';
 import {map, startWith} from 'rxjs/operators';
 import { MatFormFieldControl } from '@angular/material/form-field';
 import { ActivePipe } from 'src/app/pipes/active.pipe';
+import { ImageService } from 'src/app/services/image.service';
 
 @Component({
   selector: 'app-squad',
@@ -55,7 +56,7 @@ export class SquadComponent implements OnInit {
   newMember: User = new User;
   userName: string = "";
   goals: Goal[] = [];
-  expandedElement: Squad | null = null;
+  expandedSquad: Squad | null = null;
   updateGoal = false;
   goalToUpdate = {} as Goal;
   squadToEditId: number = 0;
@@ -81,6 +82,7 @@ export class SquadComponent implements OnInit {
     private route: ActivatedRoute,
     private goalService: GoalService,
     private squadService: SquadService,
+    private imageService: ImageService,
     private activePipe: ActivePipe,
     private squadUserPipe: SquadUserPipe,
     public dialog: MatDialog) { }
@@ -98,7 +100,7 @@ export class SquadComponent implements OnInit {
       }
     );
 
-    this.load()
+    this.load();
 
     this.filteredOptions = this.myControl.valueChanges.pipe(
       startWith(''),
@@ -110,6 +112,11 @@ export class SquadComponent implements OnInit {
     const filterValue = value.toLowerCase();
 
     return this.options.filter(option => option.toLowerCase().includes(filterValue));
+  }
+
+  testExpand() {
+    console.log("Expanded Squad");
+    console.log(this.expandedSquad);
   }
 
   openAddDialog(enterAnimationDuration: string, exitAnimationDuration: string): void {
@@ -124,6 +131,8 @@ export class SquadComponent implements OnInit {
       if (result) {
         let squad: Squad = result.createNewSquadForm.value;
         squad.profilePic = result.squadImage;
+        console.log("FROM ADD IMAGE DIALOG IMAGE: " + result.squadImage.url);
+        console.log("SQUAD TO CREATE IMAGE: " + squad.profilePic.url);
         this.createSquad(squad);
       }
 
@@ -201,10 +210,13 @@ export class SquadComponent implements OnInit {
       }
     })
     let getTheGoals = this.getGoalsBySquad;
+    let getImage = this.addImageToSquad;
     this.squadService.squadsByUser().subscribe({
       next: (squads) => {
         console.log("INDEX SUCCESSFUL");
         squads.forEach(function(squad) {
+          getImage(squad);
+
           getTheGoals(squad);
         })
         this.squads = squads;
@@ -220,6 +232,20 @@ export class SquadComponent implements OnInit {
       error: (err) => {
         console.error(err);
       }
+    });
+  }
+
+  addImageToSquad = (squad: Squad): void => {
+    this.imageService.getImageBySquad(squad.id).subscribe({
+      next: (img) => {
+        squad.profilePic = img;
+        console.log("Squad Images:");
+        console.log(squad.profilePic.url);
+      },
+      error: (nojoy) => {
+        console.error('Error adding image to squad ' + squad.id);
+        console.error(nojoy);
+      },
     });
   }
 
@@ -288,17 +314,29 @@ export class SquadComponent implements OnInit {
   }
 
   createSquad = (squad: Squad) => {
+    console.log("IN CREATE SQUAD IMAGE: " + squad.profilePic.url);
     this.squadService.createSquad(squad).subscribe({
       next: (result) => {
-
-        this.displayTable()
-        this.load();
+        // console.log("RETURNED CREATED SQUAD IMAGE: " + result.profilePic.url);
+        this.createImageForSquad(result, squad.profilePic);
       },
       error: (nojoy) => {
         console.error('Error creating squad');
         console.error(nojoy);
       },
     });
+  }
+
+  createImageForSquad = (squad: Squad, image: Image) => {
+    this.squadService.createImageForSquad(squad.id, image).subscribe({
+      next: () => {
+        this.displayTable()
+        this.load();
+      },
+      error: (err) => {
+        console.error(err);
+      }
+    })
   }
 
   displayTable() {

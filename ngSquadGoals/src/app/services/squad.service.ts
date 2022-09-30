@@ -4,6 +4,7 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { catchError, throwError } from 'rxjs';
 import { environment } from 'src/environments/environment';
+import { Image } from '../models/image';
 
 @Injectable({
   providedIn: 'root'
@@ -86,6 +87,17 @@ export class SquadService {
       );
 
     }
+
+    createImageForSquad(squadId: number, image: Image) {
+      return this.http.put<void>(this.url+'/addImage/'+squadId, image, this.getHttpOptions()).pipe(catchError((err: any) => {
+        console.log(err);
+        return throwError(
+          () => new Error('ParkService.updatePark(): error updating squad: '  + err)
+          );
+        })
+        );
+    }
+
     updateSquad(squad: Squad, id:number){
       console.log(squad);
       return this.http.put<Squad>(this.url+'/'+id,squad, this.getHttpOptions()).pipe(catchError((err: any) => {

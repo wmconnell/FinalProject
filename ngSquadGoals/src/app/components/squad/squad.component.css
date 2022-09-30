@@ -6,24 +6,24 @@ tr.example-detail-row {
   height: 0;
 }
 
-tr.example-element-row:not(.example-expanded-row):hover {
+tr.example-squad-row:not(.example-expanded-row):hover {
   background: whitesmoke;
 }
 
-tr.example-element-row:not(.example-expanded-row):active {
+tr.example-squad-row:not(.example-expanded-row):active {
   background: #efefef;
 }
 
-.example-element-row td {
+.example-squad-row td {
   border-bottom-width: 0;
 }
 
-.example-element-detail {
+.example-squad-detail {
   overflow: hidden;
   display: flex;
 }
 
-.example-element-diagram {
+.example-squad-diagram {
   min-width: 80px;
   border: 2px solid black;
   padding: 8px;
@@ -32,17 +32,17 @@ tr.example-element-row:not(.example-expanded-row):active {
   height: 104px;
 }
 
-.example-element-symbol {
+.example-squad-symbol {
   font-weight: bold;
   font-size: 40px;
   line-height: normal;
 }
 
-.example-element-description {
+.example-squad-description {
   padding: 16px;
 }
 
-.example-element-description-attribution {
+.example-squad-description-attribution {
   opacity: 0.5;
 }
 
@@ -54,24 +54,24 @@ tr.example-detail-row {
   height: 0;
 }
 
-tr.example-element-row:not(.example-expanded-row):hover {
+tr.example-squad-row:not(.example-expanded-row):hover {
   background: whitesmoke;
 }
 
-tr.example-element-row:not(.example-expanded-row):active {
+tr.example-squad-row:not(.example-expanded-row):active {
   background: #efefef;
 }
 
-.example-element-row td {
+.example-squad-row td {
   border-bottom-width: 0;
 }
 
-.example-element-detail {
+.example-squad-detail {
   overflow: hidden;
   display: flex;
 }
 
-.example-element-diagram {
+.example-squad-diagram {
   min-width: 80px;
   border: 2px solid black;
   padding: 8px;
@@ -80,17 +80,17 @@ tr.example-element-row:not(.example-expanded-row):active {
   height: 104px;
 }
 
-.example-element-symbol {
+.example-squad-symbol {
   font-weight: bold;
   font-size: 40px;
   line-height: normal;
 }
 
-.example-element-description {
+.example-squad-description {
   padding: 16px;
 }
 
-.example-element-description-attribution {
+.example-squad-description-attribution {
   opacity: 0.5;
 }
 
