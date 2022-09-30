@@ -241,20 +241,7 @@ class="example-element-row"
 <tr mat-row *matRowDef="let row; columns: ['expandedDetail']" class="example-detail-row"></tr>
 </table> -->
 
-<!-- single squad view -->
-<div *ngIf="selectedSquad && !editSquad && !selectedMember">
-  <table>
-    <tr><td>{{selectedSquad.name}}</td></tr>
-    <tr><td>About Us: {{selectedSquad.bio}}</td></tr>
-    <tr><td>Squad Leader: {{selectedSquad.leader!.username}}</td></tr>
-    <tr><td>Members:</td></tr>
-    <tr *ngFor="let user of selectedSquad.users"><td (click)="selectMember(user.username)" >{{user.username}}</td></tr>
-  </table>
-  <button class="btn btn-success" (click)="addmember = true">Add Members</button>
-  <button class="btn btn-warning" (click)="editSquad = true">Edit</button>
-  <button class="btn btn-danger" (click)="deleteSquad(selectedSquad.id)">Delete</button>
-  <button class="btn btn-primary" (click)="displayTable()">Back</button>
-</div>
+
 
 <!-- <table mat-table
      [dataSource]="squads | active" multiTemplateDataRows
@@ -280,15 +267,7 @@ class="example-element-row"
     </button>
   </td>
 </ng-container> -->
-<!-- add member to squad form -->
-<div *ngIf="selectedSquad && addmember && !selectedMember">
-  <form>
-    <label>New Members User Name</label>
-    <input type="text" name="userName" [(ngModel)]="userName">
-    <button (click)="addMember(userName)"> Add Member</button>
 
-  </form>
-</div>
 
 
 
