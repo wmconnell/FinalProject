@@ -1,6 +1,12 @@
-<h1 class="m-2 mt-4">All Squads</h1>
+<div class="container">
+  <div>
+  <h1 class="m-2 mt-4" style="display: inline-block;">All Squads</h1>
+  <button mat-icon-button *ngIf="squads.length > 0" matTooltip="Create new squad" matTooltipPosition="right" (click)="openAddDialog('1000ms', '500ms')">
+    <mat-icon class="plain" style="float: right">add_circle</mat-icon>
+  </button>
+  </div>
 
-<div class="m-2 p-3 w-100" style="background-color:white;">
+<div class="m-2 p-3 w-100 rounded" style="background-color:white;">
   <!-- <p>Admin: {{loggedIn.username}}</p> -->
 
   <mat-form-field class="w-100" appearance="standard">
@@ -9,7 +15,7 @@
   </mat-form-field>
 
   <div class="mat-elevation-z8" >
-  <table class="w-100" #squadTable mat-table [dataSource]="dataSource" matSort>
+  <table class="w-100 rounded" #squadTable mat-table [dataSource]="dataSource" matSort>
 
     <!-- Squad Name Column -->
     <ng-container matColumnDef="name">
@@ -32,7 +38,7 @@
         </button>
         <mat-menu #menu="matMenu">
           <button class="w-100" mat-menu-item *ngFor="let member of squad.users">
-            <img class="rounded-circle me-2" [src]="member.profilePic.url" height="30rem" width="30rem" [routerLink]="['/user/' + member.username + '/' + squad.id + '/squads']"/>
+            <img [style]="member.username === squad.leaderName ? 'outline:5px solid gold' : ''" class="rounded-circle me-2" [src]="member.profilePic.url" height="30rem" width="30rem" [routerLink]="['/user/' + member.username + '/' + squad.id + '/squads']"/>
             <span [routerLink]="['/user/' + member.username + '/' + squad.id + '/squads']">{{ member.username }}</span>
             <!-- <button mat-icon-button (click)="removeMember(member.username)">
               <mat-icon style="color: red">remove_circle_outline</mat-icon>
@@ -76,7 +82,7 @@
                 <button mat-icon-button aria-label="Edit goal" (click)="openEditDialog('1000ms', '500ms', goal)"><mat-icon>edit</mat-icon> Edit </button><br />
                 <button mat-icon-button aria-label="Delete goal" (click)="openDeleteDialog('1000ms', '500ms', goal)"><mat-icon>delete</mat-icon> Delete </button>
               </mat-menu> -->
-              <button mat-icon-button (click)="addLoggedInUser(squad)">
+              <button mat-icon-button (click)="addLoggedInUser(squad)" *ngIf="!squad.containsLoggedInUser">
                 <mat-icon style="color:green">add_circle</mat-icon>
                 <span style="color:green"> Join     </span>
               </button>
@@ -213,3 +219,4 @@
       </div>
     </div>
   </div> -->
+</div>

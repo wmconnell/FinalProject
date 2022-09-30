@@ -1,3 +1,4 @@
+import { ConditionalExpr } from '@angular/compiler';
 import { Image } from './image';
 import { User } from "./user";
 
@@ -17,6 +18,7 @@ export class Squad {
   leader: User;
   leaderName: string = "";
   numMembers: number | null = null;
+  containsLoggedInUser: boolean = false;
 
   constructor(
     id: number = 0,
@@ -31,7 +33,8 @@ export class Squad {
     badges: any[] = [],
     squadMessages: any[] = [],
     profilePic: any = null,
-    leader: User = new User()
+    leader: User = new User(),
+    containsLoggedInUser: boolean = false
   ) {
   this.id = id;
   this.name = name;
@@ -46,5 +49,6 @@ export class Squad {
   this.squadMessages = squadMessages;
   this.profilePic = profilePic;
   this.leader = leader;
+  this.containsLoggedInUser = containsLoggedInUser;
   }
 }

@@ -1,0 +1,30 @@
+<h1 mat-dialog-title>Member of {{data.squad.name}}</h1>
+
+<div class="container">
+
+<!-- **** ANGULAR CARD -->
+<mat-card class="example-card">
+  <mat-card-header>
+    <!-- <div mat-card-avatar class="example-header-image"></div> -->
+    <mat-card-title>{{data.member.username}}
+
+   </mat-card-title>
+    <mat-card-subtitle>{{data.member.firstName}} {{data.member.lastName}}</mat-card-subtitle>
+    <!-- <div name="buttonDiv" *ngIf="squadMemberIds.includes(loggedIn!.id)">
+      <button mat-raised-button color="warn" (click)="removeMember(selectedMember!.username)">remove</button>
+    </div>
+    <button mat-raised-button (click)="back()">Back</button> -->
+  </mat-card-header>
+  <img mat-card-image [src]="data.member.profilePic.url" alt="Profile Picture">
+  <mat-card-content>
+    <p>
+      {{data.member.bio}}
+    </p>
+  </mat-card-content>
+  <mat-card-actions mat-dialog-actions>
+    <button mat-raised-button mat-dialog-close>Back</button>
+    <button mat-raised-button color="warn" [mat-dialog-close]="true" cdkFocusInitial>Remove</button>
+  </mat-card-actions>
+</mat-card>
+</div>
+

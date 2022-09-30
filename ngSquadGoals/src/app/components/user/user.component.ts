@@ -9,6 +9,7 @@ import { Goal } from 'src/app/models/goal';
 import { Squad } from 'src/app/models/squad';
 import { MatIconModule } from '@angular/material/icon';
 import { NgForm } from '@angular/forms';
+import { MygoalsComponent } from '../mygoals/mygoals.component';
 
 @Component({
   selector: 'app-user',

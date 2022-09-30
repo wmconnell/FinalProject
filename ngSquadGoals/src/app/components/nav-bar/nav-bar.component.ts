@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { User } from 'src/app/models/user';
 import { AuthService } from 'src/app/services/auth.service';
+import { UserService } from 'src/app/services/user.service';
 
 @Component({
   selector: 'app-nav-bar',
@@ -10,17 +11,30 @@ import { AuthService } from 'src/app/services/auth.service';
 })
 export class NavBarComponent implements OnInit {
 
-  constructor(private auth: AuthService,private router: Router) { }
-loggedIn: User = new User();
+  constructor(private auth: AuthService, private userService: UserService, private router: Router) { }
+loggedIn: User = new User;
+isLoggedIn: boolean = false;
   ngOnInit(): void {
-    // this.load();
+    this.load();
   }
 
   load = (): void => {
     this.auth.getLoggedInUser().subscribe(
       {
       next: (user) => {
+        console.log(user);
         this.loggedIn = user;
+        this.isLoggedIn = true;
+        this.userService.show(user.id).subscribe({
+          next: (result) => {
+            console.log(result);
+            this.loggedIn.profilePic = result.profilePic;
+          },
+          error: (err) => {
+            console.error("Unable to retrieve user: " + err);
+          }
+        })
+
         // console.log("Successfully retrieved user id " + user.id);
       },
       error: (err) => {
@@ -39,8 +53,13 @@ loggedIn: User = new User();
     }
   }
   logout(){
-    this.auth.logout()
-    this.router.navigateByUrl('/home')
+    this.isLoggedIn = false;
+    this.auth.logout();
+    this.router.navigateByUrl('/home');
+    setTimeout(() => {
+      window.location.reload();
+    }, 1); // Activate after 5 minutes.
+
   }
 
   isAdmin() {
