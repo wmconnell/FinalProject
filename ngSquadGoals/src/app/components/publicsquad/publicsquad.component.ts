@@ -53,7 +53,7 @@ export class PublicsquadComponent implements OnInit {
   updateGoal = false;
   goalToUpdate = {} as Goal;
   squadToEditId: number = 0;
-  displayedColumns: string[] = ['name', 'leaderName', 'numMembers', 'actions'];
+  displayedColumns: string[] = ['name', 'leaderName', 'numMembers', 'join', 'actions'];
   columnsToDisplayWithExpand: string[] = [...this.displayedColumns, 'expand'];
   dataSource = new MatTableDataSource(this.squads);
 
@@ -80,7 +80,7 @@ export class PublicsquadComponent implements OnInit {
           this.loggedIn = user;
           console.log(user.username);
           this.load();
-          this.displayedColumns = ['name', 'leaderName', 'numMembers'];
+          this.displayedColumns = ['name', 'leaderName', 'numMembers', 'join'];
           if (user.role === "admin") {
             this.displayedColumns.push('actions');
           }
@@ -252,34 +252,16 @@ export class PublicsquadComponent implements OnInit {
     this.editSquad = false;
   }
 
-  addMember(userName: string) {
-    console.log(userName);
-
-    this.userService.showUser(userName).subscribe({
-      next: (user) => {
-        this.newMember = user;
-        if (this.selectedSquad) {
-          console.log(this.selectedSquad);
-
-          this.selectedSquad!.users.push(this.newMember);
-          let squadId: number = this.selectedSquad!.id;
-          let memberId: number = this.newMember!.id;
-          this.squadService.addMember(squadId, memberId).subscribe({
+  addLoggedInUser(squad: Squad) {
+          this.squadService.addMember(squad.id, this.loggedIn.id).subscribe({
             next: (squad) => {
-              this.newMember = new User();
               this.load();
             },
             error: (err) => {
               console.error(err);
             }
           });
-        }
-      },
-      error: (err) => {
-        console.log(err);
 
-      }
-    });
   }
   deleteSquad(id: number) {
     console.log(id);
