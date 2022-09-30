@@ -3,13 +3,39 @@
   <div class="row">
     <div class="col-sm-4 justify-content-center">
       <div class="row align-content-center">
-        <img class="rounded-circle m-4 p-4" [src]="selectedMember!.profilePic.url"/>
+<!-- **** ANGULAR CARD -->
+<mat-card class="example-card">
+  <mat-card-header>
+    <!-- <div mat-card-avatar class="example-header-image"></div> -->
+    <mat-card-title>{{selectedMember!.username}}
+
+   </mat-card-title>
+    <mat-card-subtitle>{{selectedMember!.firstName}} {{selectedMember!.lastName}}</mat-card-subtitle>
+    <!-- <div name="buttonDiv" *ngIf="squadMemberIds.includes(loggedIn!.id)">
+      <button mat-raised-button color="warn" (click)="removeMember(selectedMember!.username)">remove</button>
+    </div>
+    <button mat-raised-button (click)="back()">Back</button> -->
+  </mat-card-header>
+  <img mat-card-image [src]="selectedMember!.profilePic.url" alt="Profile Picture">
+  <mat-card-content>
+    <p>
+      {{selectedMember!.bio}}
+    </p>
+  </mat-card-content>
+  <mat-card-actions>
+    <button mat-raised-button color="warn" (click)="removeMember(selectedMember!.username)">Remove</button>
+    <button mat-raised-button (click)="back()">Back</button>
+  </mat-card-actions>
+</mat-card>
+
+
+
+        <!-- <img class="rounded-circle m-4 p-4" [src]="selectedMember!.profilePic.url"/>
         <span>{{selectedMember!.firstName}} {{selectedMember!.lastName}}</span>
-        <span>{{selectedMember!.bio}}</span>
-        <div name="buttonDiv" *ngIf="squadMemberIds.includes(loggedIn!.id)">
-          <button (click)="removeMember(selectedMember!.username)">remove</button>
-        </div>
-        <button (click)="back()">Back</button>
+        <span>{{selectedMember!.bio}}</span> -->
+
+
+
       </div>
     </div>
   </div>
