@@ -50,6 +50,9 @@ import { MatBadgeModule } from '@angular/material/badge';
 import { UserProfileComponent } from './components/user-profile/user-profile.component';
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { MatCardModule } from '@angular/material/card';
+import { TheOneComponent } from './components/the-one/the-one.component';
+import { MatTooltipModule } from '@angular/material/tooltip';
+import { RemoveUserFromSquadDialogComponent } from './components/remove-user-from-squad-dialog/remove-user-from-squad-dialog.component';
 
 @NgModule({
   declarations: [
@@ -80,7 +83,9 @@ import { MatCardModule } from '@angular/material/card';
     AddGoalDialogComponent,
     EditSquadDialogComponent,
     AddSquadDialogComponent,
-    UserProfileComponent
+    UserProfileComponent,
+    TheOneComponent,
+    RemoveUserFromSquadDialogComponent
   ],
   imports: [
     BrowserModule,
@@ -102,7 +107,8 @@ import { MatCardModule } from '@angular/material/card';
     MatBadgeModule,
     MatAutocompleteModule,
     ReactiveFormsModule,
-    MatCardModule
+    MatCardModule,
+    MatTooltipModule
   ],
 
     providers:  [

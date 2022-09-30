@@ -37,7 +37,7 @@ index(){
 );
 }
 show(id:number){
-  return this.http.get<User>(this.url+'/'+id,this.getHttpOptions()).pipe(catchError((err: any) => {
+  return this.http.get<User>(this.url+'/uid/'+id,this.getHttpOptions()).pipe(catchError((err: any) => {
     console.log(err);
     return throwError(
       () => new Error('UserService.show(): error retrieving user: ' +id + err)

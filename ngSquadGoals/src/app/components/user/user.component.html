@@ -1,16 +1,16 @@
-<div class="container">
-  <div class="row">
+<!-- <div class="container align-items-center">
+  <div class="row justify-items-center">
     <div class="col-sm-4 justify-content-center">
-      <div class="row align-content-center">
+      <div class="row align-content-center"> -->
         <!-- <img class="rounded-circle m-4 p-4" [src]="loggedIn.profilePic.url"/> -->
 <!-- **** Angular Card Section ****  -->
-<mat-card *ngIf="loggedIn && !editUser" class="example-card">
+<mat-card *ngIf="loggedIn && !editUser" class="example-card rounded">
   <mat-card-header>
     <div mat-card-avatar class="example-header-image"></div>
     <mat-card-title>{{loggedIn.username}} <mat-icon (click)="editUser = true">edit</mat-icon></mat-card-title>
     <mat-card-subtitle>{{loggedIn.firstName}} {{loggedIn.lastName}}</mat-card-subtitle>
   </mat-card-header>
-  <img mat-card-image [src]="loggedIn.profilePic.url" alt="Profile Picture">
+  <img mat-card-image class="object-cover" style="max-height: 300px" [src]="loggedIn.profilePic.url" alt="Profile Picture">
   <mat-card-content>
     <p>
       {{loggedIn.bio}}
@@ -72,7 +72,7 @@
         <button class="btn btn-danger" (click)="deleteUser(loggedIn.id)">Deactivate</button>
         <!-- <button class="btn btn-primary" (click)="displayTable()">Back</button> -->
       </form>
-    </div>
+    <!-- </div> -->
 
 
 
@@ -97,5 +97,8 @@
   <tr><td>{{goal.endDate}}</td></tr>
 </table> -->
 
+<!-- </div>
 </div>
+</div>
+</div> -->
 <!-- {{ loggedIn | json }} -->

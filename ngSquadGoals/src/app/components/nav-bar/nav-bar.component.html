@@ -1,6 +1,8 @@
 <nav class="navbar navbar-expand-lg bg-light">
   <div class="container-fluid">
-    <a class="navbar-brand" [routerLink]="['/home']">Home</a>
+    <a class="navbar-brand" [routerLink]="['/home']">
+      <img src="https://as2.ftcdn.net/v2/jpg/03/54/12/21/1000_F_354122131_lvL2nSdQU9x1RJwST1I02fQFRBna2rge.jpg" height="40rem" width="40rem" />
+    </a>
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
       <span class="navbar-toggler-icon"></span>
     </button>
@@ -9,15 +11,13 @@
         <!-- <li class="nav-item">
           <a class="nav-link active" aria-current="page" [routerLink]="['/about']">About</a>
         </li> -->
-        <li class="nav-item">
-          <a class="nav-link" [routerLink]="['/user']">User</a>
-        </li>
-        <li class="nav-item">
+        <!-- <li class="nav-item">
           <a class="nav-link" [routerLink]="['/mysquads']">My Squads</a>
-        </li>
+        </li> -->
         <li class="nav-item">
           <a class="nav-link" [routerLink]="['/squads']">All Squads</a>
         </li>
+
         <!-- <li class="nav-item">
           <a class="nav-link" [routerLink]="['/tasks']">My Tasks</a>
         </li> -->
@@ -25,7 +25,7 @@
           <a class="nav-link" [routerLink]="['/mygoals']">My Goals</a>
         </li>
         <li class="nav-item">
-            <a class="nav-link" [routerLink]="['/goals']">All Goals</a>
+            <a class="nav-link" *ngIf="loggedIn.role === 'admin'" [routerLink]="['/goals']">All Goals</a>
         </li>
         <li class="nav-item" *ngIf="!logedIn()">
           <a class="nav-link" [routerLink]="['/login']">Log in</a>
@@ -41,13 +41,14 @@
             <li><a class="dropdown-item" href="#">Something else here</a></li>
           </ul>
         </li> -->
-        <li class="nav-item" *ngIf="!logedIn()">
+        <li class="nav-item" *ngIf="!isLoggedIn">
           <a class="nav-link" [routerLink]="['/register']">Register</a>
         </li>
-        <li class="nav-item" (click)="logout()" *ngIf="logedIn()">
-          <a  class="nav-link" (click)="logout()"  >Log Out</a>
-        </li>
       </ul>
+      <div class="d-flex align-items-center" *ngIf="isLoggedIn">
+        <a [routerLink]="['/user']"><img class="rounded-circle me-3" [src]="loggedIn.profilePic.url" height="40rem" width="40rem" /></a>
+        <a  class="nav-link" (click)="logout()"  >Log Out</a>
+      </div>
       <!-- <form class="d-flex" role="search">
         <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
         <button class="btn btn-outline-success" type="submit">Search</button>

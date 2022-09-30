@@ -1,4 +1,15 @@
-<h1>Squad Goals</h1>
-<div *ngIf="!logedIn()">
-<app-login></app-login>
+<div *ngIf="!isLoggedIn" class="container w-50 mt-4">
+  <app-login></app-login>
+</div>
+<div *ngIf="isLoggedIn">
+<div class="container mt-4 pt-4 justify-self-center" *ngIf="isLoggedIn">
+  <div class="row">
+      <div class="col">
+        <app-user></app-user>
+      </div>
+      <div class="col">
+        <app-squad></app-squad>
+      </div>
+  </div>
+</div>
 </div>

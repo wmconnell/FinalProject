@@ -19,8 +19,10 @@ export class LoginComponent implements OnInit {
     this.auth.login(user.username,user.password).subscribe({
       next: (user) =>{
         console.log(user + '!');
-
         this.router.navigateByUrl('user');
+        setTimeout(() => {
+          window.location.reload();
+        }, 1); // Activate after 5 minutes.
 
       },
       error: (err) => {
